@@ -1,0 +1,351 @@
+﻿@model List<MaidLinker.Data.Entites.Maid>
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@{
+    string cultureCode = System.Threading.Thread.CurrentThread.CurrentCulture.Name;
+    string direction = cultureCode.StartsWith("ar", StringComparison.OrdinalIgnoreCase) ? "rtl" : "ltr";
+    string textAlign = direction == "rtl" ? "right" : "left";
+    bool isEng = cultureCode.StartsWith("en", StringComparison.OrdinalIgnoreCase) ? true : false;
+    string closeButtonValue = isEng ? "0" : "1%";
+}
+
+
+<section class="sub-header" style="text-align:@textAlign">
+    <div class="container" style="direction:@direction">
+        <div class="content">
+            <h1>
+                @Localizer["Maids"]
+            </h1>
+
+            <ul class="bread-list" style="text-align:@textAlign">
+                <li>
+                    <span>
+                        @Localizer["Home"]
+                    </span>
+                </li>
+
+                <li>
+                    <a>
+                        @Localizer["Maids"]
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<section class="contact-us general-section" style="direction:@direction">
+    <div class="container">
+        <div>
+            <div>
+                <div class="heading-contact">
+                    <p style="font-size:40px;text-align:@textAlign">
+                        @Localizer["Maids"]
+                    </p>
+
+                </div>
+                <div id="error">
+                </div>
+                <form class="form-contain" method="POST" id="validation">
+
+                    <input type="hidden" name="_token" value="P9gMRWSZXiKVb1HY0oTRjpAhSnhUQU6JAmVkQpN8">
+                    <div class="row">
+                        <div class="form-group search-container col-md-8 p-0">
+                            <input type="text" class="form-control margin-15-position-obselete" id="filterInput" onkeypress="searchUsingEnterButton(event)" name="search" style=" background-color: #f2f2f2;"
+                                   placeholder="@Localizer["Search"]" value="">
+                            <i class="fas fa-search" style=" margin-right: 0.5%; color: #5F7AE7;cursor:pointer" onclick="filterDoctors()"></i>
+                        </div>
+
+                        <div class="col-md-4" style="padding-bottom:16px">
+                            <select class="form-control" id="sort-ddl" onchange="filterDoctors()">
+                                <option value="0">@Localizer["SortBy"]</option>
+                                <option value="1">@Localizer["Nationality"]</option>
+                                <option value="2">@Localizer["Language"]</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                         <div class="col-md-2 col-12 p-0">
+                            <select class="form-control" id="services-ddl" onchange="filterDoctors()">
+                                <option value="">@Localizer["Nationality"] </option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-2 col-12 ">
+                            <select class="form-control" id="services-ddl" onchange="filterDoctors()">
+                                <option value="">@Localizer["Language"] </option>
+                            </select>
+                        </div>
+                        <div class="col-md-2 col-12">
+                            <select class="form-control" id="cities-ddl" onchange="getDistrictsThenFilter()">
+                                <option value="">@Localizer["Age"] </option>
+                            </select>
+                        </div>
+                        <div class="col-md-2 col-12 ">
+                            <select class="form-control" id="disctricts-ddl" onchange="filterDoctors()">
+                                <option value="">@Localizer["Experience"] </option>
+                            </select>
+                        </div>
+                        <div class="col-md-4 col-12 ">
+                            <select class="form-control" id="insurance-ddl" onchange="filterDoctors()">
+                                <option value="0">@Localizer["MaritalStatus"]</option>
+                            </select>
+                        </div>
+
+                    </div>
+                    <div id="doctorsListContainer">
+                        @Html.Partial("MaidList", Model)
+                    </div>
+                </form>
+            </div>
+
+            @*     <div class="col-lg-4 col-12 mb-4">
+            <div class="data-contain" style="margin-top: 84px;">
+
+            <div style="padding-bottom:10px">
+            <select class="form-control" id="insurance-ddl" onchange="filterDoctors()">
+            <option value="0">All Insurance Companies</option>
+            </select>
+            </div>
+
+            </div>
+            </div> *@
+        </div>
+    </div>
+</section>
+
+<div class="modal fade" id="UserProfileModal" tabindex="-1" role="dialog" aria-labelledby="UserProfileModal" aria-hidden="true">
+    <div class="modal-dialog custom-modal-dialog" style="max-width:768px;" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="text-align:@textAlign;direction:@direction">
+                <h5 class="modal-title" id="UserProfileModal">@Localizer["DoctorDetails"]</h5>
+                <button type="button" style="margin-left:@closeButtonValue" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body doctorDetailsContainer" style="text-align:@textAlign;direction:@direction" id="doctorDetailsContainer">
+                <!-- modal content In DoctorDetails -->
+            </div>
+
+            <div class="modal-footer" style="text-align:center">
+                <button type="button" class="btn btn-danger" data-dismiss="modal" id="close-add-service">@Localizer["Close"]</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $.ajax({
+                url: '@Url.Action("GetCitiesDDL", "Common")',
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    // Clear existing options
+                    $('#cities-ddl').empty();
+                    // Populate the dropdown list
+                    var defaultSelect = "@Localizer["AllCities"]"
+                    var isEng = isEnglishCulture();
+
+                    var dropdown = $('#cities-ddl');
+                    dropdown.append($('<option></option>').val(0).text(defaultSelect));
+
+                    $.each(data, function (index, item) {
+                        dropdown.append($('<option></option>').val(item.id).text(isEng ? item.titleEn : item.titleAr));
+                    });
+                }
+            });
+
+
+
+            $.ajax({
+                url: '@Url.Action("GetInsuranceCompaniesDDL", "Common")',
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    // Clear existing options
+                    $('#insurance-ddl').empty();
+                    // Populate the dropdown list
+                    var defaultSelect = "@Localizer["AllInsuranceCompanies"]"
+                    var isEng = isEnglishCulture();
+
+                    var dropdown = $('#insurance-ddl');
+                    dropdown.append($('<option></option>').val(0).text(defaultSelect));
+
+                    $.each(data, function (index, item) {
+                        dropdown.append($('<option></option>').val(item.id).text(isEng ? item.titleEn : item.titleAr));
+                    });
+                }
+            });
+            $.ajax({
+                url: '@Url.Action("GetServicesDDL", "Common")',
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    // Clear existing options
+                    $('#services-ddl').empty();
+                    var defaultSelect = "@Localizer["AllServices"]"
+                    var isEng = isEnglishCulture();
+                    // Populate the dropdown list
+                    var dropdown = $('#services-ddl');
+                    dropdown.append($('<option></option>').val(0).text(defaultSelect));
+
+                    $.each(data, function (index, item) {
+                        dropdown.append($('<option></option>').val(item.id).text(isEng ? item.titleEn : item.titleAr));
+                    });
+                }
+            });
+            setTimeout(function () {
+                setSelectedOptions();
+            }, 1000);
+
+        });
+        function searchUsingEnterButton(event) {
+            if (event.keyCode === 13) {
+                event.preventDefault();
+                filterDoctors();
+                ;
+            }
+        }
+
+        function getDistrictsThenFilter() {
+            var cityId = $('#cities-ddl').val();
+
+            $.ajax({
+                url: '@Url.Action("GetDistrictsDDL", "Common")' + "?cityId=" + cityId,
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    // Clear existing options
+                    $('#disctricts-ddl').empty();
+                    var defaultSelect = "@Localizer["AllDistricts"]"
+                    var isEng = isEnglishCulture();
+                    // Populate the dropdown list
+                    var dropdown = $('#disctricts-ddl');
+                    dropdown.append($('<option></option>').val(0).text(defaultSelect));
+                    $.each(data, function (index, item) {
+                        dropdown.append($('<option></option>').val(item.id).text(isEng ? item.titleEn : item.titleAr));
+                    });
+                    filterDoctors();
+                }
+            });
+        }
+
+        function filterDoctors() {
+            var doctorsContainer = $('#doctorsListContainer');
+            var serviceId = $('#services-ddl').val();
+            var disctrictId = $('#disctricts-ddl').val();
+
+            var cityId = $('#cities-ddl').val();
+            var sortBy = $('#sort-ddl').val();
+            var insuranceType = $('#insurance-ddl').val();
+            var name = $('#filterInput').val();
+            $.ajax({
+                url: '/Home/FillDoctorsList?name=' + name + '&serviceId=' + serviceId + '&cityId=' + cityId + '&disctrictId=' + disctrictId + '&sortBy=' + sortBy + '&insuranceType=' + insuranceType,
+                type: 'GET',
+                success: function (response) {
+                    doctorsContainer.html(response);
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
+        }
+
+        function fillDoctorDetails(userId) {
+            var doctorDetailsContainer = $('#doctorDetailsContainer');
+
+            $.ajax({
+                url: '/Home/GetDoctorDetails?userId=' + userId,
+                type: 'GET',
+                success: function (response) {
+                    doctorDetailsContainer.html(response);
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
+        }
+
+        function getQueryParamsFromCurrentURL() {
+            const params = {};
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.toString() === "") {
+                return null;
+            }
+
+            for (const [key, value] of urlParams) {
+                params[key] = value;
+            }
+            return params;
+        }
+
+        function getDistricts(selectedDistrictId) {
+            var cityId = $('#cities-ddl').val();
+
+            $.ajax({
+                url: '@Url.Action("GetDistrictsDDL", "Common")' + "?cityId=" + cityId,
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    // Clear existing options
+                    $('#disctricts-ddl').empty();
+                    var defaultSelect = "@Localizer["AllDistricts"]"
+                    var isEng = isEnglishCulture();
+                    // Populate the dropdown list
+                    var dropdown = $('#disctricts-ddl');
+                    dropdown.append($('<option></option>').val(0).text(defaultSelect));
+                    $.each(data, function (index, item) {
+                        dropdown.append($('<option></option>').val(item.id).text(isEng ? item.titleEn : item.titleAr));
+                    });
+                    const districtDropdown = document.getElementById('disctricts-ddl');
+
+                    // Set selected option for District dropdown
+                    if (selectedDistrictId) {
+                        districtDropdown.value = selectedDistrictId;
+                    } else {
+                        districtDropdown.value = ''; // Default value if disctrictId is not present in the query string
+                    }
+                }
+            });
+        }
+
+        function setSelectedOptions() {
+            const queryParams = getQueryParamsFromCurrentURL();
+            if (queryParams == null)
+                return;
+            const serviceDropdown = document.getElementById('services-ddl');
+            const cityDropdown = document.getElementById('cities-ddl');
+
+
+            const nameField = document.getElementById('filterInput');
+
+            //var name = $('#filterInput').val();
+
+            // Set selected option for Service dropdown
+            if (queryParams.serviceId) {
+                serviceDropdown.value = queryParams.serviceId;
+            } else {
+                serviceDropdown.value = ''; // Default value if serviceId is not present in the query string
+            }
+
+            // Set selected option for City dropdown
+            if (queryParams.cityId) {
+                cityDropdown.value = queryParams.cityId;
+                getDistricts(queryParams.disctrictId);
+
+
+            } else {
+                cityDropdown.value = ''; // Default value if cityId is not present in the query string
+            }
+
+
+            if (queryParams.name) {
+                nameField.value = queryParams.name;
+            } else {
+                nameField.value = ''; // Default value if serviceId is not present in the query string
+            }
+        }
+    </script>
+}

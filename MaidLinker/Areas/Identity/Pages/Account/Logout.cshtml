@@ -1,0 +1,70 @@
+﻿@page
+@model LogoutModel
+
+<header>
+    @{
+        if (User.Identity?.IsAuthenticated ?? false)
+        {
+            <div class="modal-dialog modal-dialog-centered" style=" height: 140px;">
+            </div>
+            <div style="max-width: 550px; background-color: white; margin: -80px auto 0 auto; padding: 20px 60px 80px 60px;">
+                <div style="  font-size: 30px; font-weight: 300; margin-top: 20px; text-align: center;">Logout!</div>
+                <br />
+                <p style="text-align:center">You have successfully logged out.</p>
+
+                <div class=" box-sizing: border-box; width: 100%;">
+                    <br />
+                    <br />
+                    <div style="font-size: 18px; text-align: center">
+                        Hope see you soon  :)
+                    </div>
+                    <br>
+
+                    <form   id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
+                        <button type="submit" class="nav-link btn btn-link text-dark">&nbsp;&nbsp;&nbsp;&nbsp; If you Still your account not Logout?  <span id="logout-btn" style="color:#5F7AE7;font-weight:bold">Click Here</span></button>
+                    </form>
+                </div>
+            </div>
+
+        
+        }
+        else
+        {
+         
+
+                <div class="modal-dialog modal-dialog-centered" style=" height: 140px;">
+                </div>
+                <div style="max-width: 550px; background-color: white; margin: -80px auto 0 auto; padding: 20px 60px 80px 60px;">
+                    <div style="  font-size: 30px; font-weight: 300; margin-top: 20px; text-align: center;"> Email Confirmed!</div>
+                    <br />
+                    <p>You have successfully logged out Hope see you soon  :).</p>
+                 
+                    <div class=" box-sizing: border-box; width: 100%;">
+                        <br />
+                        <br />
+                        <div style="font-size: 18px; text-align: center">
+                            Welcome to the MaidLinker!
+                        </div>
+
+                    </div>
+                </div>
+
+        }
+    }
+</header>
+
+
+
+
+<script>
+    // window.addEventListener('domcontentloaded', function () {
+    //     
+    //     document.getelementbyid('logoutform').submit();
+    //     var link = document.getElementById('logout-btn');
+    //     link.click();
+    // });
+
+    window.addEventListener('DOMContentLoaded', function () {
+        document.getElementById('logoutForm').submit();
+    });
+</script>

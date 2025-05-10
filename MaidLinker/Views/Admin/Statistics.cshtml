@@ -1,0 +1,95 @@
+﻿<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<div class="charts-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-top: 2rem;">
+    <div>
+        <canvas id="chartWorkers"></canvas>
+    </div>
+    <div>
+        <canvas id="chartRequests"></canvas>
+    </div>
+    <div>
+        <canvas id="chartContracts"></canvas>
+    </div>
+    <div>
+        <canvas id="chartPayments"></canvas>
+    </div>
+</div>
+
+<script>
+    async function fetchStats() {
+      // Simulated API call (replace with actual API call)
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          resolve({
+            workersCount: 125,
+            newRequests: 43,
+            completedContracts: 87,
+            payments: 12000,
+            remaining: 3500
+          });
+        }, 500);
+      });
+    }
+
+    async function renderCharts() {
+      const stats = await fetchStats();
+
+      const chartConfigs = [
+        {
+          id: 'chartWorkers',
+          labels: ['عدد العاملات', 'باقي العاملات (تقديري)'],
+          data: [stats.workersCount, 200 - stats.workersCount],
+          colors: ['#5F7AE7', '#E0E7FF']
+        },
+        {
+          id: 'chartRequests',
+          labels: ['الطلبات الجديدة', 'طلبات أخرى (تقديري)'],
+          data: [stats.newRequests, 100 - stats.newRequests],
+          colors: ['#4A5FC9', '#D1D5DB']
+        },
+        {
+          id: 'chartContracts',
+          labels: ['العقود المنجزة', 'عقود معلقة (تقديري)'],
+          data: [stats.completedContracts, 100 - stats.completedContracts],
+          colors: ['#6E85D3', '#CBD5E1']
+        },
+        {
+          id: 'chartPayments',
+          labels: ['المبالغ المستلمة', 'المتبقية'],
+          data: [stats.payments, stats.remaining],
+          colors: ['#91B9F9', '#C3D4F5']
+        }
+      ];
+
+      chartConfigs.forEach(config => {
+        const ctx = document.getElementById(config.id).getContext('2d');
+        new Chart(ctx, {
+          type: 'pie',
+          data: {
+            labels: config.labels,
+            datasets: [{
+              data: config.data,
+              backgroundColor: config.colors,
+              borderColor: '#fff',
+              borderWidth: 2
+            }]
+          },
+          options: {
+            plugins: {
+              legend: {
+                position: 'bottom',
+                labels: {
+                  font: {
+                    family: 'Segoe UI',
+                    size: 13
+                  }
+                }
+              }
+            }
+          }
+        });
+      });
+    }
+
+    renderCharts();
+</script>

@@ -1,0 +1,304 @@
+﻿@model List<MaidLinker.Data.Entites.City>
+<head>
+    <!-- Custom styles for this template-->
+    <link href="~/css/sb-admin-2.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
+
+    <style>
+        .hidden {
+            display: none;
+        }
+
+
+        .toast-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .toast-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+    </style>
+</head>
+
+<!-- Toaster -->
+<div id="toast-container" class="toast-container toast-center">
+    <div class="alert alert-success hidden" role="alert">
+        The City Added/Updated Successfully!
+    </div>
+
+    @if (@ViewBag.SuccessMessage != null)
+    {
+        if (@ViewBag.SuccessMessage == true)
+        {
+            <text>
+                <div class="alert alert-success" role="alert">
+                    City deleted successfully!
+                </div>
+            </text>
+        }
+        if (@ViewBag.SuccessMessage == false)
+        {
+            <text>
+                <div class="alert alert-danger" role="alert">
+                    You cannot delete this item as it is linked in the system.
+                </div>
+            </text>
+        }
+    }
+</div>
+
+
+<div id="page-top" style="margin-top:50px">
+
+    <div id="wrapper">
+
+
+        <!-- Sidebar -->
+        @Html.Partial("_Sidebar")
+
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid" style="margin-top:50px">
+
+
+                    <!-- Page Heading -->
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <h6 style="font-weight:bold;color:#5F7AE7 " class="h6 mb-0 ">  Master List  &#8658; Cities</h6>
+
+
+                        <!--ToDo:Move To Partial View -->
+                        <div class="dropdown" style="margin-right: 5%;" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+                            <a href="#">
+                                <label style="font-weight:bold;color:#5F7AE7 ">Administrator</label>
+                                <img src="~/users/images/Default-User-Profile.jpg" width="40" height="40" alt="user-profile">
+                            </a>
+
+                            <div class="dropdown-content">
+                                 @*<a class="nav-link text-dark  linkButton" asp-area="" asp-controller="Home" asp-action="Index">My Profile </a>*@
+                                @*<a class="nav-link text-dark linkButton" asp-area="" asp-controller="Doctor" asp-action="Index">My Order </a>*@
+
+
+                                <a type="submit" style="text-transform: none;" class="my-profile-button" asp-area="Identity" asp-page="/Account/Logout">
+                                    Logout
+                                    <span>
+                                        @*  <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                                        <button style="text-transform: none;" class="my-profile-button" type="submit"></button>
+                                        </form>
+                                        *@
+                                        <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
+                                            <button style="text-transform: none;" class="my-profile-button" type="submit"></button>
+                                        </form>
+                                    </span>
+
+
+                                </a>
+
+
+                            </div>
+                        </div>
+
+                        @*    <a asp-area="Identity" asp-page="/Account/Logout" class="drop-name">
+                        <span>
+
+                        <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                        <i style="color:white" class='fas fa-sign-out-alt'></i>
+                        <button type="submit" style="background-color:#0D6EFD" class="badge badge-primary">LOGOUT</button>
+                        </form>
+
+                        </span>
+
+                        </a>*@
+
+
+
+                    </div>
+                    <!-- Content Row -->
+                    <div class="row">
+                        <!-- Area Chart -->
+                        <div class="col-xl-12 col-lg-12">
+                            <div class="card shadow mb-4">
+                                <!-- Card Header - Dropdown -->
+                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">Cities</h6>
+                                    <div style="text-align: end; cursor:pointer">
+                                        <button id="openNewCityModal" type="button" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" data-toggle="modal" data-target="#AddNewCity">  <i class="fa fa-plus text-white-50"></i>  </button>
+                                    </div>
+                                </div>
+                                <!-- Card Body -->
+                                <div class="card-body" style="max-height: 768px; overflow-y: auto;">
+
+                                    <br />
+
+                                    <div class="table-responsive" id="dataTableContainer">
+                                        @Html.Partial("CitiesList", Model)
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+
+
+
+</div>
+
+
+<div class="modal fade" id="AddNewCity" tabindex="-1" role="dialog" aria-labelledby="AddNewCityModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="AddNewCityModal">Add</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Add your modal content here -->
+                <form>
+                    <div class="form-group">
+                        <label style="font-weight:bold;color:#5F7AE7" for="titleEnInput">Title (English):</label>
+                        <input type="text" class="form-control" id="titleEnInput" required>
+                    </div>
+                    <div class="form-group">
+                        <label style="font-weight:bold;color:#5F7AE7" for="titleArInput">Title (Arabic):</label>
+                        <input type="text" class="form-control" id="titleArInput" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="states-ddl" style="font-weight:bold;color:#5F7AE7">State:</label>
+                        <!-- Dropdown list HTML element -->
+                        <select class="form-control" id="states-ddl"></select>
+                    </div>
+                </form>
+                <div class="alert alert-danger hidden sm" role="alert">
+                    <span id="error-msg-not-fill" style="display:none">Please fill all fields.</span>
+                    <span id="error-msg-duplicate" style="display:none">The details for the City have already been added.</span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="close-add-City" type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                <button id="add-City" type="button" class="btn btn-success" style="background-color:#5F7AE7">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+@section Scripts {
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            // Hide the success message after 2 seconds
+            setTimeout(function () {
+                $('.alert-success').fadeOut();
+            }, 3000);
+               // Hide the error message after 2 seconds
+                        setTimeout(function () {
+                            $('.alert-danger').addClass('hidden');
+                        }, 5000);
+
+            $('#openNewCityModal').click(function () {
+                $('#titleArInput').val("");
+                $('#titleEnInput').val("");
+
+                if ($('#states-ddl').children().length == 0) {
+                    $.ajax({
+                        url: '@Url.Action("GetStatesDDL", "Common")',
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function (data) {
+                            // Clear existing options
+                            $('#states-ddl').empty();
+                            // Populate the dropdown list
+                            var dropdown = $('#states-ddl');
+                            $.each(data, function (index, item) {
+                                dropdown.append($('<option></option>').val(item.id).text(item.titleEn));
+                            });
+                        }
+                    });
+                }
+            });
+
+            $('#add-City').click(function () {
+                var city = {
+                    TitleAr: $('#titleArInput').val(),
+                    TitleEn: $('#titleEnInput').val(),
+                    stateId: $('#states-ddl').val()
+                };
+
+                $.ajax({
+                    url: '/Admin/AddCity', // Replace with your actual API endpoint URL
+                    type: 'POST',
+                    data: JSON.stringify(city),
+                    contentType: 'application/json',
+                    success: function (response) {
+                        // Show the success message
+                        $('.alert-success').removeClass('hidden').hide().fadeIn();
+                        // Close the modal after the success message fades out
+                        $("#close-add-City").trigger("click");
+                        $('#dataTableContainer').load('/Admin/GetCities');
+
+                        // Hide the success message after 2 seconds
+                        setTimeout(function () {
+                            $('.alert-success').fadeOut();
+                        }, 3000);
+
+                    },
+                    error: function (xhr, status, error) {
+                        // Show the error message
+                        $('.alert-danger').removeClass('hidden');
+                        var msg = xhr.responseText;
+                          
+                        if (msg == "Please fill all fields.") {
+                            $('#error-msg-not-fill').show();
+                            $('#error-msg-duplicate').hide();
+                        }
+
+                        if (msg == "The details for the City have already been added.") {
+                            $('#error-msg-not-fill').hide();
+                            $('#error-msg-duplicate').show();
+                        }
+                        // Hide the error message after 2 seconds
+                        setTimeout(function () {
+                            $('.alert-danger').addClass('hidden');
+                        }, 5000);
+
+                    }
+                });
+            });
+        });
+    </script>
+}
+
+<!-- Dropdown list HTML element -->

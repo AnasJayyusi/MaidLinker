@@ -1,0 +1,294 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@{
+    string cultureCode = System.Threading.Thread.CurrentThread.CurrentCulture.Name;
+    string direction = cultureCode.StartsWith("ar", StringComparison.OrdinalIgnoreCase) ? "rtl" : "ltr";
+    string textAlign = direction == "rtl" ? "right" : "left";
+    bool isEng = direction == "ltr" ? true : false;
+}
+
+
+<section class="sub-header" style="direction:@direction">
+    <div class="container" style="text-align:@textAlign">
+        <div class="content">
+            <h1>
+                @Localizer["Contacts"]
+            </h1>
+
+            <ul class="bread-list">
+                <li>
+                    <a href="#">
+                        @Localizer["Home"]
+                    </a>
+                </li>
+
+                <li>
+                    <span>
+                        @Localizer["Contacts"]
+                    </span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<section class="contact-us general-section" style="text-align:@textAlign">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-12 mb-4">
+                <div class="heading-contact">
+                    <h1>
+                        @Localizer["AnyQuestions"]
+                    </h1>
+
+                    <p>
+                        @Localizer["AnyQuestionsDesc"]
+                    </p>
+                </div>
+                <div id="error">
+                </div>
+                <form class="form-contain" method="POST" id="validation">
+
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label for="name">
+                                    @Localizer["YourName"]
+                                </label>
+                                <div class="form-data">
+                                    <input type="text" name="name" class="form-control"
+                                           id="name" placeholder="@Localizer["YourName"]" />
+                                </div>
+                                <div id="name-error" class="text-danger"></div>
+
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 col-12">
+                            <div class="form-group">
+                                <label for="contact"> @Localizer["Phone"]</label>
+                                <div class="form-data">
+                                    <input type="text" name="contact" 
+                                        class="form-control" id="contact" maxlength="10"
+                                           placeholder="@Localizer["Phone"]" />
+                                </div>
+                                <div id="contact-error" class="text-danger"></div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 col-12">
+                            <div class="form-group">
+                                <label for="email">
+                                    @Localizer["Email"]
+                                </label>
+                                <div class="form-data">
+                                    <input type="text" name="email" class="form-control" id="email"
+                                           placeholder="@Localizer["Email"]" />
+                                </div>
+
+                                <div id="email-error" class="text-danger"></div>
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label for="message">
+                                    @Localizer["Message"]
+                                </label>
+                                <div class="form-data text-area">
+                                    <textarea name="message" class="form-control" placeholder="@Localizer["Message"]" id="message" cols="30" rows="10"></textarea>
+                                </div>
+                                <div id="message-error" class="text-danger"></div>
+
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="flex-end-data">
+                                <button type="button" id="submitForm" class="custom-btn border" style="width: 140px !important;">
+                                    <span>
+                                        @Localizer["Send"]
+                                    </span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="col-lg-4 col-12 mb-4">
+                <div class="data-contain" style="direction:@direction">
+                    <a href="#" class="link">
+                        <div class="contain">
+                            <img src="~/icon/email-icon.png" alt="">
+
+                            <h2>
+                                @Localizer["Email"]
+                            </h2>
+                        </div>
+
+                        <p>
+                            info@MaidLinker.com
+                        </p>
+                    </a>
+
+                    <a href="#" class="link">
+                        <div class="contain">
+                            <img src="~/icon/phone-icon.png" alt="">
+
+                            <h2>
+                             
+                            </h2>
+                        </div>
+
+                        <p style="direction: ltr;">
+                            +966 50 411 6436
+                        </p>
+                    </a>
+
+                    <a href="#" class="link">
+                        <div class="contain">
+                            <img src="~/icon/location-icon.png" alt="">
+
+                            <h2>
+                                @Localizer["Location"] 
+                            </h2>
+                        </div>
+
+                        <p>
+                            Riyadh
+                        </p>
+                    </a>
+
+
+                    <div class="contain">
+                        <img src="~/icon/contact-icon.png" alt="">
+
+                        <h2>
+                            @Localizer["SocialLinks"]
+                        </h2>
+                    </div>
+
+                    <ul class="socail-media">
+                        <li>
+                            <a href="https://www.facebook.com/MaidLinker_info">
+                                <img src="~/icon/facebook-icon.png" alt="">
+                            </a>
+                        </li>
+@* 
+                        <li>
+                            <a href="linkedin.com">
+                                <img src="~/icon/linked-icon.png" alt="">
+                            </a>
+                        </li> *@
+
+                        <li>
+                            <a href="https://www.instagram.com/MaidLinker_info">
+                                <img src="~/icon/instagram-icon.png" alt="">
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="https://twitter.com/MaidLinker_info">
+                                <img src="~/icon/twitter-icon.png" alt="">
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+
+        $(document).ready(function () {
+            function clearErrors() {
+                $("#name-error").text("");
+                $("#contact-error").text("");
+                $("#email-error").text("");
+                $("#message-error").text("");
+            }
+            $("#name").on("input", function () {
+                clearErrors();
+            });
+
+            // Add an input event listener for the contact field
+            $("#contact").on("input", function () {
+                clearErrors();
+            });
+
+            // Add an input event listener for the email field
+            $("#email").on("input", function () {
+                clearErrors();
+            });
+
+            // Add an input event listener for the message field
+            $("#message").on("input", function () {
+                clearErrors();
+            });
+            $("#submitForm").click(function () {
+
+                // Serialize the form data
+                clearErrors();
+                // Get the phone number input value
+                var name = $("#name").val();
+                var phone = $("#contact").val();
+                var email = $("#email").val();
+                var message = $("#message").val();
+
+                if (name.trim() === "") {
+                    // Display a name error message
+                    $("#name-error").text("@Localizer["NameValidation"]");
+                    return false; // Prevent form submission
+                }
+
+                // Perform phone number validation
+                var validPhone = /^\d{10}$/; // Matches a 10-digit number
+
+                if (!validPhone.test(phone)) {
+                    // Display an error message
+                    $("#contact-error").text("@Localizer["PhoneNumberValidation"]");
+                    return false; // Prevent form submission
+                }
+
+                var validEmail = /^[a-zA-Z0-9._%+-]+@@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+                if (!validEmail.test(email)) {
+                    // Display an email error message
+                    $("#email-error").text("@Localizer["EmailValidation"]");
+                    return false; // Prevent form submission
+                }
+                if (message.trim() === "") {
+                    // Display a message error message
+                    $("#message-error").text("@Localizer["AlertMessage"]");
+                    return false; // Prevent form submission
+                }
+                var formData = $("#validation").serialize();
+
+                // Send an AJAX request to the server
+                $.ajax({
+                    type: "POST",
+                    url: "/Home/AddNewFeedback", // Replace with the actual URL
+                    data: formData,
+                    success: function (response) {
+                        $("#validation")[0].reset();
+                        // Display the response in the result-message div
+                        //$("#result-message").html(response);
+                        
+                        alert("@Localizer["AlertMessage"]");
+                        // toastr.success('Feedback sent successfully', 'Success !!');
+
+                    },
+                    error: function (error) {
+                        // Handle errors here
+                        console.error(error);
+                    }
+                });
+            });
+        });
+    </script>
+
+}
+

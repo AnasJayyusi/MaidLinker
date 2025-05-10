@@ -1,0 +1,693 @@
+﻿<head>
+    <!-- Custom styles for this template-->
+    <link href="~/css/sb-admin-2.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
+
+    <style>
+        .hidden {
+            display: none;
+        }
+
+        .toast-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .toast-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+
+        .input-switch {
+            display: none;
+        }
+
+        .label-switch {
+            display: inline-block;
+            position: relative;
+        }
+
+            .label-switch::before, .label-switch::after {
+                content: "";
+                display: inline-block;
+                cursor: pointer;
+                transition: all 0.5s;
+            }
+
+            .label-switch::before {
+                width: 3em;
+                height: 1em;
+                border: 1px solid #757575;
+                border-radius: 4em;
+                background: #888888;
+            }
+
+            .label-switch::after {
+                position: absolute;
+                left: 0;
+                top: -20%;
+                width: 1.5em;
+                height: 1.5em;
+                border: 1px solid #757575;
+                border-radius: 4em;
+                background: #ffffff;
+            }
+
+        .input-switch:checked ~ .label-switch::before {
+            background: #00a900;
+            border-color: #008e00;
+        }
+
+        .input-switch:checked ~ .label-switch::after {
+            left: unset;
+            right: 0;
+            background: #00ce00;
+            border-color: #009a00;
+        }
+
+    </style>
+</head>
+
+<!-- Toaster -->
+<div id="toast-container" class="toast-container toast-center">
+</div>
+
+
+<div id="page-top" style="margin-top:50px">
+    <div id="wrapper">
+
+
+        <!-- Sidebar -->
+        @Html.Partial("_Sidebar")
+
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid" style="margin-top:50px">
+
+
+                    <!-- Page Heading -->
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <h6 style="font-weight:bold;color:#5F7AE7 " class="h6 mb-0 ">  Users  &#8658; Users Profiles Reviews</h6>
+
+
+                        <!--ToDo:Move To Partial View -->
+                        <div class="dropdown" style="margin-right: 5%;" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+                            <a href="#">
+                                <label style="font-weight:bold;color:#5F7AE7 ">Administrator</label>
+                                <img src="~/users/images/Default-User-Profile.jpg" width="40" height="40" alt="user-profile">
+                            </a>
+
+                            <div class="dropdown-content">
+
+
+                                <a type="submit" style="text-transform: none;" class="my-profile-button" asp-area="Identity" asp-page="/Account/Logout">
+                                    Logout
+                                    <span>
+                                        <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
+                                            <button style="text-transform: none;" class="my-profile-button" type="submit"></button>
+                                        </form>
+                                    </span>
+
+
+                                </a>
+
+
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <!-- Content Row -->
+                    <div class="row">
+                        <!-- Area Chart -->
+                        <div class="col-xl-12 col-lg-12">
+                            <div class="card shadow mb-4">
+                                <!-- Card Header - Dropdown -->
+                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">Users Profiles Reviews</h6>
+
+                                </div>
+                                <!-- Card Body -->
+                                <div class="card-body" style="max-height: 768px; overflow-y: auto;">
+
+                                    <br />
+
+                                    <div class="table-responsive" id="dataTableContainer">
+
+
+
+                                        <style>
+                                            .uncompleted {
+                                                color: rebeccapurple
+                                            }
+
+                                            .underreview {
+                                                color: darkcyan
+                                            }
+
+                                            .rejected {
+                                                color: firebrick
+                                            }
+
+                                            .active {
+                                                color: dodgerblue
+                                            }
+
+                                            .inactive {
+                                                color: gray
+                                            }
+
+                                            .status-text {
+                                                font-weight: bold;
+                                            }
+
+                                        </style>
+                                        <!-- Add an input field for filtering -->
+                                        <div class="form-group mr-2">
+                                            <input type="text" class="form-control" id="filterInput" name="search" placeholder="Search About Anything Related To User">
+                                        </div>
+
+                                        <div class="row">
+                                            <!-- Area Chart -->
+                                            <div class="col-xl-12 col-lg-12">
+
+                                                <!-- Card Header - Dropdown -->
+                                                <!-- Card Body -->
+
+                                                <div class="table-responsive">
+                                                    <table class="table table-striped" id="dataTable-RecentOrder" width="100%" cellspacing="0">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Name</th>
+                                                                <th>Email</th>
+                                                                <th>Phone</th>
+                                                                <th>Practitioner Type</th>
+                                                                <th>Status</th>
+                                                                <th>Activate / Deactivate</th>
+                                                                <th>View</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <!-- Table rows will be dynamically added here -->
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+
+                                            <!-- Pie Chart -->
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+
+
+
+</div>
+<div class="modal fade" id="ViewProfile" tabindex="-1" role="dialog" aria-labelledby="ViewProfileModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" style="max-width: 580px;" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ViewProfileModal">View Certifications / Required Files</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <!-- Add your modal content here -->
+                <table id="certifications-table" class="table">
+                    <thead>
+                        <tr>
+                            <th>Degree</th>
+                            <th>University Name</th>
+                            <th>Certification File</th>
+                        </tr>
+                    </thead>
+
+                    <tbody></tbody>
+                </table>
+
+                <table id="requiredAttachments-table" class="table">
+                    <thead>
+                        <tr>
+                            <th>Required File Type </th>
+                            <th>Attachments File</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+
+                <div id="sign-confirmed" class="alert alert-primary" role="alert">
+                    <label>Is User Signed On Contract</label> <i style="color:blue" class="fa-solid fa-signature"> ?</i> <span>Yes</span>
+                </div>
+
+
+                <div  id="sign-notconfirmed" class="alert alert-danger" role="alert">
+                    <label>Is User Signed On Contract</label> <i style="color:red" class="fa-solid fa-signature"> ?</i> <span>No</span>
+                </div>
+
+                <div class="alert alert-danger hidden sm" role="alert">
+                    <span id="error-msg-add"></span>
+                </div>
+                <div id="rejectReasonContainer" style="display: none;">
+                    <label for="rejectReason">Reason:</label>
+                    @*<input type="text" id="rejectReason" class="form-control">*@
+                    <textarea id="rejectReason" rows="4" cols="50" class="form-control"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button onclick="approve()" id="approve" type="button" class="btn btn-success">
+                    <i class="fas fa-check-circle"></i> Approve
+                </button>
+                <button onclick="reject()" id="reject" type="button" class="btn btn-danger">
+                    <i class="fas fa-times-circle"></i> Reject
+                </button>
+                <button id="close-ProfileModal" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    $(document).ready(function () {
+        getProfileReviewsOrders()
+    });
+
+    function getProfileReviewsOrders() {
+        $.ajax({
+            url: '/Admin/GetProfileReviewsOrders', // Replace with your API endpoint
+            method: 'GET',
+            dataType: 'json',
+            success: function (response) {
+                // Assuming response is an array of objects containing the data for each row
+                var table = $('#dataTable-RecentOrder tbody');
+
+                // Clear existing rows
+                table.empty();
+
+                // Loop through the response and append rows to the table
+                $.each(response, function (index, row) {
+                    var newRow = $('<tr>');
+                    newRow.append($('<td>').text(row.fullName));
+                    newRow.append($('<td>').text(row.email));
+                    newRow.append($('<td>').text(row.phoneNumber));
+                    if (row.practitionerType == null) {
+                        //row.practitionerType.titleEn = "Beneficiray"
+                        //row.practitionerType.titleEn = "مستفيد"
+                        newRow.append($('<td>').text("Beneficiray"));
+                    }
+                    else {
+                        newRow.append($('<td>').text(row.practitionerType.titleEn));
+                    }
+
+                    var statusText;
+                    if (row.profileStatus === 0) {
+                        statusText = 'UnCompleted';
+                    } else if (row.profileStatus === 1) {
+                        statusText = 'Under Review';
+                    } else if (row.profileStatus === 2) {
+                        statusText = 'Rejected';
+                    } else if (row.profileStatus === 3) {
+                        statusText = 'Active';
+                    }
+                    else if (row.profileStatus === 4) {
+                        statusText = 'InActive';
+                    }
+
+                    var statusCell = $('<td>').addClass('status-cell');
+                    statusCell.append($('<span>').append('&nbsp;&nbsp;').addClass('status-text').append('&nbsp;&nbsp;').text(statusText)).append('&nbsp;&nbsp;');
+                    if (row.profileStatus === 0) {
+                        statusCell.addClass('uncompleted');
+                        statusCell.append($('<i>').addClass('fa fa-unlock'));
+                    } else if (row.profileStatus === 1) {
+                        statusCell.addClass('underreview');
+                        statusCell.append($('<i>').addClass('fa fa-clock'));
+                    } else if (row.profileStatus === 2) {
+                        statusCell.addClass('rejected');
+                        statusCell.append($('<i>').addClass('fa fa-times-circle'));
+                    } else if (row.profileStatus === 3) {
+                        statusCell.addClass('active');
+                        statusCell.append($('<i>').addClass('fa fa-check-circle'));
+                    }
+                    else if (row.profileStatus === 4) {
+                        statusCell.addClass('inactive');
+                        statusCell.append($('<i>').addClass('fas fa-user-slash'));
+                    }
+
+                    newRow.append(statusCell);
+
+                    var activeInactiveCell = $('<td  id="tdActiveInactive' + index + '"> <input onclick="changeStatus(' + row.id + ')" class="input-switch" type="checkbox" id="chkActiveInactive' + index + '" /> <label id="lblActiveInactive' + index + '" class="label-switch" for="chkActiveInactive' + index + '"> </label> </td>');
+
+
+                    newRow.append(activeInactiveCell);
+
+                    newRow.append($('<td>').html('<img style="cursor:pointer" data-toggle="modal" data-target="#ViewProfile" href="#" title="View Profile" src="/icon/view-certifications-icon.png" alt="" width="40" height="40" onclick="viewProfile(' + row.id + ',' + row.profileStatus + ')">'));
+
+
+                    table.append(newRow);
+
+                    if (row.profileStatus === 4)
+                        $("#chkActiveInactive" + index).prop("checked", false);
+                    if (row.profileStatus != 4)
+                        $("#chkActiveInactive" + index).prop("checked", true);
+                    if (row.profileStatus == 0 || row.profileStatus == 1 || row.profileStatus == 2) {
+                        $('#tdActiveInactive' + index).prop('disabled', true).css('opacity', 0.5);
+                        $("#chkActiveInactive" + index).prop("disabled", true);
+                        $("#lblActiveInactive" + index).css("disabled", true);
+
+
+                        $('#tdActiveInactive' + index).css('cursor', 'no-drop');
+                        $('#lblActiveInactive' + index).css('cursor', 'no-drop');
+                        $("#chkActiveInactive" + index).css('cursor', 'no-drop');
+                    }
+                });
+            },
+            error: function (xhr, status, error) {
+                console.log('AJAX Error: ' + status + ' - ' + error);
+            }
+
+        });
+    }
+
+    function viewProfile(id, profileStatusId) {
+        $("#approve").show();
+        $("#rejectReasonContainer").hide();
+        isUserSigned(id);
+        getCertifcations(id, profileStatusId);
+        getRequiredFiles(id, profileStatusId);
+    }
+
+    function getCertifcations(id, profileStatusId) {
+        $.ajax({
+            url: '/Admin/GetUserCertifications/' + id, // Replace with your API endpoint
+            method: 'GET',
+            dataType: 'json',
+            success: function (response) {
+                var table = $('#certifications-table tbody');
+
+                // Show Approve & Rejection Only If Profile Status Is UnderReview
+                if (profileStatusId != 1) {
+                    $("#approve").hide()
+                    $("#reject").hide()
+                }
+                else {
+                    $("#approve").show()
+                    $("#reject").show()
+                }
+                // Clear existing rows
+                table.empty();
+
+                // Loop through the response and append rows to the table
+                $.each(response, function (index, row) {
+                    var newRow = $('<tr>');
+                    newRow.append($('<td hidden id="userProfileId">').text(row.userProfileId));
+                    newRow.append($('<td>').text(row.degree.titleEn));
+                    newRow.append($('<td>').text(row.universityNameEn));
+
+                    var iconClass = '';
+                    var linkClass = '';
+                    switch (row.extension.replace(".", "")) {
+                        case 'pdf':
+                            iconClass = 'far fa-file-pdf';
+                            linkClass = 'pdf-link';
+                            break;
+                        case 'pptx':
+                        case 'ppt':
+                            iconClass = 'far fa-file-powerpoint';
+                            linkClass = 'pptx-link';
+                            break;
+                        case 'docx':
+                        case 'doc':
+                            iconClass = 'far fa-file-word';
+                            linkClass = 'docx-link';
+                            break;
+                        case 'xlsx':
+                        case 'xls':
+                            iconClass = 'far fa-file-excel';
+                            linkClass = 'xlsx-link';
+                            break;
+                        case 'jpg':
+                        case 'jpeg':
+                        case 'png':
+                        case 'gif':
+                            iconClass = 'far fa-file-image';
+                            linkClass = 'image-link';
+                            break;
+                        // Add more cases for other file extensions and their corresponding Font Awesome classes and link classes
+                        default:
+                            iconClass = 'far fa-file';
+                            linkClass = 'default-link';
+                            break;
+                    }
+
+                    var linkElement = $('<a>')
+                        .attr('href', row.path)
+                        .attr('target', '_blank')
+                        .addClass(linkClass)
+                        .html('&nbsp;&nbsp;' + row.name);
+                    var iconElement = $('<i>').addClass(iconClass);
+                    linkElement.prepend(iconElement);
+                    newRow.append($('<td>').append(linkElement));
+
+                    table.append(newRow);
+                });
+            },
+            error: function (xhr, status, error) {
+                console.log('AJAX Error: ' + status + ' - ' + error);
+            }
+        });
+    }
+    function isUserSigned(userProfileId) {
+
+        $.ajax({
+            url: '/Admin/IsUserSigned/' + userProfileId,
+            type: 'Get',
+            success: function (response) {
+                if (response == true) {
+                    $("#sign-notconfirmed").hide();
+                    $("#sign-confirmed").show();
+                }
+                if (response == false) {
+                    $("#sign-notconfirmed").show();
+                    $("#sign-confirmed").hide();
+                }
+            },
+            error: function (xhr, status, error) {
+                toastr.error('Error occurred.', 'Failed !!');
+            }
+        });
+    }
+    function getRequiredFiles(id, profileStatusId) {
+        $.ajax({
+            url: '/Admin/GetUserRequiredAttachments/' + id, // Replace with your API endpoint
+            method: 'GET',
+            dataType: 'json',
+            success: function (response) {
+                var table = $('#requiredAttachments-table tbody');
+
+                table.empty();
+
+                // Loop through the response and append rows to the table
+                $.each(response, function (index, row) {
+                    var newRow = $('<tr>');
+                    newRow.append($('<td hidden id="userProfileId">').text(row.userProfileId));
+                    if (row.requiredFileType == 1)
+                        newRow.append($('<td>').text("Signed Contract"));
+                    else
+                        newRow.append($('<td>').text("Professional Category"));
+
+                    var iconClass = '';
+                    var linkClass = '';
+                    switch (row.extension.replace(".", "")) {
+                        case 'pdf':
+                            iconClass = 'far fa-file-pdf';
+                            linkClass = 'pdf-link';
+                            break;
+                        case 'pptx':
+                        case 'ppt':
+                            iconClass = 'far fa-file-powerpoint';
+                            linkClass = 'pptx-link';
+                            break;
+                        case 'docx':
+                        case 'doc':
+                            iconClass = 'far fa-file-word';
+                            linkClass = 'docx-link';
+                            break;
+                        case 'xlsx':
+                        case 'xls':
+                            iconClass = 'far fa-file-excel';
+                            linkClass = 'xlsx-link';
+                            break;
+                        case 'jpg':
+                        case 'jpeg':
+                        case 'png':
+                        case 'gif':
+                            iconClass = 'far fa-file-image';
+                            linkClass = 'image-link';
+                            break;
+                        // Add more cases for other file extensions and their corresponding Font Awesome classes and link classes
+                        default:
+                            iconClass = 'far fa-file';
+                            linkClass = 'default-link';
+                            break;
+                    }
+
+                    var linkElement = $('<a>')
+                        .attr('href', row.path)
+                        .attr('target', '_blank')
+                        .addClass(linkClass)
+                        .html('&nbsp;&nbsp;' + row.name);
+                    var iconElement = $('<i>').addClass(iconClass);
+                    linkElement.prepend(iconElement);
+                    newRow.append($('<td>').append(linkElement));
+
+                    table.append(newRow);
+                });
+            },
+            error: function (xhr, status, error) {
+                console.log('AJAX Error: ' + status + ' - ' + error);
+            }
+        });
+    }
+
+    function reject() {
+        var rejectReason = $("#rejectReason").val();
+        if (rejectReason == "" || rejectReason == null || rejectReason == undefined) {
+            // Add red color to the input field
+            $("#rejectReason").addClass("is-invalid");
+
+            // Add reject reason message
+            $("#rejectReasonError").text("Please add reject reason");
+            $("#approve").hide(); // Hide the "Approve" button
+            $("#rejectReasonContainer").show();
+        }
+        else {
+            var userProfileId = parseInt($("#userProfileId").text(), 10);
+            var rejectReason = $("#rejectReason").val();
+            $("#close-ProfileModal").trigger("click");
+
+            $.ajax({
+                url: '/Admin/RejectUserProfile/' + userProfileId + '/' + rejectReason,
+                method: 'GET',
+                dataType: 'json',
+                success: function (response) {
+                    // Handle the success response here
+                    console.log('User status updated successfully:', response);
+                    getProfileReviewsOrders();
+                },
+                error: function (xhr, status, error) {
+                    // Handle the error response here
+                    console.log('AJAX Error: ' + status + ' - ' + error);
+                }
+            });
+        }
+    }
+
+    function approve() {
+        var userProfileId = parseInt($("#userProfileId").text(), 10);
+        $("#close-ProfileModal").trigger("click");
+
+        $.ajax({
+            url: '/Admin/ApproveUserProfile/' + userProfileId,
+            method: 'GET',
+            dataType: 'json',
+            success: function (response) {
+                // Handle the success response here
+                console.log('User status updated successfully:', response);
+                getProfileReviewsOrders();
+            },
+            error: function (xhr, status, error) {
+                // Handle the error response here
+                console.log('AJAX Error: ' + status + ' - ' + error);
+            }
+        });
+    }
+
+    function changeStatus(userprofileId) {
+
+        $.ajax({
+            url: '/Admin/SetActivateDeactivateUser?userProfileId=' + userprofileId,
+            method: 'GET',
+            dataType: 'json',
+            success: function (response) {
+                // Handle the success response here
+
+                if (response == 4)
+                    toastr.success("The User Deactivated Successfully", "Success !!");
+
+                if (response == 3)
+                    toastr.success("The User Activated Successfully", "Success !!");
+
+                getProfileReviewsOrders();
+
+            },
+            error: function (xhr, status, error) {
+                // Handle the error response here
+                toastr.error('Error occurred', 'Failed !!');
+            }
+        });
+    }
+
+
+</script>
+
+<script>
+    // Wait for the document to be ready
+    $(document).ready(function () {
+        // Add an input field for filtering
+        $('#filterInput').on('input', function () {
+            var filterValue = $(this).val().toLowerCase();
+
+            // Iterate through each row in the table
+            $('#dataTable-RecentOrder tbody tr').each(function () {
+                // Access each cell in the row
+                var name = $(this).find('td:eq(0)').text().toLowerCase();
+                var email = $(this).find('td:eq(1)').text().toLowerCase();
+                var phone = $(this).find('td:eq(2)').text().toLowerCase();
+                var practitionerType = $(this).find('td:eq(3)').text().toLowerCase();
+                var status = $(this).find('td:eq(4)').text().toLowerCase();
+                var view = $(this).find('td:eq(5)').text().toLowerCase();
+
+                // Show or hide the row based on the filter criteria
+                if (name.includes(filterValue) || email.includes(filterValue) || phone.includes(filterValue) || practitionerType.includes(filterValue) || status.includes(filterValue) || view.includes(filterValue)) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+        });
+    });
+</script>

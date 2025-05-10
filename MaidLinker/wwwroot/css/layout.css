@@ -1,0 +1,186 @@
+﻿.error-email {
+    color: red;
+    font-size: 12px;
+    text-align: left
+}
+
+.success-email {
+    color: green;
+    font-size: 12px;
+    text-align: left
+}
+
+.error {
+    color: red !important;
+}
+
+.forget-input {
+    height: 50px !important;
+}
+
+.rating-star {
+    font-family: "Font Awesome 5 Free" !important;
+}
+
+.star-rating {
+    direction: rtl;
+    display: inline-block;
+    padding: 20px;
+    cursor: default;
+}
+
+    .star-rating input[type=radio] {
+        display: none;
+    }
+
+    .star-rating label {
+        color: #bbb;
+        font-size: 2rem;
+        padding: 0;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+        margin: 0 5px;
+    }
+
+        .star-rating label:hover,
+        .star-rating label:hover ~ label,
+        .star-rating input[type=radio]:checked ~ label {
+            color: #f2b600;
+        }
+
+.custom-check-badge {
+    position: relative;
+    padding: 4px 0;
+}
+
+    .custom-check-badge input {
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        position: absolute;
+        cursor: pointer;
+        padding: 4px 0;
+        top: 0;
+        left: 0;
+    }
+
+        .custom-check-badge input:checked ~ .custom-check-label a {
+            color: #5F7AE7;
+            border-color: #5F7AE7;
+        }
+
+    .custom-check-badge label {
+        margin-bottom: 0;
+    }
+
+.review-star {
+    font-family: "Font Awesome 5 Free" !important;
+}
+
+.tooltiptext {
+    visibility: hidden;
+    width: 309px;
+    background-color: #565454;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: -2px 0;
+    margin-left: 23%;
+    margin-top: -53px;
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+}
+
+.tooltiptext {
+    visibility: visible;
+}
+
+.dropdown a {
+    overflow: hidden;
+    position: relative;
+    display: inline-block;
+}
+
+    .dropdown a::before,
+    .dropdown a::after {
+        content: '';
+        position: absolute;
+        width: 100%;
+        left: 0;
+    }
+
+    .dropdown a::before {
+        background-color: #54b3d6;
+        height: 2px;
+        bottom: 0;
+        transform-origin: 100% 50%;
+        transform: scaleX(0);
+        transition: transform .3s cubic-bezier(0.76, 0, 0.24, 1);
+    }
+
+    .dropdown a::after {
+        content: attr(data-replace);
+        height: 100%;
+        top: 0;
+        transform-origin: 100% 50%;
+        transform: translate3d(200%, 0, 0);
+        transition: transform .3s cubic-bezier(0.76, 0, 0.24, 1);
+        color: #54b3d6;
+    }
+
+    .dropdown a:hover::before {
+        transform-origin: 0% 50%;
+        transform: scaleX(1);
+    }
+
+    .dropdown a:hover::after {
+        transform: translate3d(0, 0, 0);
+    }
+
+    .dropdown a span {
+        display: inline-block;
+        transition: transform .3s cubic-bezier(0.76, 0, 0.24, 1);
+    }
+
+    .dropdown a:hover span {
+        transform: translate3d(-200%, 0, 0);
+    }
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    padding: 12px 16px;
+    z-index: 1;
+    
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.my-profile-button {
+    background-color: transparent; /* Button background color */
+    color: black; /* Button text color */
+    border: none; /* Remove button border */
+    padding: 8px 16px; /* Adjust padding as needed */
+    font-size: 14px; /* Adjust font size as needed */
+    /* Add any additional styles you want */
+}
+
+.linkButton {
+    background-color: transparent; /* Button background color */
+    color: black; /* Button text color */
+    border: none; /* Remove button border */
+    padding: 8px 16px; /* Adjust padding as needed */
+    font-size: 14px; /* Adjust font size as needed */
+    /* Add any additional styles you want */
+}

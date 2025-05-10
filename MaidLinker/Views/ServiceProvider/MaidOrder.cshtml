@@ -1,0 +1,462 @@
+﻿<div class="col-md-12 col-12 mb-4">
+    <div class="input-group">
+        <div class="form-outline">
+            <input onkeyup="filterDoctors()" id="doctorName-input" type="text" class="form-control" />
+        </div>
+        <button onclick="filterDoctors()" style="height:40px" id="search-button" type="button" class="btn btn-primary">
+            <i class="fas fa-search"></i>
+        </button>
+        <br />
+        <span style="color:red;font-style:italic;font-weight:bold">Note: Only Doctors who have the selected Privileges will display</span>
+        <br />
+        <br />
+
+    </div>
+    <div class="row">
+        <div class="col-md-3 col-12 " style="padding-right:8px">
+            <select class="form-control" id="services-ddl" onchange="filterDoctors()" disabled>
+            </select>
+        </div>
+        <div class="col-md-3 col-12 padding-screen" style="padding-right:8px">
+            <select class="form-control" id="cities-ddl" onchange="getDistrictsThenFilter()"></select>
+        </div>
+
+        <div class="col-lg-3 col-12 padding-screen" style="padding-right:8px">
+            <select class="form-control" id="disctricts-ddl" onchange="filterDoctors()"></select>
+        </div>
+
+        <div class="col-md-3 col-12 padding-screen">
+            <select class="form-control" id="insurance-ddl" onchange="filterDoctors()"></select>
+        </div>
+    </div>
+    <br />
+    <div class="col-md-3 offset-9 padding-screen">
+        <select style="margin-left:15px" class="form-control" id="sort-ddl" onchange="filterDoctors()">
+            <option value="0">Sort By</option>
+            <option value="1">Name</option>
+            <option value="2">Location</option>
+        </select>
+    </div>
+
+    <div class="container">
+        <div class="row" id="doctorsContainer">
+        </div>
+    </div>
+    @*@Html.Partial("AvailableDoctorsList",Model)*@
+
+</div>
+
+
+<style>
+    .doctor-card {
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+        transition: transform 0.3s ease;
+    }
+
+        .doctor-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+
+    .doctor-weight-700 {
+        color: #5F7AE7;
+        font-weight: 700;
+    }
+
+    .doctor-card-title {
+        color: #5F7AE7;
+        font-size: 18px;
+        margin-bottom: 10px;
+        color: #5F7AE7
+    }
+
+    .doctor-card-text {
+        color: #666;
+        margin-bottom: 5px;
+    }
+
+
+    .dots-container {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .dots-button {
+        background: none;
+        border: none;
+        color: red;
+        font-size: 18px;
+        padding: 0;
+        cursor: pointer;
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        position: relative;
+        overflow: hidden;
+    }
+
+        .dots-button::before {
+            content: "";
+            position: absolute;
+            color: red;
+            font-size: 20px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .dots-button::after {
+            content: "";
+            position: absolute;
+            background-color: #007bff;
+            width: 4px;
+            height: 4px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .dots-button::before,
+        .dots-button::after {
+            border-radius: 50%;
+        }
+
+        .dots-button::after {
+            top: 54%;
+        }
+
+        .dots-button::before {
+            top: 46%;
+        }
+
+    .activeLink {
+        color: #5F7AE7;
+        font-weight: bold;
+        pointer-events: none;
+        cursor: not-allowed;
+        background-color: whitesmoke
+    }
+
+    #menu .nav-item:hover {
+        /* Add your desired styles for hover state */
+        background-color: #e0e0e0;
+        color: #333;
+    }
+
+
+    .tab-header {
+        display: flex;
+        justify-content: space-between;
+        background-color: #f1f1f1;
+    }
+
+    .padding-top-25 {
+        padding-top: 25px;
+    }
+
+    .tab-button {
+        background-color: inherit;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        padding: 10px 20px;
+        transition: background-color 0.3s;
+        border-radius: 12px;
+        margin: 5px;
+    }
+
+        .tab-button:hover {
+            background-color: #ddd;
+        }
+
+        .tab-button.active {
+            background-color: #5F7AE7;
+            color: white
+        }
+
+    .tab-content {
+        background-color: #fff;
+    }
+
+    .no-results {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        margin-top: 20px;
+        padding: 20px;
+        font-size: 18px;
+    }
+
+        .no-results img {
+            width: 15%;
+            height: 100%;
+            margin-bottom: 10px;
+        }
+
+        .no-results p {
+            margin: 0;
+        }
+
+    .doctor-card {
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        position: relative;
+        cursor: pointer;
+        transition: transform 0.3s ease;
+        border-radius: 10%;
+    }
+
+        .doctor-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+    .doctor-card-body {
+        padding: 20px;
+        border-radius: 10%;
+    }
+
+    .doctor-card-title {
+        color: #333;
+        font-size: 18px;
+        margin-bottom: 10px;
+        color: #5F7AE7
+    }
+
+    .doctor-card-text {
+        color: #666;
+        margin-bottom: 5px;
+    }
+
+
+    .dots-container {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .dots-button {
+        background: none;
+        border: none;
+        color: #007bff;
+        font-size: 18px;
+        padding: 0;
+        cursor: pointer;
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        position: relative;
+        overflow: hidden;
+    }
+
+        .dots-button::before {
+            position: absolute;
+            color: red;
+            font-size: 20px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .dots-button::after {
+            content: "";
+            position: absolute;
+            background-color: #007bff;
+            width: 4px;
+            height: 4px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .dots-button::before,
+        .dots-button::after {
+            border-radius: 50%;
+        }
+
+        .dots-button::after {
+            top: 54%;
+        }
+
+        .dots-button::before {
+            top: 46%;
+        }
+
+    .no-results {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        margin-top: 20px;
+        padding: 20px;
+        font-size: 18px;
+    }
+
+        .no-results img {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 10px;
+        }
+
+        .no-results p {
+            margin: 0;
+        }
+
+    .search-container {
+        position: relative;
+        display: flex;
+        align-items: center;
+        width: 100%;
+    }
+
+        .search-container input {
+            padding-right: 30px; /* Add space for the search icon */
+        }
+
+        .search-container i {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #888;
+        }
+
+    .status {
+        text-align: center;
+        font-size: 10px;
+        padding: 4px 6px;
+        border-radius: 4px;
+        font-weight: bold;
+    }
+
+    .status-default {
+        background-color: #5F7AE7;
+        color: #ffffff;
+    }
+
+    .status-success {
+        background-color: #4CAF50;
+        color: #ffffff;
+    }
+
+    .status-warning {
+        background-color: #FFC107;
+        color: #ffffff;
+    }
+
+    .status-error {
+        background-color: #FF0000;
+        color: #ffffff;
+    }
+</style>
+<script>
+    function handleDoubleClick(element) {
+        // Remove 'selected' class from all divs
+        const divs = document.getElementsByClassName('selectable');
+        for (let i = 0; i < divs.length; i++) {
+            divs[i].classList.remove('selected');
+        }
+
+        // Add 'selected' class to the double-clicked div
+        element.classList.add('selected');
+
+
+        if ($(".selected").attr('id') == undefined || $(".selected").attr('id') == null || $(".selected").attr('id') == -1) {
+            $("#submitRequest").prop('disabled', true)
+            $("#submitRequest").css("background", "gray");
+            $("#submitRequest").css("cursor", "not-allowed")
+        }
+        else {
+            $("#submitRequest").prop('disabled', false)
+            $("#submitRequest").css("background", "");
+            $("#submitRequest").css("cursor", "");
+        }
+    }
+
+
+</script>
+<style>
+    .selectable {
+        position: relative;
+        cursor: pointer;
+    }
+
+    .selected {
+        background-color: lightblue;
+    }
+
+    .check-icon {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        visibility: hidden;
+    }
+
+    .selected .check-icon {
+        visibility: visible;
+    }
+</style>
+
+
+<script>
+    function filterDoctors() {
+        var doctorsContainer = $('#doctorsContainer');
+        var servicesIds = $("#selectedServicesIds").val();
+        var quantities = $("#selectedQuantities").val();
+        var disctrictId = $('#disctricts-ddl').val();
+        var cityId = $('#cities-ddl').val();
+        var sortBy = $('#sort-ddl').val();
+        var insuranceType = $('#insurance-ddl').val();
+        var name = $('#doctorName-input').val();
+        $.ajax({
+            url: '/ServiceProvider/GetAvailableDoctors?serviceIds=' + servicesIds + '&name=' + name + '&cityId=' + cityId + '&disctrictId=' + disctrictId + '&sortBy=' + sortBy + '&insuranceType=' + insuranceType, 
+            type: 'GET',
+            success: function (response) {
+                doctorsContainer.html(response);
+            },
+            error: function (xhr, status, error) {
+                console.error('Error:', error);
+            }
+        });
+    }
+
+    function getDistrictsThenFilter() {
+        var cityId = $('#cities-ddl').val();
+
+        $.ajax({
+            url: '@Url.Action("GetDistrictsDDL", "Common")' + "?cityId=" + cityId,
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                // Clear existing options
+                $('#disctricts-ddl').empty();
+                // Populate the dropdown list
+                var dropdown = $('#disctricts-ddl');
+                dropdown.append($('<option></option>').val(0).text('All Districts'));
+                $.each(data, function (index, item) {
+                    dropdown.append($('<option></option>').val(item.id).text(item.titleEn));
+                });
+                filterDoctors();
+            }
+        });
+    }
+
+
+</script>

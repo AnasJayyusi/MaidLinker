@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="18px" height="18px" viewBox="0 0 18 18" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>icon/social/notifications_none_24px copy_outlined</title>
+    <defs>
+        <path d="M11.81625,10.69125 L11.22375,10.69125 L11.01375,10.48875 C11.74875,9.63375 12.19125,8.52375 12.19125,7.31625 C12.19125,4.62375 10.00875,2.44125 7.31625,2.44125 C4.62375,2.44125 2.44125,4.62375 2.44125,7.31625 C2.44125,10.00875 4.62375,12.19125 7.31625,12.19125 C8.52375,12.19125 9.63375,11.74875 10.48875,11.01375 L10.69125,11.22375 L10.69125,11.81625 L14.44125,15.55875 L15.55875,14.44125 L11.81625,10.69125 Z M7.31625,10.69125 C5.44875,10.69125 3.94125,9.18375 3.94125,7.31625 C3.94125,5.44875 5.44875,3.94125 7.31625,3.94125 C9.18375,3.94125 10.69125,5.44875 10.69125,7.31625 C10.69125,9.18375 9.18375,10.69125 7.31625,10.69125 Z" id="path-1"></path>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Add-Dental-Clinic-Info-&amp;-Add-Timetable-5-Insurance-Company" transform="translate(-1200.000000, -713.000000)">
+            <g id="Check-Select-Copy" transform="translate(474.000000, 631.000000)">
+                <g id="Search-Bar" transform="translate(24.000000, 73.000000)">
+                    <g id="icon/social/notifications_none_24px-copy" transform="translate(702.000000, 9.000000)">
+                        <mask id="mask-2" fill="white">
+                            <use xlink:href="#path-1"></use>
+                        </mask>
+                        <g id="icon/action/search_24px" fill-rule="nonzero"></g>
+                        <g id="↳-Color" mask="url(#mask-2)" fill="#FDFDFD">
+                            <rect id="Rectangle-13" x="0" y="0" width="18" height="18"></rect>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

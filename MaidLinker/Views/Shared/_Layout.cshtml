@@ -1,0 +1,548 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@{
+    string cultureCode = System.Threading.Thread.CurrentThread.CurrentCulture.Name;
+    string direction = cultureCode.StartsWith("ar", StringComparison.OrdinalIgnoreCase) ? "rtl" : "ltr";
+    string textAlign = direction == "rtl" ? "right" : "left";
+}
+<!DOCTYPE html>
+
+<html lang="@cultureCode"  >
+<head>
+    <!-- Releate To HTMl-->
+    <meta charset="utf-8" />
+    <title>MaidLinker</title>
+    <link rel="icon" type="image/x-icon" href="~/MaidLinker.ico" />
+    <link rel="stylesheet" type="text/css" href="~/css/datepicker.css">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Cdn Css libraries-->
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" /> <!-- Bootstrap v4.3.1 -->
+    <!-- Cdn Js libraries-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+
+    <!-- Internal Css  Theme libraries-->
+    <link rel="stylesheet" href="~/css/style.css">
+    <link rel="stylesheet" href="~/css/layout.css">
+    <link href="~/css/owl.carousel.min.css" rel="stylesheet" />
+    <link href="~/css/owl.theme.default.min.css" rel="stylesheet" />
+
+    <!-- Internal JavaScripts  Theme libraries-->
+    <script src="~/vendor/bootstrap/js/bootstrap.bundle.js"></script>
+
+    <!-- Toaster-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+
+    <style>
+        .custom-notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 300px;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+        }
+
+        .custom-notification-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border-radius: 5px 5px 0 0;
+        }
+
+        .custom-notification-title {
+            margin: 0;
+            font-size: 16px;
+        }
+
+        .custom-notification-close-btn {
+            border: none;
+            background: transparent;
+            color: #fff;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .custom-notification-list {
+            margin: -24px;
+        }
+
+        .no-notification-container {
+            padding: 20px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+            text-align: center;
+            max-width: 100%;
+            margin: 0 auto;
+        }
+
+        .notification-message {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .custom-notification-item {
+            padding: 10px;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .notification-close {
+            display: -ms-flexbox;
+            display: flex;
+            -ms-flex-align: center;
+            align-items: center;
+            -ms-flex-pack: end;
+            justify-content: center;
+            padding-top: 32px;
+            /*padding: 1rem;*/
+            /* border-top: 1px solid #dee2e6; */
+            border-bottom-right-radius: 0.3rem;
+            border-bottom-left-radius: 0.3rem;
+        }
+
+        .custom-notification-icon {
+            flex: 0 0 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            color: #007bff;
+        }
+
+        .custom-notification-content {
+            flex: 1;
+        }
+
+        .custom-notification-message {
+            margin: 0;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .custom-notification-time {
+            font-size: 12px;
+            color: #777;
+        }
+
+    </style>
+
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <!-- For User Image -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Your script here
+            var cookies = document.cookie.split("; ");
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = cookies[i].split("=");
+                var cookieName = cookie[0];
+                var cookieValue = cookie[1];
+                if (cookieName === "userImagePath") {
+                    $('#user-image-layout').attr('src', decodeURIComponent(cookieValue));
+                }
+            }
+        });
+    </script>
+</head>
+
+@await RenderSectionAsync("Scripts", required: false)
+
+<body style="overflow-x: hidden">
+    <nav class="navabr">
+        <div class="top-nav">
+            <div class="container">
+                <div class="content">
+
+                    <ul class="socail-media" style="margin:0px">
+                        <li>
+                            <a href="#">
+                                <img src="~/images/navbar/message.svg" alt="">
+
+                                <span>
+                                    info@MaidLinker.com
+                                </span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="https://www.facebook.com/MaidLinker_info">
+                                <img src="~/images/navbar/face.svg" alt="">
+                            </a>
+                        </li>
+
+                        @*   <li>
+                        <a href="linkedin.com">
+                        <img src="~/images/navbar/linkedn.svg" alt="">
+                        </a>
+                        </li> *@
+
+                        <li>
+                            <a href="https://www.instagram.com/MaidLinker_info">
+                                <img src="~/images/navbar/insta.svg" alt="">
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="https://wa.me/+966504116436">
+                                <img  src="~/images/navbar/whatsapp.svg" alt="">
+                            </a>
+                        </li>
+                    </ul>
+
+                    @{
+                        if (User.Identity.IsAuthenticated)
+                        {
+
+                            <text>
+
+
+                                <div class="button-container">
+
+                                    <!-- Modal -->
+                                    @if (this.User.IsInRole("Administrator"))
+                                    {
+                                        <a href="/" class="drop-name">
+                                            <img src="/images/logo.png" class="navbar-logo" alt="logo" style="height:30px">
+                                        </a>
+                                    }
+
+                                </div>
+
+                                <partial name="_LoginPartial" />
+
+
+                            </text>
+
+
+                        }
+                    }
+                    @{
+                        if (!User.Identity.IsAuthenticated)
+                        {
+                            <text>
+                                <div class="drop-list-shape data">
+                                    <a href="#" class="drop-name">
+                                        <img src="~/images/navbar/lang.svg" loading="lazy" alt="" />
+                                        <span id="current-language">
+                                            @Localizer["CurrentLanguage"]
+                                        </span>
+                                    </a>
+
+
+
+                                    <ul class="list">
+                                        <li class="item">
+                                            <a asp-action="SetCulture" asp-controller="Home" asp-route-culureCode="en-US" asp-route-returnUrl="@($"{Context.Request.Path}{Context.Request.QueryString}")">
+                                                English
+                                            </a>
+                                        </li>
+
+                                        <li class="item">
+                                            <a asp-action="SetCulture" asp-controller="Home" asp-route-culureCode="ar-SA" asp-route-returnUrl="@($"{Context.Request.Path}{Context.Request.QueryString}")">
+                                                العربية
+                                            </a>
+                                        </li>
+
+                                    </ul>
+                                </div>
+                            </text>
+
+                        }
+                    }
+
+                </div>
+            </div>
+        </div>
+
+        @{
+            if (!this.User.IsInRole("Administrator"))
+            {
+
+                <text>
+                    <div class="bottom-nav" style="direction:@direction">
+                        <div class="container">
+                            <div class="content">
+
+
+                                @if (User.Identity.IsAuthenticated)
+                                {
+                                    <div id="mobiledropDown" class="dropdown" style="direction:@direction;text-align:@textAlign">
+                                        <a href="#">
+                                            <img style="border-radius:30%" id="user-image-layout" src="" width="40" height="40" alt="user-image-profile" onerror="this.src='/users/images/Default-User-Profile.jpg'">
+                                        </a>
+
+                                        <div class="dropdown-content">
+                                            <a class="nav-link text-dark  linkButton" asp-area="" asp-controller="Home" asp-action="MyProfile">@Localizer["MyProfile"] </a>
+                                            <a class="nav-link text-dark linkButton" asp-area="" asp-controller="ServiceProvider" asp-action="Referrals">@Localizer["MyOrders"]  </a>
+
+
+                                            <a style="text-transform: none;" class="my-profile-button" asp-area="Identity" asp-page="/Account/Logout">
+                                                @Localizer["Logout"]
+                                                <span>
+                                                    <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("MyProfile", "Home", new { area = "" })">
+                                                        <button style="text-transform: none;" class="my-profile-button" type="submit"></button>
+                                                    </form>
+                                                </span>
+
+                                            </a>
+
+                                        </div>
+                                    </div>
+                                }
+
+
+                                <a class="brand-name" asp-area="" asp-controller="Home" asp-action="Index">
+                                <img src="~/images/logo.png" class="navbar-logo" alt="logo" style="height:50px">
+                                </a>
+
+                                <div class="nav-contain">
+                                    <ul class="navbar-nav">
+                                        <li class="nav-item">
+                                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">@Localizer["Home"]</a>
+                                        </li>
+
+                                        <li class="nav-item">
+                                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="About">@Localizer["AboutUs"]</a>
+                                        </li>
+
+                                        <li class="nav-item">
+                                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Maids">@Localizer["Maids"] </a>
+                                        </li>
+
+                                        <li class="nav-item">
+                                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Contact">@Localizer["ContactUs"] </a>
+                                        </li>
+
+
+                                    </ul>
+
+                                </div>
+                                @if (!User.Identity.IsAuthenticated)
+                                {
+
+                                    <partial name="_LoginPartial" />
+                                }
+                                else
+                                {
+                                    <div id="loadingSpinner" class="loading-spinner" style="display:none">
+                                        <!-- Add your loading spinner HTML here -->
+                                        <!-- For example, you can use a GIF or a CSS-based spinner -->
+                                        <img src="~/icon/spinner-loading.gif" alt="Loading" />
+                                        <div class="loading-text">@Localizer["PleaseWait"]</div>
+                                    </div>
+                                    <div id="deskTopdropDown" class="dropdown" style="direction:@direction;text-align:@textAlign">
+                                        <a href="#">
+                                            <img style="border-radius:30%" id="user-image-layout" src="" width="40" height="40" alt="user-image-profile" onerror="this.src='/users/images/Default-User-Profile.jpg'">
+                                        </a>
+
+                                        <div class="dropdown-content">
+                                            <a class="nav-link text-dark  linkButton" asp-area="" asp-controller="Home" asp-action="MyProfile">@Localizer["MyProfile"] </a>
+                                            <a class="nav-link text-dark linkButton" asp-area="" asp-controller="ServiceProvider" asp-action="Referrals">@Localizer["MyOrders"]  </a>
+
+
+                                            <a style="text-transform: none;" class="my-profile-button" asp-area="Identity" asp-page="/Account/Logout">
+                                                @Localizer["Logout"]
+                                                <span>
+                                                    <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("MyProfile", "Home", new { area = "" })">
+                                                        <button style="text-transform: none;" class="my-profile-button" type="submit"></button>
+                                                    </form>
+                                                </span>
+
+                                            </a>
+
+                                        </div>
+                                    </div>
+                                }
+
+
+                            </div>
+                        </div>
+                    </div>
+                </text>
+            }
+        }
+    </nav>
+
+
+
+
+    <div>
+        <main role="main" style="direction:@direction">
+            @RenderBody()
+        </main>
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="NotificationModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content" style="width: 400px">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="NotificationModalLabel">@Localizer["Notifications"]</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body" style="max-height: 300px; overflow-y: auto;">
+                        <!-- Add your content here -->
+                        <div class="custom-notification-list" id="notificationContainer">
+                            <!-- Your notification content goes here -->
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">@Localizer["Ok"] </button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+</body>
+</html>
+
+
+<style>
+    .loading-spinner {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 9999;
+        background-color: rgba(0, 0, 0, 0.1); /* Adjust the opacity value (0.5) as needed */
+    }
+
+
+    .loading-text {
+        color: white;
+        font-size: 16px;
+        margin-top: 10px;
+        text-align: center;
+    }
+</style>
+
+<script>
+
+
+    $(document).ready(function () {
+        // JavaScript to detect screen size
+        if (window.innerWidth <= 768) { // Adjust threshold as needed
+            // Set flag indicating the device is mobile
+
+            $("#mobiledropDown").show()
+            $("#deskTopdropDown").hide()
+        }
+        else {
+            $("#mobiledropDown").hide()
+            $("#deskTopdropDown").show()
+        }
+        $.ajax({
+            url: '/Notification/GetNotificationsCount',  // Replace 'your-api-url' with the actual API endpoint URL
+            method: 'GET',
+            success: function (response) {
+                // On success, loop through the response data and populate the dropdown options
+                //dropdown.append($('<option>').text(degree.titleEn).val(degree.id));
+                $(".notificationsCount").text(response);
+                //li.textContent = `${response} says `;
+
+                if ($(".notificationsCount").text() > 0) {
+                    $("#notifications-count").removeClass("badge-light").addClass("badge-danger");
+                }
+
+                //$.each(response, function (index, item) {
+                //    li.textContent = `${item.titleEn} says `;
+                //});
+
+
+            },
+            error: function () {
+                console.log('Error occurred while retrieving degree data.');
+            }
+        });
+
+    })
+    function showNotifications() {
+        var notificationContainer = $('#notificationContainer');
+
+        $.ajax({
+            url: '/Notification/GetNotifications',
+            type: 'GET',
+            success: function (response) {
+                notificationContainer.html(response);
+                markAllNotificationsReaded();
+            },
+            error: function (xhr, status, error) {
+                console.error('Error:', error);
+            }
+        });
+    }
+    function markAllNotificationsReaded() {
+        //var notificationContainer = $('#notificationContainer');
+
+        $.ajax({
+            url: '/Notification/MarkAllNotificationsReaded',
+            type: 'GET',
+            success: function (response) {
+                $(".notificationsCount").text(0);
+                $("#notifications-count").removeClass("badge-danger").addClass("badge-light");
+
+            },
+            error: function (xhr, status, error) {
+                console.error('Error:', error);
+            }
+        });
+    }
+    var currentUrl = window.location.href;
+    if (currentUrl.includes("/ServiceProvider/Profile")) {
+        // Show the loading spinner
+        document.getElementById('loadingSpinner').style.display = 'block';
+
+        // Hide the loading spinner after 3 seconds
+        setTimeout(function () {
+            document.getElementById('loadingSpinner').style.display = 'none';
+        }, 3000);
+    }
+
+    if (currentUrl.includes("/ServiceProvider/Referrals")) {
+        // Show the loading spinner
+        document.getElementById('loadingSpinner').style.display = 'block';
+
+        // Hide the loading spinner after 3 seconds
+        setTimeout(function () {
+            document.getElementById('loadingSpinner').style.display = 'none';
+        }, 800);
+    }
+
+    if (currentUrl.includes("/ServiceProvider/AddServices")) {
+        // Show the loading spinner
+        document.getElementById('loadingSpinner').style.display = 'block';
+
+        // Hide the loading spinner after 3 seconds
+        setTimeout(function () {
+            document.getElementById('loadingSpinner').style.display = 'none';
+        }, 800);
+    }
+
+    function isEnglishCulture() {
+        var isEn = true;
+        var name = "CultureInfo"
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) {
+            var cultureInfo = parts.pop().split(';').shift();
+            if (cultureInfo == "en-US")
+                isEn = true;
+            else
+                isEn = false;
+        }
+        return isEn;
+    }
+</script>
+
+
+
+<script src="~/js/signalr/dist/browser/signalr.js"></script>
+<script src="~/js/notification.js"></script>

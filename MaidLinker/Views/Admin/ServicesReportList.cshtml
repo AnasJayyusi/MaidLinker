@@ -1,0 +1,282 @@
+﻿@model List<MaidLinker.Models.ServicesReport>
+
+@{
+    var defaultPageSize = 5; // Default number of items per page
+    var currentPage = Context.Request.Query["page"].ToString();
+    if (string.IsNullOrEmpty(currentPage))
+    {
+        currentPage = "1";
+    }
+
+    var searchQuery = Context.Request.Query["search"].ToString().Trim();
+    var filteredItems = string.IsNullOrEmpty(searchQuery) ? Model :
+     Model.Where(p => p.ServiceNameEn.ToLower().Contains(searchQuery.ToLower()) 
+    || p.ServiceNameAr.ToLower().Contains(searchQuery.ToLower()) 
+    || p.AssignedToUserName.ToLower().Contains(searchQuery.ToLower()) 
+    || p.CreatedByUserName.ToLower().Contains(searchQuery.ToLower())).ToList();
+
+    var totalItems = filteredItems.Count;
+
+    var pageSizeParam = Context.Request.Query["pageSize"].ToString();
+    var pageSize = string.IsNullOrEmpty(pageSizeParam) ? defaultPageSize : int.Parse(pageSizeParam);
+    pageSize = Math.Max(1, Math.Min(pageSize, totalItems)); // Ensure the page size is within a valid range
+
+    var totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
+
+    var startIndex = (int.Parse(currentPage) - 1) * pageSize;
+    var endIndex = Math.Min(startIndex + pageSize - 1, totalItems - 1);
+
+    var visibleItems = filteredItems.GetRange(startIndex, endIndex - startIndex + 1);
+    var vatValue = ViewBag.GeneralSettings == null ? 0 : (double.Parse(ViewBag.GeneralSettings.VatValue) / 100);
+    var sitePercentage = ViewBag.GeneralSettings == null ? 0 : (double.Parse(ViewBag.GeneralSettings.SitePercentage) / 100);
+}
+
+<div>
+    <div class="row justify-content-start">
+        <div class="col-md-6 d-flex justify-content-start">
+            <form id="filterForm" method="get" class="d-flex flex-wrap align-items-center">
+                <div class="form-group mr-2">
+                    <input type="text" class="form-control" id="searchInput" name="search" placeholder="Search" value="@searchQuery">
+                </div>
+
+                <div class="form-group mr-2">
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-md-6 d-flex justify-content-end">
+            <form id="filterForm" method="get" class="d-flex flex-wrap align-items-center">
+                <div class="form-group mr-2">
+                    <input type="number" class="form-control" id="pageSizeInput" name="pageSize" min="1" max="@totalItems" value="@pageSize">
+                </div>
+                <div class="form-group mr-2">
+                    <button type="submit" class="btn btn-primary">Apply</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<div class="row justify-content-start">
+    <div class="col-md-6 d-flex justify-content-start">
+    </div>
+    <div class="col-md-6 d-flex justify-content-end">
+        <a style="font-size:17px" href="/Admin/ExportReport" id="generateButton" onclick="showSpinner()" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
+    </div>
+</div>
+<br />
+
+
+
+<div id="loadingSpinner" class="loading-spinner" style="display:none">
+    <!-- Add your loading spinner HTML here -->
+    <!-- For example, you can use a GIF or a CSS-based spinner -->
+    <img src="~/icon/spinner-loading.gif" alt="Loading" />
+    <div class="loading-text">Please wait...</div>
+</div>
+
+
+<table class="table table-striped" id="dataTable-UserServices" width="100%" cellspacing="0">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Created By</th>
+            <th>
+                Assigned To
+            </th>
+            <th>Title (Arabic)</th>
+            <th>Title (English)</th>
+            <th>Price</th>
+            <th>Fee</th>
+            <th>Fee +  (@(vatValue * 100))% vat</th>
+            <th>MaidLinker Percentage (@(sitePercentage * 100)%)</th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (int i = 0; i < visibleItems.Count; i++)
+        {
+            var userServices = visibleItems[i];
+            <tr>
+                <td>@(startIndex + i + 1)</td>
+                <td>@userServices.CreatedByUserName</td>
+                <td>@userServices.AssignedToUserName</td>
+                <td>@userServices.ServiceNameAr</td>
+                <td>@userServices.ServiceNameEn</td>
+                <td>@userServices.Price</td>
+                <td>@userServices.Fee</td>
+                <td>@(userServices.Fee + (userServices.Fee * vatValue))</td>
+                <td>@(((userServices.Fee + (userServices.Fee * vatValue)) * sitePercentage))</td>
+
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+
+
+@if (totalItems == 0)
+{
+    <div style="text-align:center">
+        <label style="font-weight:bold">No Results Found</label>
+        <img src="~/icon/no-result-found-icon.png" width="25" height="25" /> <span style="color:black"></span>
+    </div>
+}
+
+<div style="text-align:center">
+    <ul class="pagination">
+        @for (int i = 1; i <= totalPages; i++)
+        {
+            <li class="page-item @(i == int.Parse(currentPage) ? "active" : "")">
+                <a class="page-link" href="?page=@i&search=@searchQuery&pageSize=@pageSize">@i</a>
+            </li>
+        }
+    </ul>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+
+    $(document).ready(function () {
+        $('.custom-control-input').on('change', function () {
+
+            var isChecked = $(this).is(':checked');
+            var userServicesId = $(this).data('id');
+
+            // Make an API call to update the status using the userServicesId and isChecked values
+            updateStatus(userServicesId, isChecked);
+        });
+    });
+    function rejectService(userServicesId) {
+        var reason = $('#rejectionReason').val();
+        $.ajax({
+            url: '/Admin/RejectDashboardUserServices?id=' + userServicesId + '&rejectionReason=' + reason,
+            type: 'GET',
+            data: null,
+            success: function (response) {
+
+                location.reload();
+
+
+            },
+            error: function (error) {
+                // Handle the error response if needed
+            }
+        });
+
+    }
+    function updateStatus(userServicesId, isChecked) {
+        // Perform the API call here to update the status based on the userServicesId and isChecked values
+        // You can use $.ajax or any other method to make the API request
+        // Example using $.ajax:
+        $.ajax({
+            url: '/Admin/UpdateUserServicesStatus/' + userServicesId + '/' + isChecked,
+            type: 'GET',
+            data: { isActive: isChecked },
+            success: function (response) {
+                // Show the success message
+                $('.alert-success').removeClass('hidden').hide().fadeIn();
+                // Hide the success message after 2 seconds
+                setTimeout(function () {
+                    $('.alert-success').fadeOut();
+                }, 3000);
+
+
+            },
+            error: function (error) {
+                // Handle the error response if needed
+            }
+        });
+    }
+
+
+    function getUserServices(id) {
+        $.ajax({
+            url: '/Admin/GetUserServices/' + id,
+            type: 'GET',
+            success: function (data) {
+                // Handle the success response here
+                console.log(data); // Output the received data to the console
+
+                // Perform further operations with the returned data as needed
+                // For example, you can update HTML elements with the received values
+                $('#titleArInputEdit').val(data.titleAr);
+                $('#titleEnInputEdit').val(data.titleEn);
+                $('#titleId').val(data.id);
+            },
+            error: function (error) {
+                // Handle the error response here
+                console.log(error); // Output the error to the console
+            }
+        });
+    }
+
+    $('#edit-UserServices').click(function () {
+        var userServices = {
+            TitleAr: $('#titleArInputEdit').val(),
+            TitleEn: $('#titleEnInputEdit').val(),
+            Id: $('#titleId').val(),
+        };
+
+        $.ajax({
+            url: '/Admin/UpdateUserServices', // Replace with your actual API endpoint URL
+            type: 'POST',
+            data: JSON.stringify(userServices),
+            contentType: 'application/json',
+            success: function (response) {
+                // Show the success message
+                $('.alert-success').removeClass('hidden').hide().fadeIn();
+                // Close the modal after the success message fades out
+                $("#close-edit-UserServices").trigger("click");
+                $('#dataTableContainer').load('/Admin/GetUserServices');
+
+                // Hide the success message after 2 seconds
+                setTimeout(function () {
+                    $('.alert-success').fadeOut();
+                }, 3000);
+
+            },
+            error: function (xhr, status, error) {
+
+                // Show the error message
+                $('.alert-danger').removeClass('hidden');
+                var msg = xhr.responseText;
+                $('#error-msg-add').text(msg.toString());
+                // Hide the error message after 2 seconds
+                setTimeout(function () {
+                    $('.alert-danger').addClass('hidden');
+                }, 5000);
+
+            }
+        });
+    });
+
+</script>
+
+<script>
+    function showSpinner() {
+        // Get the spinner and button elements
+        var spinner = document.getElementById("loadingSpinner");
+        var generateButton = document.getElementById("generateButton");
+
+        // Show the spinner
+        spinner.style.display = "inline-block";
+
+        // Hide the button
+        generateButton.style.display = "none";
+
+        setTimeout(function () {
+            document.getElementById('loadingSpinner').style.display = 'none';
+        }, 3000);
+        // You can also perform any additional actions here, such as submitting a form or making an AJAX request to generate the report.
+    }
+</script>
+
+<style>
+    #spinner {
+        margin-left: 10px; /* Adjust the margin as needed */
+    }
+</style>

@@ -1,0 +1,155 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@{
+	string cultureCode = System.Threading.Thread.CurrentThread.CurrentCulture.Name;
+	string direction = cultureCode.StartsWith("ar", StringComparison.OrdinalIgnoreCase) ? "rtl" : "ltr";
+	string textAlign = direction == "rtl" ? "right" : "left";
+}
+
+<section class="sub-header" style="direction:@direction">
+	<div class="container" style="direction:@direction">
+		<div class="content" style="text-align:@textAlign">
+			<h1>
+				@Localizer["AboutUs"]
+			</h1>
+
+			<ul class="bread-list">
+				<li>
+					<span>
+						@Localizer["Home"]
+					</span>
+				</li>
+				<li>
+					<a>@Localizer["AboutUs"]
+						
+					</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</section>
+<section class="about-us general-section">
+	<div class="container" style="direction:@direction">
+		<div class="row">
+			<div class="col-lg-6 col-12 mb-4" style="text-align:@textAlign">
+				<div class="image-content">
+					<img src="~/images/about.png" alt="" style="transform=scaleX(-1)">
+				</div>
+			</div>
+
+			<div class="col-lg-6 col-12" style="text-align:@textAlign">
+				<div class="content">
+					<p class="title">
+						@Localizer["AboutUs"]
+					</p>
+
+					<h1>
+						@Localizer["Mission"]
+
+						<span>
+							@Localizer["ElHAL"]
+
+						</span>
+					</h1>
+
+					<p class="desc">
+						@Localizer["MaidLinkerParhPartOne"]
+					</p>
+
+					<p class="desc">
+						@Localizer["MaidLinkerParhPartTwo"]
+					</p>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<section class="vision">
+	<div class="container" style="direction:@direction">
+		<div class="row">
+			<div class="col-lg-4 col-12 px-0">
+				<div class="box primary-color">
+					@*   <div class="image-content">
+                        <img src="~/images/ourMission.jpg" alt="">
+                    </div>*@
+
+					<div class="contain">
+						<h1>
+							@Localizer["OurMission"]
+
+						</h1>
+
+						<p>
+							@Localizer["OurMissionDesc"]
+						</p>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-lg-4 col-12 px-0">
+				<div class="box secondary-color">
+					@*  <div class="image-content">
+                        <img src="~/images/our-vision.jpg" alt="">
+                    </div>*@
+
+					<div class="contain">
+						<h1>
+							@Localizer["OurVision"]
+						</h1>
+
+						<p>
+							@Localizer["OurVisionDesc"]
+						</p>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-lg-4 col-12 px-0">
+				<div class="box third-color">
+					@*<div class="image-content">
+                        <img src="~/images/ourphilosphy.png" alt="">
+                    </div>*@
+
+					<div class="contain">
+						<h1>
+							@Localizer["PHILOSOPHY"]
+						</h1>
+
+						<p>
+							@Localizer["PHILOSOPHYDesc"]
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class="advantages general-section">
+	<div class="container" style="direction:@direction">
+		<div class="heading">
+			<h1>
+				@Localizer["WhyMaidLinker"]
+
+				<!-- <span>
+					Advantages & Technologies
+				</span> -->
+			</h1>
+
+			<ul class="list">
+				<li>
+					• @Localizer["FirstPoint"]
+				</li>
+				<li>
+					• @Localizer["SecPoint"]
+				</li>
+				<li>
+					• @Localizer["ThirdPoint"]
+				</li>
+			</ul>
+		</div>
+
+
+	</div>
+</section>

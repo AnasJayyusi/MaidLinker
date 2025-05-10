@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>TRAILING ICON_rounded</title>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Sign-Up-0" transform="translate(-879.000000, -329.000000)" fill="#5F7AE7">
+            <g id="Group-22" transform="translate(498.000000, 216.000000)">
+                <g id="First-Name-Copy-6" transform="translate(24.000000, 72.000000)">
+                    <g id="Gender-Copy" transform="translate(0.000000, 28.000000)">
+                        <g id="TRAILING-ICON" transform="translate(357.000000, 13.000000)">
+                            <path d="M15.875,8.9999928 L11.995,12.8799928 L8.115,8.9999928 C7.92816847,8.81274013 7.67451764,8.7075072 7.41,8.7075072 C7.14548236,8.7075072 6.89183153,8.81274013 6.705,8.9999928 C6.315,9.3899928 6.315,10.0199928 6.705,10.4099928 L11.295,14.9999928 C11.685,15.3899928 12.315,15.3899928 12.705,14.9999928 L17.295,10.4099928 C17.685,10.0199928 17.685,9.3899928 17.295,8.9999928 C16.905,8.6199928 16.265,8.6099928 15.875,8.9999928 L15.875,8.9999928 Z" id="icon/navigation/expand_more_24px"></path>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

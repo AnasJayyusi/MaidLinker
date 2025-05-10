@@ -1,0 +1,92 @@
+﻿@model List<MaidLinker.Data.Entites.Notification>
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+@{
+    string cultureCode = System.Threading.Thread.CurrentThread.CurrentCulture.Name;
+    string direction = cultureCode.StartsWith("ar", StringComparison.OrdinalIgnoreCase) ? "rtl" : "ltr";
+    string textAlign = direction == "rtl" ? "right" : "left";
+    bool isEng = direction == "ltr" ? true : false;
+}
+
+
+
+@foreach (var notification in Model)
+{
+    <div class="custom-notification-item" style='@(notification.IsRead ? "":"background-color:lightblue")'>
+        <div class="custom-notification-icon">
+           <i class="fa-light fa-bell" style="color: #FFD43B;"></i>
+        </div>
+        <div class="custom-notification-content">
+            @if (isEng)
+            {
+                <h6 class="custom-notification-message">@notification.MessageEn</h6>
+            }
+            else
+            {
+                <h6 class="custom-notification-message">@notification.MessageAr</h6>
+            }
+            <span class="custom-notification-time">
+                @{
+
+                    //if((DateTime.Now -   notification.CreationDate) < 5
+                    bool isLessThan5Minutes = DateTime.Now.Subtract(notification.CreationDate).Duration() < TimeSpan.FromMinutes(5);
+                    if (isLessThan5Minutes)
+                    {
+                        <text>Now</text>
+                    }
+                    else
+                    {
+                        <text>@notification.CreationDate</text>
+                    }
+                }
+            </span>
+        </div>
+    </div>
+    <div style="border-bottom: 1px solid #cdcaca;">
+        <!-- Your content goes here -->
+    </div>
+}
+@if (Model.Count == 0)
+{
+    <div class="no-notification-container">
+        <div class="notification-message">
+            <img src="~/images/no-notification.ico" width="100" height="100">
+            <br>
+            <lable style="color:#5F7AE7">
+                @Localizer["NoNotifications"]
+            </lable>
+        </div>
+    </div>
+
+}
+
+@if (this.User.IsInRole("Administrator"))
+{
+    @if (Model.Count > 15)
+    {
+        <a style="text-align:center" class="nav-link text-dark" href="/Admin/MyProfile/Notifications">
+            <i id="notifications-icon" class="fa fa-angle-double-down"></i> <span id="notifications-text">@Localizer["ShowMore"]</span>
+        </a>
+    }
+}
+
+else
+{
+    @if (Model.Count > 15)
+    {
+        <a style="text-align:center" class="nav-link text-dark" href="/ServiceProvider/Notifications">
+            <i id="notifications-icon" class="fa fa-angle-double-down"></i> <span id="notifications-text">@Localizer["ShowMore"]</span>
+        </a>
+    }
+}
+
+
+
+
+<style>
+    .unseen-color {
+        background-color: lightblue
+    }
+</style>
+

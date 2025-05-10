@@ -1,0 +1,114 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+
+
+
+<ul class="navbar-nav">
+    @if (SignInManager.IsSignedIn(User))
+    {
+        var splitted = @User.Identity?.Name!.Split('.', 2);
+        var username = splitted[0];
+
+        <div class="button-container">
+
+            <!-- Modal -->
+
+
+            <a href="#" class="drop-name">
+                <span class="notification" data-toggle="modal" onclick="showNotifications()" data-target="#myModal">
+                   
+                        <img style="background-color:#00333F" src="/images/navbar/bell.svg" width="20" height="20">
+                    <span id="notifications-count" class="badge badge-light"><span class="notificationsCount"> 0 </span>   @Localizer["Notifications"] </span>
+                </span>
+            </a>
+
+
+
+          @*  <a asp-area="Identity" asp-page="/Account/Logout"  class="drop-name">
+                <span>
+                    
+                    <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                        <i style="color:white" class='fas fa-sign-out-alt'></i>
+                        <button type="submit"  style="background-color:#0D6EFD" class="badge badge-primary">LOGOUT</button>
+                    </form>
+
+                </span>
+
+            </a>*@
+
+
+
+            <div class="drop-list-shape data">
+                <a href="#" class="drop-name">
+                    <img src="~/images/navbar/lang.svg" loading="lazy" alt="" />
+                    <span id="current-language">
+                        @Localizer["CurrentLanguage"]
+                    </span>
+                </a>
+
+
+
+                <ul class="list">
+                    <li class="item">
+                        <a asp-action="SetCulture" asp-controller="Home" asp-route-culureCode="en-US" asp-route-returnUrl="@($"{Context.Request.Path}{Context.Request.QueryString}")">
+                            English
+                        </a>
+                    </li>
+
+                    <li class="item">
+                        <a asp-action="SetCulture" asp-controller="Home" asp-route-culureCode="ar-SA" asp-route-returnUrl="@($"{Context.Request.Path}{Context.Request.QueryString}")">
+                            العربية
+                        </a>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+
+
+
+    }
+    else
+    {
+        @*<a href="#" type="button" class="custom-btn" data-toggle="modal" data-target="#loginModal">*@
+        <a class="custom-btn" asp-area="Identity" asp-page="/Account/Login">
+            <img src="~/images/navbar/user.svg" alt="">
+            <span>
+                @Localizer["SignIn"]
+            </span>
+        </a>
+
+        @*<li class="nav-item">
+    <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
+    </li>
+    <li class="nav-item">
+    <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
+    </li>*@
+    }
+</ul>
+
+
+
+
+
+<style>
+    .button-container {
+        display: flex;
+    }
+
+        .button-container .drop-name {
+            display: flex;
+            align-items: center;
+            margin-right: 10px;
+        }
+
+</style>
+
+
+
+
+

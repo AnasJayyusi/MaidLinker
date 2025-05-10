@@ -1,0 +1,58 @@
+﻿@page
+@model ResendEmailConfirmationModel
+@{
+    ViewData["Title"] = "Resend email confirmation";
+}
+
+
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@{
+    string cultureCode = System.Threading.Thread.CurrentThread.CurrentCulture.Name;
+    string direction = cultureCode.StartsWith("ar", StringComparison.OrdinalIgnoreCase) ? "rtl" : "ltr";
+    string textAlign = direction == "rtl" ? "right" : "left";
+}
+
+<div class="loginLogo">
+    <div class="modal-dialog modal-dialog-centered" role="document" style="direction:@direction">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title" id="restModalLabel">
+                    @Localizer["ResetPassword"]
+                </h1>
+            </div>
+
+            <div class="modal-body">
+                <form method="post">
+                    <div asp-validation-summary="All" style="background-color:antiquewhite" class="text-info"></div>
+                    <div class="form-floating">
+                        <label asp-for="Input.Email" class="form-label"></label>
+                        <input asp-for="Input.Email" class="form-control" aria-required="true" />
+                        <Br />
+                        <span asp-validation-for="Input.Email" class="text-danger"></span>
+                    </div>
+                    <button type="submit" class="w-100 btn btn-lg btn-primary">Resend</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+
+
+
+<style>
+    .form-label {
+        color: #5F7AE7;
+        font-size: 14px;
+        font-weight: 500;
+        margin-bottom: 8px;
+    }
+</style>
+    

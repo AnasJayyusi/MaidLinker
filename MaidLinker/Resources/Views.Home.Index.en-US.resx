@@ -1,0 +1,187 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ChooseMaid" xml:space="preserve">
+    <value>Choose a maid</value>
+  </data>
+  <data name="CityDefaultSelection" xml:space="preserve">
+    <value>Choose City</value>
+  </data>
+  <data name="DistrictDefaultSelection" xml:space="preserve">
+    <value>Choose District</value>
+  </data>
+  <data name="EasyAccessBenefit" xml:space="preserve">
+    <value>Easy access to a large number of dentists, specialists and consultants, and easy identification of the academic qualifications and certificates of each doctor. Also, knowing the medical privileges and treatment services provided by each doctor and the
+                            prices of the services provided.</value>
+  </data>
+  <data name="ElHAL" xml:space="preserve">
+    <value>ElHAL</value>
+  </data>
+  <data name="FewStepsToJoin" xml:space="preserve">
+    <value>Few simple steps to register withMaidLinker platform, and join the MaidLinker team and refer and receive medical referrals in all dental specialties.</value>
+  </data>
+  <data name="HowJoinMaidLinker" xml:space="preserve">
+    <value>How To Join MaidLinker?</value>
+  </data>
+  <data name="HowJoinMaidLinkerDesc" xml:space="preserve">
+    <value>MaidLinker is an enjoyable professional experience and an additional source of income through referring and receivingpatients with other dentists. Also, it helps to exposed and share experiences with other expert professional dentists in all dental specialties.</value>
+  </data>
+  <data name="JoinNow" xml:space="preserve">
+    <value>JOIN NOW</value>
+  </data>
+  <data name="JustFewInfo" xml:space="preserve">
+    <value>Registration to MaidLinker few information about your personal data, contact numbers and academic qualifications. Also, you will need to attach the professional classification and registration card of the Commission for Health Specialties.</value>
+  </data>
+  <data name="MultipleOptionsBenefit" xml:space="preserve">
+    <value>Provides patients with multiple and appropriate options of qualified and certified dentists in all specialties at a variety of treatment prices suitable for each patient.</value>
+  </data>
+  <data name="OurVision" xml:space="preserve">
+    <value>Our Vision</value>
+  </data>
+  <data name="OurVisionDesc" xml:space="preserve">
+    <value>To improve the level of dental services, by providing and facilitating reaching the best doctors in various dental specialties, including specialists and consultants. Also, take advantage of the new graduated dentist to improve the dental profession.</value>
+  </data>
+  <data name="Readmore" xml:space="preserve">
+    <value>Read more</value>
+  </data>
+  <data name="RegisterMaidLinkerNow" xml:space="preserve">
+    <value>Register in MaidLinker Now</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>SEARCH</value>
+  </data>
+  <data name="SearchByName" xml:space="preserve">
+    <value>Or search by name</value>
+  </data>
+  <data name="ServiceDefaultSelection" xml:space="preserve">
+    <value>Choose Service</value>
+  </data>
+  <data name="SpecialityDefaultSelection" xml:space="preserve">
+    <value>Choose Speciality</value>
+  </data>
+  <data name="WhyMaidLinker" xml:space="preserve">
+    <value>Why MaidLinker?</value>
+  </data>
+  <data name="WhyMaidLinkerPlatform" xml:space="preserve">
+    <value>Why Use A Referral Platform?</value>
+  </data>
+  <data name="WhyMaidLinkerPlatformDesc" xml:space="preserve">
+    <value>The only platform that connects all dentists in different specialties, and facilitates their communications to do referrals of medical cases among them, and facilitate the accessibility to the appropriate specialist doctor through the following:</value>
+  </data>
+</root>

@@ -1,0 +1,63 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<UserSecretsId>aspnet-MaidLinker-18b79a8f-fb0b-42d3-864d-bb36666d5a4a</UserSecretsId>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+	
+	 
+
+	<ItemGroup>
+		<None Remove="Areas\Identity\Pages\Account\header.jpg" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Content Include="Areas\Identity\Pages\Account\EmailTemplates\AccountConfirmation.html" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="EPPlus" Version="6.2.9" />
+		<PackageReference Include="iTextSharp" Version="5.5.13.3" />
+		<PackageReference Include="Magnific.Popup" Version="1.1.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="6.0.16" />
+		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.23" />
+		<PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.23" />
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="6.0.1" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.23" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.23" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.23">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.16" />
+		<PackageReference Include="NPOI" Version="2.6.2" />
+		<PackageReference Include="SixLabors.ImageSharp" Version="3.0.1" />
+
+	</ItemGroup>
+	<ItemGroup>
+		<None Include="wwwroot\**">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+	<ItemGroup>
+	  <Content Remove="wwwroot\css\w3.css" />
+	  <Content Remove="wwwroot\icon\maid-svgrepo-com.svg" />
+	  <Content Remove="wwwroot\images\ClinicalSpecialtyLogo\Default-Company-Image.jpg" />
+	  <Content Remove="wwwroot\images\header.jpg" />
+	  <Content Remove="wwwroot\images\InsuranceLogo\14a67892-d574-49bd-a6ce-fa12138a12c3.png" />
+	  <Content Remove="wwwroot\images\InsuranceLogo\3b97bae9-7698-4e65-8c25-780146ba9f66.png" />
+	  <Content Remove="wwwroot\images\InsuranceLogo\7b8e3d75-c0b1-4701-84a8-08eb03494681.png" />
+	  <Content Remove="wwwroot\images\InsuranceLogo\91aa9d22-fd46-44fd-9569-06cddd563a22.png" />
+	  <Content Remove="wwwroot\images\InsuranceLogo\926f0420-9d84-4692-9eed-653e65fc73e6.jpg" />
+	  <Content Remove="wwwroot\images\InsuranceLogo\Default-insurance-Image.jpg" />
+	  <Content Remove="wwwroot\images\navbar\bell.svg" />
+	  <Content Remove="wwwroot\images\warning.png" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="Migrations\" />
+	</ItemGroup>
+
+</Project>

@@ -1,0 +1,243 @@
+﻿@model List<MaidLinker.Data.Entites.Nationality>
+
+@{
+    var defaultPageSize = 5; // Default number of items per page
+    var currentPage = Context.Request.Query["page"].ToString();
+    if (string.IsNullOrEmpty(currentPage))
+    {
+        currentPage = "1";
+    }
+
+    var searchQuery = Context.Request.Query["search"].ToString().Trim();
+    var filteredItems = string.IsNullOrEmpty(searchQuery) ? Model : Model.Where(p => p.TitleEn.ToLower().Contains(searchQuery.ToLower()) || p.TitleAr.ToLower().Contains(searchQuery.ToLower())).ToList();
+    var totalItems = filteredItems.Count;
+
+    var pageSizeParam = Context.Request.Query["pageSize"].ToString();
+    var pageSize = string.IsNullOrEmpty(pageSizeParam) ? defaultPageSize : int.Parse(pageSizeParam);
+    pageSize = Math.Max(1, Math.Min(pageSize, totalItems)); // Ensure the page size is within a valid range
+
+    var totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
+
+    var startIndex = (int.Parse(currentPage) - 1) * pageSize;
+    var endIndex = Math.Min(startIndex + pageSize - 1, totalItems - 1);
+
+    var visibleItems = filteredItems.GetRange(startIndex, endIndex - startIndex + 1);
+}
+
+<div>
+    <div class="row justify-content-start">
+        <div class="col-md-6 d-flex justify-content-start">
+            <form id="filterForm" method="get" class="d-flex flex-wrap align-items-center">
+                <div class="form-group mr-2">
+                    <input type="text" class="form-control" id="searchInput" name="search" placeholder="Search" value="@searchQuery">
+                </div>
+
+                <div class="form-group mr-2">
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-md-6 d-flex justify-content-end">
+            <form id="filterForm" method="get" class="d-flex flex-wrap align-items-center">
+                <div class="form-group mr-2">
+                    <input type="number" class="form-control" id="pageSizeInput" name="pageSize" min="1" max="@totalItems" value="@pageSize">
+                </div>
+                <div class="form-group mr-2">
+                    <button type="submit" class="btn btn-primary">Apply</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<table class="table table-striped" id="dataTable-Nationality" width="100%" cellspacing="0">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Title (English)</th>
+            <th>Title (Arabic)</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (int i = 0; i < visibleItems.Count; i++)
+        {
+            var Nationality = visibleItems[i];
+            <tr>
+                <td>@(startIndex + i + 1)</td>
+                <td>@Nationality.TitleEn</td>
+                <td>@Nationality.TitleAr</td>
+              
+                <td>
+                    <li class="list-inline-item">
+                        <button onclick="getNationality(@Nationality.Id)" href="#" class="btn btn-success btn-sm rounded-pill" type="button" data-toggle="modal" data-target="#EditNationality" data-placement="top" title="Edit">
+                            <i class="fa fa-edit"></i>
+                        </button>
+                    </li>
+                    <li class="list-inline-item">
+                        <a href="#" class="btn btn-danger btn-sm rounded-pill" data-toggle="modal" data-target="#confirmDeleteModal_@Nationality.Id"><i class="fa fa-trash"></i></a>
+                    </li>
+                    <!-- Confirm Delete Modal -->
+                    <div class="modal fade" id="confirmDeleteModal_@Nationality.Id" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="confirmDeleteModalLabel">Confirmation</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    Are you sure you want to delete this Nationality?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                    <a href="/Admin/DeleteNationality/@Nationality.Id" class="btn btn-danger" id="deleteButton">Delete</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="modal fade" id="EditNationality" tabindex="-1" role="dialog" aria-labelledby="EditNationalityModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="EditNationalityModal">Edit</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Add your modal content here -->
+                <form>
+                    <div class="form-group">
+                        <label style="font-weight:bold;color:#5F7AE7" for="titleEnInputEdit">Title (English):</label>
+                        <input type="text" class="form-control" id="titleEnInputEdit" required>
+                    </div>
+                    <div class="form-group">
+                        <input hidden type="text" class="form-control" id="titleId">
+                        <label style="font-weight:bold;color:#5F7AE7" for="titleArInputEdit">Title (Arabic):</label>
+                        <input type="text" class="form-control" id="titleArInputEdit" required>
+                    </div>
+                </form>
+                <div class="alert alert-danger hidden sm" role="alert">
+                    <span id="error-msg"></span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="close-edit-Nationality" type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                <button id="edit-Nationality" type="button" class="btn btn-success" style="background-color:#5F7AE7">Update</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@if (totalItems == 0)
+{
+    <div style="text-align:center">
+        <label style="font-weight:bold">No Results Found</label>
+        <img src="~/icon/no-result-found-icon.png" width="25" height="25" /> <span style="color:black"></span>
+    </div>
+}
+
+<div style="text-align:center">
+    <ul class="pagination">
+        @for (int i = 1; i <= totalPages; i++)
+        {
+            <li class="page-item @(i == int.Parse(currentPage) ? "active" : "")">
+                <a class="page-link" href="?page=@i&search=@searchQuery&pageSize=@pageSize">@i</a>
+            </li>
+        }
+    </ul>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+
+    $(document).ready(function () {
+        $('.custom-control-input').on('change', function () {
+
+            var isChecked = $(this).is(':checked');
+            var NationalityId = $(this).data('id');
+
+            // Make an API call to update the status using the NationalityId and isChecked values
+            updateStatus(NationalityId, isChecked);
+        });
+    });
+
+
+    function getNationality(id) {
+        $.ajax({
+            url: '/Admin/GetNationality/' + id,
+            type: 'GET',
+            success: function (data) {
+                // Handle the success response here
+                console.log(data); // Output the received data to the console
+
+                // Perform further operations with the returned data as needed
+                // For example, you can update HTML elements with the received values
+                $('#titleArInputEdit').val(data.titleAr);
+                $('#titleEnInputEdit').val(data.titleEn);
+                $('#titleId').val(data.id);
+            },
+            error: function (error) {
+                // Handle the error response here
+                console.log(error); // Output the error to the console
+            }
+        });
+    }
+
+    $('#edit-Nationality').click(function () {
+        var Nationality = {
+            TitleAr: $('#titleArInputEdit').val(),
+            TitleEn: $('#titleEnInputEdit').val(),
+            Id: $('#titleId').val(),
+        };
+
+        $.ajax({
+            url: '/Admin/UpdateNationality', // Replace with your actual API endpoint URL
+            type: 'POST',
+            data: JSON.stringify(Nationality),
+            contentType: 'application/json',
+            success: function (response) {
+                // Show the success message
+                $('.alert-success').removeClass('hidden').hide().fadeIn();
+                // Close the modal after the success message fades out
+                $("#close-edit-Nationality").trigger("click");
+                $('#dataTableContainer').load('/Admin/GetNationalities');
+
+                // Hide the success message after 2 seconds
+                setTimeout(function () {
+                    $('.alert-success').fadeOut();
+                }, 3000);
+
+            },
+            error: function (xhr, status, error) {
+                  
+                // Show the error message
+                $('.alert-danger').removeClass('hidden');
+                var msg = xhr.responseText;
+                $('#error-msg-add').text(msg.toString());
+                // Hide the error message after 2 seconds
+                setTimeout(function () {
+                    $('.alert-danger').addClass('hidden');
+                }, 5000);
+
+            }
+        });
+    });
+
+</script>

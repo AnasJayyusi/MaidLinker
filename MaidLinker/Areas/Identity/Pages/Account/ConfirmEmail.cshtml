@@ -1,0 +1,64 @@
+﻿@page
+@model ConfirmEmailModel
+@{
+    ViewData["Title"] = "Confirm email";
+}
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@{
+    string cultureCode = System.Threading.Thread.CurrentThread.CurrentCulture.Name;
+    string direction = cultureCode.StartsWith("ar", StringComparison.OrdinalIgnoreCase) ? "rtl" : "ltr";
+    string textAlign = direction == "rtl" ? "right" : "left";
+    bool isEng = direction == "ltr" ? true : false;
+}
+
+
+<h1>@ViewData["Title"]</h1>
+
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+
+<body class="loginLogo" style="background-color: #f4f4f4; font-family: Roboto, arial, sans-serif">
+    <div class="modal-dialog modal-dialog-centered"  style=" height: 140px;">
+    </div>
+    <div style="max-width: 550px; background-color: white; margin: -80px auto 0 auto; padding: 20px 60px 80px 60px;direction:@direction">
+        <div style="  font-size: 30px; font-weight: 300; margin-top: 20px; text-align: center;">@Localizer["EmailConfirm"]</div>
+        <br />
+        
+        @if (Model.StatusMessage == "Thank you for confirming your email.")
+        {
+
+            <p>@Localizer["EmailHasBeenConfirm"]</p>
+        }
+        else
+        {
+            <partial name="_StatusMessage" model="Model.StatusMessage" />
+            <a class="custom-btn" asp-area="Identity" asp-page="/Account/ResendEmailConfirmation">
+                <i class="fa-solid fa-envelope" style="color:white">&nbsp;</i>
+                <span>
+                    @Localizer["Resend the Confirmation Email"]
+                </span>
+            </a>
+        }
+        <div class=" box-sizing: border-box; width: 100%;">
+            <br />
+            <br />
+            <div style="font-size: 18px; text-align: center">
+                @Localizer["Welcome"]
+            </div>
+
+        </div>
+    </div>
+</body>
+
+</html>
+

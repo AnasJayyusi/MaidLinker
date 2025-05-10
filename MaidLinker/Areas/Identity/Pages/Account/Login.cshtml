@@ -1,0 +1,220 @@
+﻿@page
+@model LoginModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+@{
+    ViewData["Title"] = "Log in";
+}
+@{
+    string cultureCode = System.Threading.Thread.CurrentThread.CurrentCulture.Name;
+    string direction = cultureCode.StartsWith("ar", StringComparison.OrdinalIgnoreCase) ? "rtl" : "ltr";
+    string inputDirection = cultureCode.StartsWith("ar", StringComparison.OrdinalIgnoreCase) ? "right" : "left";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+
+<div  id="largescreensize" class="loginLogo" style="display:block">
+
+    <div  id="loginDiv" class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content" >
+            
+    
+
+            <div  class="modal-header">
+                <h1 class="modal-title" id="loginModalLabel">
+                    @Localizer["LoginTitle"]
+                </h1>
+            </div>
+
+            <div class="modal-body">
+
+                <div class="d-none alert alert-danger" id="login-error">
+                </div>
+
+          
+                <form class="form-contain" id="account" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger">
+                        @if (Convert.ToBoolean(@TempData["IsNeedConfirmation"]) == true)
+                        {
+                            <a class="custom-btn" asp-area="Identity" asp-page="/Account/ResendEmailConfirmation">
+                                <i class="fa-solid fa-envelope" style="color:white">&nbsp;</i>
+                                <span>
+                                    @Localizer["Resend the Confirmation Email"]
+                                </span>
+                            </a>
+                        }
+                     
+                    </div>
+                    <div class="form-group" style="text-align:@inputDirection"> 
+
+                        <!-- Phone Number Input & Label -->
+                        <label style="display:block;text-align:@inputDirection" id="phone-input-label" for="">
+                            @Localizer["Phone"]
+                        </label>
+
+                        <div id="phone-text" style="display:block" class="form-data">
+                            <input asp-for="Input.PhoneNumber" class="form-control" autocomplete="username" aria-required="true" maxlength="10" onkeypress="return (event.charCode !=8 && event.charCode ==0 || ( event.charCode == 46 || (event.charCode >= 48 && event.charCode <= 57)))" placeholder=" @Localizer["PhoneNumberExample"]" />
+                            <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+                        </div>
+
+                        <!-- Email Input & Label -->
+                        <label style="display:none;text-align:@inputDirection" id="email-input-label" for="">
+                            @Localizer["Email"]
+                        </label>
+
+                        <div id="email-text" style="display:none;text-align:@inputDirection" class="form-data">
+                            <input asp-for="Input.Email" class="form-control" autocomplete="email" aria-required="true" placeholder=" @Localizer["EmailExample"]" />
+                            <span asp-validation-for="Input.Email" class="text-danger"></span>
+                        </div>
+
+                        <div style="text-align: end; cursor:pointer">
+                            <label id="switch-to-email" onclick="showEmailInput()" style="cursor:pointer;display:block">@Localizer["UseEmail"] </label>
+                            <label id="switch-to-phone" onclick="showPhoneInput()" style="cursor:pointer;display:none">@Localizer["UsePhone"] </label>
+                        </div>
+                    </div>
+                    <div class="form-group" style="text-align:@inputDirection">
+                        <label for="">
+                            @Localizer["Password"]
+                        </label>
+
+                        <div class="form-data show_hide_password">
+                            <input id="txtPassword" asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" />
+                            <span asp-validation-for="Input.Password" class="text-danger"></span>
+                            <a class="btn-contain show_pass">
+                                <span id="show_password" class="fa fa-eye-slash icon"></span>
+                            </a>
+                        </div>
+                    </div>
+
+
+
+
+                    <div class="flex-data mt-5">
+                        <div class="wrapper">
+                            <input class="radio-check" asp-for="Input.RememberMe" />
+                            <label asp-for="Input.RememberMe" class="radio-title">      @Localizer["RememberMe"]</label>
+                        </div>
+                        <a id="forgot-password" class="link" asp-page="./ForgotPassword">   @Localizer["ForgetPassword"]</a>
+                    </div>
+
+                    <button id="login-submit" type="submit" class="custom-btn mb-3">
+                        <span>
+                            @Localizer["Login"]
+                        </span>
+                    </button>
+
+                    <a type="button" class="link" asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">
+                        @Localizer["NoAccountYet"]
+                        <span>
+                            @Localizer["SignUp"]
+                        </span>
+                    </a>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+ 
+</div>
+
+<div id="smallscreensize" class="loginLogo" style="display:none">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <img src="~/images/warning.png" width="40%" height="40%" />
+        <Br />
+        <div class="row">
+            <h2 style="color:#2FBDEB">@Localizer["ScreenSizeTooSmall"]</h2>
+            <p style="color:#2FBDEB">@Localizer["PleaseTryLargerScreen"]</p>
+        </div>
+        
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+<script>
+
+    function showEmailInput() {
+        // Hide everything releated to phone & Clear
+        $('#phone-text').val("")
+        $('#Input_PhoneNumber').val("")
+
+        $('#phone-text').hide()
+        $('#phone-input-label').hide();
+
+        // Show email option
+        $('#email-input-label').show();
+        $('#email-text').show();
+
+        // Convert option
+        $('#switch-to-email').hide();
+        $('#switch-to-phone').show();
+    }
+
+    function showPhoneInput() {
+        // Hide everything releated to email & Clear
+        $('#email-text').val("")
+        $('#Input_Email').val("")
+        $('#email-input-label').hide();
+        $('#email-text').hide();
+
+        // Show email option
+
+        $('#phone-text').show();
+        $('#phone-input-label').show();
+
+        // Convert option
+        $('#switch-to-phone').hide();
+        $('#switch-to-email').show();
+    }
+
+
+    $('#show_password').hover(function show() {
+        //Change the attribute to text
+        $('#txtPassword').attr('type', 'text');
+        $('.icon').removeClass('fa fa-eye-slash').addClass('fa fa-eye');
+    },
+        function () {
+            //Change the attribute back to password
+            $('#txtPassword').attr('type', 'password');
+            $('.icon').removeClass('fa fa-eye').addClass('fa fa-eye-slash');
+        });
+    //CheckBox Show Password
+    $('#show_password').click(function () {
+        $('#Password').attr('type', $(this).is(':checked') ? 'text' : 'password');
+    });
+</script>
+
+<script>
+    // window.onload = function () {
+    //     checkScreenSize();
+    //     // window.addEventListener('resize', checkScreenSize);
+    // };
+
+    // function checkScreenSize() {
+      
+    //     if (window.innerWidth <= 768) {
+    //         $("#smallscreensize").show();
+    //         $("#largescreensize").hide();
+    //     } else {
+    //         $("#smallscreensize").hide();
+    //         $("#largescreensize").show();
+    //     }
+    // }
+</script>
+
+<style>
+    .alert {
+        background-color: #fff;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 20px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+</style>
+

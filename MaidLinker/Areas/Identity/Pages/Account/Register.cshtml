@@ -1,0 +1,507 @@
+﻿@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Register";
+}
+@{
+    string cultureCode = System.Threading.Thread.CurrentThread.CurrentCulture.Name;
+    string direction = cultureCode.StartsWith("ar", StringComparison.OrdinalIgnoreCase) ? "rtl" : "ltr";
+    string textAlign = cultureCode.StartsWith("ar", StringComparison.OrdinalIgnoreCase) ? "right" : "left";
+    bool isEng = direction == "ltr" ? true : false;
+}
+
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+<!--Sign Up -->
+<div id="largescreensize" style="display:block">
+
+<div class="loginLogo" id="singUpModal"  tabindex="-1" role="dialog">
+
+<div id="sizeofModel" class="modal-dialog modal-dialog-centered" style="max-width: 50%;padding-top:5%" role="document">
+    <div class="modal-content">
+        <div class="modal-header" style="direction: @direction;">
+            <h1 class="modal-title" id="singUpModalLabel">
+                @Localizer["CreateNewAccount"]
+            </h1>
+        </div>
+        <div class="modal-body">
+            <form class="form-contain" id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="row">
+                    <!-- Left Side -->
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label for="account_type" class="text-right">@Localizer["AccountType"]</label>
+                            <div class="form-data select-box">
+                                <select asp-for="Input.AccountTypeId" class="form-control" name="account_type" id="account_type" required>
+                                    <option value="">@Localizer["DefaultOptionAccountType"]</option>
+                                    @foreach (var accountType in Model.AccountTypes)
+                                    {
+                                        <option value="@accountType.Id">@(isEng ? accountType.TitleEn : accountType.TitleAr)</option>
+                                    }
+                                </select>
+                            </div>
+                        </div  class="col-lg-6">
+                        <div>
+                              <h6 id="about-provider" style="display:none;color:#5F7AE7;font-size:12px;text-align:left">
+           @Localizer["ServiceProviderDesc"]
+       </h6>
+       <h6 id="about-beneficiary" style="display:none; color:#5F7AE7;font-size:12px;text-align:left;">
+           @Localizer["BeneficiaryDesc"]
+       </h6>
+                            </div>
+
+                        <div class="form-group">
+                            <label for="practitioner_type" class="text-right">@Localizer["PractitionerType"]</label>
+                            <div class="form-data select-box">
+                                <select onchange="onPractitionerTypeChanged()" asp-for="Input.PractitionerTypeId" disabled style="cursor:not-allowed" class="form-control" name="practitioner_type" id="doctor-type-ddl">
+                                    <option value="">@Localizer["DefaultOptionPractitionerType"]</option>
+                                    @foreach (var practitionerType in Model.PractitionerTypes)
+                                    {
+                                        <option value="@practitionerType.Id">@(isEng ? practitionerType.TitleEn : practitionerType.TitleAr)</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+
+                      @*   <div class="form-group">
+                            <label for="professional_Rank" class="text-right">@Localizer["ProfessionalRank"]</label>
+                            <div class="form-data select-box">
+                                <select asp-for="Input.ProfessionalRankId" disabled style="cursor:not-allowed" class="form-control" name="professional_Rank" id="category-rank-ddl">
+                                    <option value="0">@Localizer["DefaultOptionProfessionalRank"]</option>
+                                    @foreach (var professionalRank in Model.ProfessionalRanks)
+                                    {
+                                        <option id="@professionalRank.PractitionerTypeId" value="@professionalRank.Id">@(isEng ? professionalRank.TitleEn : professionalRank.TitleAr)</option>
+                                    }
+                                </select>
+                            </div>
+                        </div> *@
+                    </div>
+
+                    <!-- Right Side -->
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label for="FullName">@Localizer["FullName"]</label>
+                            <div class="form-data">
+                                <input asp-for="Input.FullName" class="form-control" style="text-align:@textAlign" autocomplete="current-password" placeholder="@Localizer["EnterFullName"]" name="FullName" required />
+                                <span asp-validation-for="Input.FullName" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="PhoneNumber">@Localizer["PhoneNumber"]</label>
+                            <div class="form-data">
+                                <input asp-for="Input.PhoneNumber" name="PhoneNumber" onkeyup="checkPhoneNumber()" style="text-align:@textAlign" placeholder="@Localizer["PhoneNumber"]" class="form-control" maxlength="10" onkeypress="return (event.charCode !=8 && event.charCode ==0 || ( event.charCode == 46 || (event.charCode >= 48 && event.charCode <= 57)))" aria-required="true" placeholder="Phone Number" required />
+                                <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+                                <p id="phoneError" style="display:none; color:#FF0000;font-size:12px;text-align:left;">@Localizer["PhoneAlreadyExists"]</p>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="Email">@Localizer["EmailAddress"]</label>
+                            <div class="form-data">
+                                <input asp-for="Input.Email" onkeyup=checkEmail() class="form-control" style="text-align:@textAlign" autocomplete="current-password" aria-required="true" placeholder="@Localizer["EnterEmail"]" name="Email" required type="email" />
+                                <span asp-validation-for="Input.Email" class="text-danger"></span>
+                            </div>
+                            <p style="display:none; color:#FF0000;font-size:12px;text-align:left">@Localizer["EmailAlreadyUsed"]</p>
+                            <span style="display:none" class="success-email">@Localizer["ValidEmail"]</span>
+                            <span style="display:none" class="error-email">@Localizer["InValidEmail"]</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="Password">@Localizer["Password"]</label>
+                            <div class="form-data">
+                                <input asp-for="Input.Password" class="form-control" autocomplete="current-password" style="text-align:@textAlign" onkeyup="isPasswordAccept()" aria-required="true" placeholder="@Localizer["Password"]" name="Password" required />
+                                <span asp-validation-for="Input.Password" class="text-danger"></span>
+                            </div>
+                            <p id="password-notAccept" style="display:none; color:#FF0000;font-size:12px;text-align:left">@Localizer["AtLeast6Char"]</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="ConfirmPassword">@Localizer["ConfirmPassword"]</label>
+                            <div class="form-data">
+                                <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="current-password" onkeyup="comparePassword()" style="text-align:@textAlign" aria-required="true" placeholder="@Localizer["ConfirmPassword"]" name="ConfirmPassword" required />
+                                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                            </div>
+                            <p id="password-notmatch" style="display:none; color:#FF0000;font-size:12px;text-align:left">@Localizer["PasswordNotMatch"]</p>
+                        </div>
+
+                        <div class="flex-data mt-5" style="direction:@direction">
+                            <div class="wrapper">
+                                <input id="term-div" type="checkbox" name="terms" class="radio-check">
+                                <label class="radio-title">
+                                    <a href="#openModal">@Localizer["TermsConditions"]</a>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <label id="fields-error" class="error" for="terms" style="display: none;color:red;">@Localizer["FillAllFields"]</label>
+                <button id="registerSubmit" type="submit" onclick="isFormValid()" class="custom-btn mb-3">
+                    <span>@Localizer["SignUp"]</span>
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+<div id="openModal" class="modalDialog">
+    <div>
+        <a href="#close" title="Close" class="close">X</a>
+        <p style='margin-top:0in;margin-right:0in;margin-bottom:8.0pt;margin-left:0in;line-height:107%;font-size:15px;font-family:"Calibri",sans-serif;'>1. CONTRACTUAL RELATIONSHIP</p>
+        <p style='margin-top:0in;margin-right:0in;margin-bottom:8.0pt;margin-left:0in;line-height:107%;font-size:15px;font-family:"Calibri",sans-serif;'>1.1 The Terms and Conditions (&ldquo;Terms&rdquo;) constitute an Agreement between you, an individual, (&ldquo;Users&rdquo; or &ldquo;You&rdquo;) in which MaidLinker undergoes commercial activities, of mobile applications, websites, content, products and services (&ldquo;Services&rdquo;) made available by MaidLinker.&nbsp;</p>
+        <p style='margin-top:0in;margin-right:0in;margin-bottom:8.0pt;margin-left:0in;line-height:107%;font-size:15px;font-family:"Calibri",sans-serif;'>1.2 Your access and use of the Services constitute your agreement to be bound by these Terms, which establishes a contractual relationship between You and MaidLinker. By using the Services, You consent to be bound by these Terms and must check the &ldquo;I accept&rdquo; box herein-below stating your acceptance of these Terms.</p>
+        <p style='margin-top:0in;margin-right:0in;margin-bottom:8.0pt;margin-left:0in;line-height:107%;font-size:15px;font-family:"Calibri",sans-serif;'>1.3 By using the Services, You concur that You have the full capacity to enter into a legally binding agreement, and to be held accountable in case You violate the Terms. Otherwise, You understand that MaidLinker may terminate or hinder your use of the Services.</p>
+        <p style='margin-top:0in;margin-right:0in;margin-bottom:8.0pt;margin-left:0in;line-height:107%;font-size:15px;font-family:"Calibri",sans-serif;'>1.4 You understand and acknowledge that MaidLinker may amend the Terms related to Services from time to time. MaidLinker shall notify You of such changes to the Terms and Your acceptance to the amended Terms is required to continue using the Services.</p>
+        <p style='margin-top:0in;margin-right:0in;margin-bottom:8.0pt;margin-left:0in;line-height:107%;font-size:15px;font-family:"Calibri",sans-serif;'>1.5 Users agree that MaidLinker can contact them by text message or telephone calls on the phone numbers they provide at user registrations including for internal marketing purposes of MaidLinker. This will not constitute disclosure or share of any of your personal identifiable information.</p>
+        <p style='margin-top:0in;margin-right:0in;margin-bottom:8.0pt;margin-left:0in;line-height:107%;font-size:15px;font-family:"Calibri",sans-serif;'>1.6 By accessing or using any part of the Services, You agree that You have read, understood and agreed to be bound by these Terms, as well as any additional available guidelines, policies, or rules as applicable to the MaidLinker and its Services, including but not limited to, the MaidLinker Privacy Policy.&nbsp;</p>
+        <p style='margin-top:0in;margin-right:0in;margin-bottom:8.0pt;margin-left:0in;line-height:107%;font-size:15px;font-family:"Calibri",sans-serif;'>IF YOU DO NOT AGREE TO BE BOUND BY THESE TERMS AND TO FOLLOW ALL APPLICABLE LAWS, GUIDELINES AND POLICIES, DO NOT ACCESS OR USE THE SERVICES.</p>
+        <p style='margin-top:0in;margin-right:0in;margin-bottom:8.0pt;margin-left:0in;line-height:107%;font-size:15px;font-family:"Calibri",sans-serif;'>2. SERVICES</p>
+        <p style='margin-top:0in;margin-right:0in;margin-bottom:8.0pt;margin-left:0in;line-height:107%;font-size:15px;font-family:"Calibri",sans-serif;'>2.1 This constitutes a technology platform that allows users of MaidLinker website and application to search and make referrals, as well as seek remote medical consultation and diagnostics through MaidLinker&rsquo;s Doctors.&nbsp;</p>
+        <p style='margin-top:0in;margin-right:0in;margin-bottom:8.0pt;margin-left:0in;line-height:107%;font-size:15px;font-family:"Calibri",sans-serif;'>WE DO NOT OFFER MEDICAL ADVICE, DIAGNOSIS OR TREATMENT. WE DO NOT ENDORSE NOR RECOMMEND YOU A SPECIFIC PROVIDER. WE DO NOT -AND DO NOT INTEND TO- PRACTICE MEDICINE. WE ONLY HELP YOU SEARCH, BOOK AND MAKE REFERRALS TO OTHER DOCTORS. THEREFORE, IT IS CRUCIAL THAT YOU EMPLOY THE SAME CAUTIOUSNESS AND PRUDENCE YOU WOULD HAVE EMPLOYED WITHOUT USING OUR SERVICES.</p>
+        <div style="text-align:center">
+            <div style="text-align:center">
+                <a title="We Will Download for you Policies and conditions" href="/uploadfiles/MaidLinker-terms-and-conditions.pdf" target="_blank">Read More..</a>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+@* <div id="smallscreensize" class="loginLogo" style="display:none">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <img src="~/images/warning.png" width="40%" height="40%" />
+        <Br />
+        <div class="row">
+            <h2 style="color:#2FBDEB">Screen size is too small</h2>
+            <p style="color:#2FBDEB">Please try viewing on a larger screen for the best experience.</p>
+        </div>
+    </div>
+</div>
+ *@
+
+<script src="https://code.jquery.com/jquery-3.5.0.min.js"></script>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+
+<script>
+
+    function checkEmail() {
+        var regExp = /^([\w\.\+]{1,})([^\W])(@@)([\w]{1,})(\.[\w]{1,})+$/;
+
+        isValidEmail = regExp.test($("#Input_Email").val())
+
+        if (isValidEmail) {
+            $('.success-email').show()
+            $('.error-email').hide();
+        }
+        else {
+            $('.success-email').hide()
+            $('.error-email').show();
+        }
+    }
+
+    function isFormValid() {
+        resetAllValidation();
+        var accountTypeId = $('#account_type').val();
+        var doctoryTypeId = $('#doctor-type-ddl').val();
+        var categoryId = $('#category-rank-ddl').val();
+        var showErrorlabel = false;
+
+        if (accountTypeId < 1) { // mean is no selected{
+            $('#account-type-div').css("border", "solid 1px red");
+        }
+
+        if (accountTypeId == 1) { // Service Provider Should fill
+            if (doctoryTypeId < 1) {
+                $('#doctor-type-div').css("border", "solid 1px red");
+                showErrorlabel = true;
+            }
+            if (categoryId < 1) {
+                $('#category-id-div').css("border", "solid 1px red");
+                showErrorlabel = true;
+            }
+        }
+
+        if ($("#Input_FullName").val().length == 0) {
+            $('#fullname-div').css("border", "solid 1px red");
+            showErrorlabel = true;
+        }
+
+        if ($("#Input_Email").val().length == 0) {
+            $('#email-div').css("border", "solid 1px red")
+            showErrorlabel = true;
+        }
+
+        if ($("#Input_PhoneNumber").val().length == 0) {
+            $('#phone-div').css("border", "solid 1px red")
+            showErrorlabel = true;
+        }
+
+        if ($("#Input_Password").val().length == 0) {
+            $('#password-div').css("border", "solid 1px red");
+            showErrorlabel = true;
+        }
+
+        if ($("#Input_ConfirmPassword").val().length == 0) {
+            $('#confirmpassword-div').css("border", "solid 1px red");
+            showErrorlabel = true;
+        }
+
+        if ($('#term-div').is(":checked") == false) {
+            $('#term-div').css("border", "solid 1px red");
+            showErrorlabel = true;
+        }
+
+        // When is not valid
+        if (showErrorlabel == true)
+            $("#fields-error").show();
+
+    }
+
+    function resetAllValidation() {
+        $('#account-type-div').css("border", "");
+        $('#doctor-type-div').css("border", "");
+        $('#category-id-div').css("border", "");
+        $('#fullname-div').css("border", "");
+        $('#phone-div').css("border", "");
+        $('#email-div').css("border", "");
+        $('#password-div').css("border", "");
+        $('#confirmpassword-div').css("border", "");
+        $('#term-div').css("border", "");
+        $("#fields-error").hide();
+    }
+
+    function comparePassword() {
+        if ($("#Input_Password").val() != $("#Input_ConfirmPassword").val())
+            $("#password-notmatch").show();
+        else
+            $("#password-notmatch").hide();
+
+    }
+
+    function isPasswordAccept() {
+        if ($("#Input_Password").val().length < 6)
+            $("#password-notAccept").show();
+        else
+            $("#password-notAccept").hide();
+
+    }
+
+    //CheckBox Show Password
+    $('#account_type').change(function () {
+        var id = $('#account_type').val()
+        if (id == 2)   // Which is Beneficiary
+        {
+            // Disable Options
+            $('#about-provider').hide()
+            $('#about-beneficiary').show()
+            $('#doctor-type-ddl').prop("disabled", true);
+            $('#category-rank-ddl').prop("disabled", true);
+            $('#doctor-type-ddl').css("cursor", "not-allowed")
+            $('#category-rank-ddl').css("cursor", "not-allowed")
+
+        }
+        else if (id == 1) {
+            // Element(s) are now enabled.
+            // Enable Options
+            $('#about-beneficiary').hide()
+            $('#about-provider').show()
+            $('#doctor-type-ddl').prop("disabled", false);
+            $('#category-rank-ddl').prop("disabled", false);
+            $('#doctor-type-ddl').css("cursor", "")
+            $('#category-rank-ddl').css("cursor", "")
+        }
+
+    });
+
+    function checkPhoneNumber(phoneNumber) {
+
+        if ($("#Input_PhoneNumber").val().length == 0) {
+            $('#phone-div').css("border", "solid 1px red");
+            showErrorlabel = true;
+
+        }
+        else {
+            var phoneNumber = $("#Input_PhoneNumber").val()
+            $.ajax({
+                url: '/Common/CheckPhoneNumber?phoneNumber=' + phoneNumber,
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    if (data == true) {
+                        $('#phone-div').css("border", "solid 1px red");
+                        $('#phoneError').show();
+                        $("#registerSubmit").prop('disabled', true);
+                        $("#registerSubmit").css('background', "darkgray");
+                        $("#registerSubmit").css('cursor', "not-allowed");
+                        showErrorlabel = true;
+                    }
+                    else {
+                        $('#phoneError').hide();
+                        $('#phone-div').css("border", "");
+                        showErrorlabel = false;
+                        $("#registerSubmit").prop('disabled', false);
+                        $("#registerSubmit").css('background', "");
+                        $("#registerSubmit").css('cursor', "pointer");
+                    }
+
+                }
+            });
+
+        }
+
+    }
+
+    function onPractitionerTypeChanged() {
+
+        var selectedPractitionerTypeId = $("#doctor-type-ddl").val();
+
+        // Get the selected option's data attribute (id) for each professional rank option
+        $('#category-rank-ddl option').each(function () {
+            var practitionerTypeId = $(this).attr("id");;
+            // Hide/show professional rank options based on selected practitioner type
+            if (practitionerTypeId === selectedPractitionerTypeId || practitionerTypeId === "" || practitionerTypeId == "0") {
+                $(this).show();
+            } else {
+                $(this).hide();
+            }
+
+        });
+
+    }
+</script>
+<style>
+    section {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .modalDialog {
+        position: fixed;
+        font-family: Arial, Helvetica, sans-serif;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background: rgba(0,0,0,0.8);
+        z-index: 99999;
+        opacity: 0;
+        -webkit-transition: opacity 400ms ease-in;
+        -moz-transition: opacity 400ms ease-in;
+        transition: opacity 400ms ease-in;
+        pointer-events: none;
+    }
+
+        .modalDialog:target {
+            opacity: 1;
+            pointer-events: auto;
+            overflow-y: scroll;
+        }
+
+        .modalDialog > div {
+            width: 50%;
+            max-height: 100%;
+            position: relative;
+            margin: 10% auto;
+            padding: 5px 20px 13px 20px;
+            border-radius: 10px;
+            background: #fff;
+            background: -moz-linear-gradient(#fff, #999);
+            background: -webkit-linear-gradient(#fff, #999);
+            background: -o-linear-gradient(#fff, #999);
+            -webkit-transition: opacity 400ms ease-in;
+            -moz-transition: opacity 400ms ease-in;
+            transition: opacity 400ms ease-in;
+        }
+
+    .close {
+        background: #606061;
+        color: #FFFFFF;
+        line-height: 25px;
+        position: absolute;
+        right: -12px;
+        text-align: center;
+        top: -10px;
+        width: 24px;
+        text-decoration: none;
+        font-weight: bold;
+        -webkit-border-radius: 12px;
+        -moz-border-radius: 12px;
+        border-radius: 12px;
+        -moz-box-shadow: 1px 1px 3px #000;
+        -webkit-box-shadow: 1px 1px 3px #000;
+        box-shadow: 1px 1px 3px #000;
+    }
+
+        .close:hover {
+            background: #00d9ff;
+        }
+
+    .explanation {
+        display: flex;
+        /* justify-content: space-around; */
+    }
+
+    .service-provider, .beneficiary {
+        width: 50%;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        margin:1%;
+    }
+
+        .service-provider h2, .beneficiary h2 {
+            color: #333;
+        }
+
+        .service-provider ul, .beneficiary ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+            .service-provider ul li, .beneficiary ul li {
+                margin-bottom: 10px;
+            }
+
+        .service-provider p, .beneficiary p {
+            margin-top: 10px;
+        }
+</style>
+
+<script>
+    window.onload = function () {
+        checkScreenSize();
+        // window.addEventListener('resize', checkScreenSize);
+    };
+
+    function checkScreenSize() {
+
+        if (window.innerWidth <= 768) {
+             $("#sizeofModel").css("max-width", "100%");
+            // $("#smallscreensize").show();
+            // $("#largescreensize").hide();
+        } else {
+              $("#sizeofModel").css("max-width", "50%");
+            // $("#smallscreensize").hide();
+            // $("#largescreensize").show();
+        }
+    }
+</script>
+
+@* <style>
+    .alert {
+        background-color: #fff;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 20px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+</style>
+ *@
