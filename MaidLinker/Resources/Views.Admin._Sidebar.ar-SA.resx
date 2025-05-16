@@ -117,34 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Age" xml:space="preserve">
-    <value>العمر</value>
+  <data name="Countries" xml:space="preserve">
+    <value>الدول </value>
   </data>
-  <data name="Experience" xml:space="preserve">
-    <value>الخبرة</value>
+  <data name="MasterList" xml:space="preserve">
+    <value>القائمة الرئيسية</value>
   </data>
-  <data name="MaritalStatus" xml:space="preserve">
-    <value>الحالة الاجتماعية</value>
-  </data>
-  <data name="Close" xml:space="preserve">
-    <value>إغلاق</value>
-  </data>
-  <data name="Maids" xml:space="preserve">
-    <value>العاملات</value>
-  </data>
-  <data name="Home" xml:space="preserve">
-    <value>الصفحة الرئيسية</value>
-  </data>
-  <data name="Nationality" xml:space="preserve">
-    <value>الجنسية</value>
-  </data>
-  <data name="Search" xml:space="preserve">
-    <value>بحث</value>
-  </data>
-  <data name="SortBy" xml:space="preserve">
-    <value>ترتيب حسب</value>
-  </data>
-  <data name="Language" xml:space="preserve">
-    <value>اللغة</value>
+  <data name="Nationalities" xml:space="preserve">
+    <value>الجنسيات</value>
   </data>
 </root>

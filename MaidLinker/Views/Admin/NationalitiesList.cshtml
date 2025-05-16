@@ -1,5 +1,17 @@
 ﻿@model List<MaidLinker.Data.Entites.Nationality>
 
+<!-- #region For Localization -->
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@{
+    string cultureCode = System.Threading.Thread.CurrentThread.CurrentCulture.Name;
+    string direction = cultureCode.StartsWith("ar", StringComparison.OrdinalIgnoreCase) ? "rtl" : "ltr";
+    string textAlign = direction == "rtl" ? "right" : "left";
+    bool isEng = cultureCode.StartsWith("en", StringComparison.OrdinalIgnoreCase) ? true : false;
+}
+<!-- #endregion For Localization -->
+
+<!-- #region For Pagenations C# Code -->
 @{
     var defaultPageSize = 5; // Default number of items per page
     var currentPage = Context.Request.Query["page"].ToString();
@@ -23,17 +35,20 @@
 
     var visibleItems = filteredItems.GetRange(startIndex, endIndex - startIndex + 1);
 }
+<!-- #endregion For Pagenations  C# Code -->
 
+
+<!-- #region For Pagenations Front-End Code -->
 <div>
     <div class="row justify-content-start">
         <div class="col-md-6 d-flex justify-content-start">
             <form id="filterForm" method="get" class="d-flex flex-wrap align-items-center">
                 <div class="form-group mr-2">
-                    <input type="text" class="form-control" id="searchInput" name="search" placeholder="Search" value="@searchQuery">
+                    <input type="text" class="form-control" id="searchInput" name="search" placeholder="@Localizer["Search"]" value="@searchQuery">
                 </div>
 
                 <div class="form-group mr-2">
-                    <button type="submit" class="btn btn-primary">Search</button>
+                    <button type="submit" class="btn btn-primary">@Localizer["Search"]</button>
                 </div>
             </form>
         </div>
@@ -44,24 +59,24 @@
                     <input type="number" class="form-control" id="pageSizeInput" name="pageSize" min="1" max="@totalItems" value="@pageSize">
                 </div>
                 <div class="form-group mr-2">
-                    <button type="submit" class="btn btn-primary">Apply</button>
+                    <button type="submit" class="btn btn-primary">@Localizer["Apply"]</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
+<!-- #endregion For Pagenations Front-End Code -->
 
 
-
-
+<!-- #region Records Table -->
 
 <table class="table table-striped" id="dataTable-Nationality" width="100%" cellspacing="0">
     <thead>
         <tr>
             <th>#</th>
-            <th>Title (English)</th>
-            <th>Title (Arabic)</th>
-            <th>Actions</th>
+            <th>@Localizer["TitleEn"]</th>
+            <th>@Localizer["TitleAr"]</th>
+            <th>@Localizer["Actions"]</th>
         </tr>
     </thead>
     <tbody>
@@ -75,7 +90,7 @@
               
                 <td>
                     <li class="list-inline-item">
-                        <button onclick="getNationality(@Nationality.Id)" href="#" class="btn btn-success btn-sm rounded-pill" type="button" data-toggle="modal" data-target="#EditNationality" data-placement="top" title="Edit">
+                        <button onclick="get(@Nationality.Id)" href="#" class="btn btn-success btn-sm rounded-pill" type="button" data-toggle="modal" data-target="#EditPopup" data-placement="top" title="Edit">
                             <i class="fa fa-edit"></i>
                         </button>
                     </li>
@@ -87,17 +102,17 @@
                         <div class="modal-dialog modal-dialog-centered" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="confirmDeleteModalLabel">Confirmation</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <h5 class="modal-title" id="confirmDeleteModalLabel"> @Localizer["Confirmation"]</h5>
+                                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
                                 <div class="modal-body">
-                                    Are you sure you want to delete this Nationality?
+                                    @Localizer["DeleteConfirmation"]
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                    <a href="/Admin/DeleteNationality/@Nationality.Id" class="btn btn-danger" id="deleteButton">Delete</a>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">    @Localizer["Cancel"]</button>
+                                    <a href="/Admin/DeleteNationality/@Nationality.Id" class="btn btn-danger" id="deleteButton"> @Localizer["Delete"]</a>
                                 </div>
                             </div>
                         </div>
@@ -107,12 +122,15 @@
         }
     </tbody>
 </table>
+<!-- #region Records Table -->
 
-<div class="modal fade" id="EditNationality" tabindex="-1" role="dialog" aria-labelledby="EditNationalityModal" aria-hidden="true">
+
+<!-- #region Popup -->
+<div class="modal fade" id="EditPopup" tabindex="-1" role="dialog" aria-labelledby="EditPopupModal" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="EditNationalityModal">Edit</h5>
+                <h5 class="modal-title"> @Localizer["Edit"]</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -121,12 +139,12 @@
                 <!-- Add your modal content here -->
                 <form>
                     <div class="form-group">
-                        <label style="font-weight:bold;color:#5F7AE7" for="titleEnInputEdit">Title (English):</label>
+                        <label style="font-weight:bold;color:#5F7AE7" for="titleEnInputEdit">@Localizer["TitleEn"]:</label>
                         <input type="text" class="form-control" id="titleEnInputEdit" required>
                     </div>
                     <div class="form-group">
                         <input hidden type="text" class="form-control" id="titleId">
-                        <label style="font-weight:bold;color:#5F7AE7" for="titleArInputEdit">Title (Arabic):</label>
+                        <label style="font-weight:bold;color:#5F7AE7" for="titleArInputEdit">@Localizer["TitleAr"]:</label>
                         <input type="text" class="form-control" id="titleArInputEdit" required>
                     </div>
                 </form>
@@ -135,19 +153,20 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button id="close-edit-Nationality" type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
-                <button id="edit-Nationality" type="button" class="btn btn-success" style="background-color:#5F7AE7">Update</button>
+                <button id="close-edit-Nationality" type="button" class="btn btn-danger" data-dismiss="modal">@Localizer["Cancel"]</button>
+                <button id="edit-Nationality" type="button" class="btn btn-success" style="background-color:#5F7AE7"> @Localizer["Save"] </button>
             </div>
         </div>
     </div>
 </div>
+<!-- #region Popup -->
 
-
+<!-- #region For Pagenations Footer C# & Front-End Code -->
 
 @if (totalItems == 0)
 {
     <div style="text-align:center">
-        <label style="font-weight:bold">No Results Found</label>
+        <label style="font-weight:bold">@Localizer["NoResultsFound"]</label>
         <img src="~/icon/no-result-found-icon.png" width="25" height="25" /> <span style="color:black"></span>
     </div>
 }
@@ -163,6 +182,7 @@
     </ul>
 </div>
 
+<!-- #endregion For Pagenations FooterC# & Front-End Code -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
@@ -179,7 +199,7 @@
     });
 
 
-    function getNationality(id) {
+    function get(id) {
         $.ajax({
             url: '/Admin/GetNationality/' + id,
             type: 'GET',

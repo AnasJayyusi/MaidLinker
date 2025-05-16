@@ -1,0 +1,28 @@
+﻿<!-- #region For Localization -->
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@{
+    string cultureCode = System.Threading.Thread.CurrentThread.CurrentCulture.Name;
+    string direction = cultureCode.StartsWith("ar", StringComparison.OrdinalIgnoreCase) ? "rtl" : "ltr";
+    string textAlign = direction == "rtl" ? "right" : "left";
+    bool isEng = cultureCode.StartsWith("en", StringComparison.OrdinalIgnoreCase) ? true : false;
+}
+<!-- #endregion For Localization -->
+<div class="dropdown" style="margin-right: 5%;" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+    <a href="#">
+        <label style="font-weight:bold;color:#5F7AE7 ">@Localizer["Administrator"]</label>
+        <img src="~/users/images/Default-User-Profile.jpg" width="40" height="40" alt="user-profile">
+    </a>
+
+    <div class="dropdown-content">
+
+        <a type="submit" style="text-transform: none;" class="my-profile-button" asp-area="Identity" asp-page="/Account/Logout">
+            @Localizer["Logout"]
+            <span>
+                <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
+                    <button style="text-transform: none;" class="my-profile-button" type="submit"></button>
+                </form>
+            </span>
+        </a>
+    </div>
+</div>

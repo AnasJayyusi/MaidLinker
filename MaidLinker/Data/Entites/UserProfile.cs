@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using static MaidLinker.Data.SharedEnum;
 
 namespace MaidLinker.Data.Entites
@@ -29,7 +28,6 @@ namespace MaidLinker.Data.Entites
         #region Navigations 
         public PractitionerType? PractitionerType { get; set; }
         public Country? Country { get; set; }
-        public City? City { get; set; }
         #endregion
 
         public ProfileStatus ProfileStatus { get; set; }

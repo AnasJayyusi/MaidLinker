@@ -53,18 +53,6 @@ namespace MaidLinker.Controllers
 
 
 
-        [HttpGet]
-        [Route("GetCitiesDDL")]
-        public ActionResult GetCitiesDDL()
-        {
-            // Retrieve the data for the dropdown list
-            var dropdownData = _dbContext.Cities.ToList();
-
-            // Pass the data to the view
-            return Json(dropdownData);
-        }
-
-
         #endregion
 
         #region Helper For Razor Page

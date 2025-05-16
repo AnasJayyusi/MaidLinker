@@ -117,34 +117,52 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Age" xml:space="preserve">
-    <value>العمر</value>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
   </data>
-  <data name="Experience" xml:space="preserve">
-    <value>الخبرة</value>
+  <data name="SavedSuccessfully" xml:space="preserve">
+    <value>Item has been saved successfully.</value>
   </data>
-  <data name="MaritalStatus" xml:space="preserve">
-    <value>الحالة الاجتماعية</value>
+  <data name="Save" xml:space="preserve">
+    <value>Save</value>
   </data>
-  <data name="Close" xml:space="preserve">
-    <value>إغلاق</value>
+  <data name="TitleAr" xml:space="preserve">
+    <value>Arabic Title</value>
   </data>
-  <data name="Maids" xml:space="preserve">
-    <value>العاملات</value>
+  <data name="TitleEn" xml:space="preserve">
+    <value>English Title</value>
   </data>
-  <data name="Home" xml:space="preserve">
-    <value>الصفحة الرئيسية</value>
+  <data name="DeletedSuccessfully" xml:space="preserve">
+    <value> Item has been deleted successfully.</value>
   </data>
-  <data name="Nationality" xml:space="preserve">
-    <value>الجنسية</value>
+  <data name="CannotDelete" xml:space="preserve">
+    <value>Cannot delete this item</value>
+  </data>
+  <data name="Actions" xml:space="preserve">
+    <value>Actions</value>
   </data>
   <data name="Search" xml:space="preserve">
-    <value>بحث</value>
+    <value>Search</value>
   </data>
-  <data name="SortBy" xml:space="preserve">
-    <value>ترتيب حسب</value>
+  <data name="Apply" xml:space="preserve">
+    <value>Apply</value>
   </data>
-  <data name="Language" xml:space="preserve">
-    <value>اللغة</value>
+  <data name="DeleteConfirmation" xml:space="preserve">
+    <value>Are you sure you want to delete this item?</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="Update" xml:space="preserve">
+    <value>Update</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="NoResultsFound" xml:space="preserve">
+    <value>No results found</value>
+  </data>
+  <data name="Confirmation" xml:space="preserve">
+    <value>Confirmation</value>
   </data>
 </root>

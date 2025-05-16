@@ -1,10 +1,19 @@
 ﻿@model List<MaidLinker.Data.Entites.Country>
+
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+@{
+    string cultureCode = System.Threading.Thread.CurrentThread.CurrentCulture.Name;
+    string direction = cultureCode.StartsWith("ar", StringComparison.OrdinalIgnoreCase) ? "rtl" : "ltr";
+    string textAlign = direction == "rtl" ? "right" : "left";
+    bool isEng = cultureCode.StartsWith("en", StringComparison.OrdinalIgnoreCase);
+}
+
+<!-- #region Styles -->
 <head>
-    <!-- Custom styles for this template-->
     <link href="~/css/sb-admin-2.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
-
-
     <style>
         .hidden {
             display: none;
@@ -29,124 +38,53 @@
         }
     </style>
 </head>
-
-
-<!-- Toaster -->
+<!-- #endregion -->
+<!-- #region Toast -->
 <div id="toast-container" class="toast-container toast-center">
-    <div class="alert alert-success hidden" role="alert">
-        The Country Added/Updated Successfully!
-    </div>
+    <div class="alert alert-success hidden" role="alert">@Localizer["SavedSuccessfully"]</div>
 
-    @if (@ViewBag.SuccessMessage != null)
+    @if (ViewBag.SuccessMessage != null)
     {
-        if (@ViewBag.SuccessMessage == true)
+        if (ViewBag.SuccessMessage == true)
         {
-            <text>
-                <div class="alert alert-success" role="alert">
-                   Country deleted successfully!
-                </div>
-            </text>
+            <div class="alert alert-success" role="alert">@Localizer["DeletedSuccessfully"]</div>
         }
-        if (@ViewBag.SuccessMessage == false)
+        else
         {
-            <text>
-                <div class="alert alert-danger" role="alert">
-                    You cannot delete this item as it is linked to state in the system.
-                </div>
-            </text>
+            <div class="alert alert-danger" role="alert">@Localizer["CannotDelete"]</div>
         }
     }
 </div>
+<!-- #endregion -->
 
-
-<div id="page-top" style="margin-top:50px">
-
+<div id="page-top" class="mt-5">
     <div id="wrapper">
-
-
-        <!-- Sidebar -->
-        @Html.Partial("_Sidebar")
+        @await Html.PartialAsync("_Sidebar")
 
         <div id="content-wrapper" class="d-flex flex-column">
-
-            <!-- Main Content -->
-            <div id="content">
-
-                <!-- Begin Page Content -->
-                <div class="container-fluid" style="margin-top:50px">
-
-
+            <div id="content" style="background-color:lavender">
+                <div class="container-fluid mt-5">
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h6 style="font-weight:bold;color:#5F7AE7 " class="h6 mb-0 ">  Master List  &#8658; Countries</h6>
-
-
-                        <!--ToDo:Move To Partial View -->
-                        <div class="dropdown" style="margin-right: 5%;" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-                            <a href="#">
-                                <label style="font-weight:bold;color:#5F7AE7 ">Administrator</label>
-                                <img src="~/users/images/Default-User-Profile.jpg" width="40" height="40" alt="user-profile">
-                            </a>
-
-                            <div class="dropdown-content">
-                                 @*<a class="nav-link text-dark  linkButton" asp-area="" asp-controller="Home" asp-action="Index">My Profile </a>*@
-                                @*<a class="nav-link text-dark linkButton" asp-area="" asp-controller="Doctor" asp-action="Index">My Order </a>*@
-
-
-                                <a type="submit" style="text-transform: none;" class="my-profile-button" asp-area="Identity" asp-page="/Account/Logout">
-                                    Logout
-                                    <span>
-                                        @*  <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                                        <button style="text-transform: none;" class="my-profile-button" type="submit"></button>
-                                        </form>
-                                        *@
-                                        <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
-                                            <button style="text-transform: none;" class="my-profile-button" type="submit"></button>
-                                        </form>
-                                    </span>
-
-
-                                </a>
-
-
-                            </div>
-                        </div>
-
-                        @*    <a asp-area="Identity" asp-page="/Account/Logout" class="drop-name">
-                        <span>
-
-                        <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                        <i style="color:white" class='fas fa-sign-out-alt'></i>
-                        <button type="submit" style="background-color:#0D6EFD" class="badge badge-primary">LOGOUT</button>
-                        </form>
-
-                        </span>
-
-                        </a>*@
-
-
-
+                        <h6 class="h6 mb-0" style="font-weight:bold;color:#5F7AE7 "></h6>
+                        @await Html.PartialAsync("_Userbar")
                     </div>
-                    <!-- Content Row -->
+
                     <div class="row">
-                        <!-- Area Chart -->
                         <div class="col-xl-12 col-lg-12">
                             <div class="card shadow mb-4">
-                                <!-- Card Header - Dropdown -->
                                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-primary">Countries</h6>
+                                    <h6 class="m-0" style="font-weight:bold;color:#5F7AE7 ">@Localizer["PageTitle"]</h6>
                                     <div style="text-align: end; cursor:pointer">
-                                        <button id="openNewPractitionerModal" type="button" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" data-toggle="modal" data-target="#AddNewCountry">  <i class="fa fa-plus text-white-50"></i>  </button>
+                                        <button id="popup_btn" type="button" class="btn btn-sm btn-primary shadow-sm" data-toggle="modal" data-target="#ViewPopup">
+                                            <i class="fa fa-plus text-white-50"></i>
+                                        </button>
                                     </div>
                                 </div>
-                                <!-- Card Body -->
-                                <div class="card-body" style="max-height: 768px; overflow-y: auto;">
 
-                                    <br />
-
+                                <div class="card-body" style="max-height:768px; overflow-y:auto;">
                                     <div class="table-responsive" id="dataTableContainer">
-                                        @Html.Partial("CountriesList", Model)
-
+                                        @await Html.PartialAsync("CountriesList", Model)
                                     </div>
                                 </div>
                             </div>
@@ -154,116 +92,96 @@
                     </div>
                 </div>
             </div>
-
         </div>
-        <!-- End of Content Wrapper -->
-
     </div>
-    <!-- End of Page Wrapper -->
-    <!-- Scroll to Top Button-->
+
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
     </a>
-
-
-
-
 </div>
 
-
-<div class="modal fade" id="AddNewCountry" tabindex="-1" role="dialog" aria-labelledby="AddNewCountryModal" aria-hidden="true">
+<!-- #region Modal -->
+<div class="modal fade" id="ViewPopup" tabindex="-1" role="dialog" aria-labelledby="ViewPopupModal" aria-hidden="true" style="direction:@direction">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="AddNewCountryModal">Add</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                <h5 class="modal-title">@Localizer["Add"]</h5>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
+                    <h5>&times;</h5>
                 </button>
             </div>
             <div class="modal-body">
-                <!-- Add your modal content here -->
                 <form>
-                    <div class="form-group">
-                        <label style="font-weight:bold;color:#5F7AE7" for="titleEnInput">Title (English):</label>
-                        <input type="text" class="form-control" id="titleEnInput" required>
+                    <div class="form-group" style="text-align:@textAlign">
+                        <label for="titleEnInput" style="font-weight:bold;color:#5F7AE7">@Localizer["TitleEn"]:</label>
+                        <input type="text" class="form-control" id="titleEnInput" required style="text-align:@textAlign" />
                     </div>
-                    <div class="form-group">
-                        <label style="font-weight:bold;color:#5F7AE7" for="titleArInput">Title (Arabic):</label>
-                        <input type="text" class="form-control" id="titleArInput" required>
+                    <div class="form-group" style="text-align:@textAlign">
+                        <label for="titleArInput" style="font-weight:bold;color:#5F7AE7">@Localizer["TitleAr"]:</label>
+                        <input type="text" class="form-control" id="titleArInput" required style="text-align:@textAlign" />
                     </div>
+                  
                 </form>
-                <div class="alert alert-danger hidden sm" role="alert">
-                    <span id="error-msg-add"></span>
+                <div class="alert alert-danger hidden" role="alert">
+                    <span id="error-msg-not-fill" style="display:none">@Localizer["PleaseFillAllFields"]</span>
+                    <span id="error-msg-duplicate" style="display:none">@Localizer["CountryAlreadyExists"]</span>
                 </div>
             </div>
             <div class="modal-footer">
-                <button id="close-add-Country" type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
-                <button id="add-Country" type="button" class="btn btn-success" style="background-color:#5F7AE7">Save</button>
+                <button id="close-add-Country" type="button" class="btn btn-danger" data-dismiss="modal">@Localizer["Cancel"]</button>
+                <button id="add-Country" type="button" class="btn btn-success" style="background-color:#5F7AE7">@Localizer["Save"]</button>
             </div>
         </div>
     </div>
 </div>
-
-
-
-
+<!-- #endregion -->
+<!-- #region Scripts -->
 @section Scripts {
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
     <script>
         $(document).ready(function () {
-            // Hide the success message after 2 seconds
-            setTimeout(function () {
-                $('.alert-success').fadeOut();
-            }, 3000);
+            setTimeout(() => $('.alert-success').fadeOut(), 3000);
+            setTimeout(() => $('.alert-danger').fadeOut(), 5000);
 
-
-            setTimeout(function () {
-                $('.alert-danger').fadeOut();
-            }, 3000);
-
-            $('#openNewPractitionerModal').click(function () {
+            $('#popup_btn').click(function () {
                 $('#titleArInput').val("");
                 $('#titleEnInput').val("");
+              
             });
 
             $('#add-Country').click(function () {
-                var practitionerType = {
+                var Country = {
                     TitleAr: $('#titleArInput').val(),
                     TitleEn: $('#titleEnInput').val(),
                 };
 
                 $.ajax({
-                    url: '/Admin/AddCountry', // Replace with your actual API endpoint URL
+                    url: '/Admin/AddCountry',
                     type: 'POST',
-                    data: JSON.stringify(practitionerType),
+                    data: JSON.stringify(Country),
                     contentType: 'application/json',
-                    success: function (response) {
-                        // Show the success message
+                    success: function () {
                         $('.alert-success').removeClass('hidden').hide().fadeIn();
-                        // Close the modal after the success message fades out
-                        $("#close-add-Country").trigger("click");
+                        $('#close-add-Country').trigger('click');
                         $('#dataTableContainer').load('/Admin/GetCountries');
-
-                        // Hide the success message after 2 seconds
-                        setTimeout(function () {
-                            $('.alert-success').fadeOut();
-                        }, 3000);
-
+                        setTimeout(() => $('.alert-success').fadeOut(), 3000);
                     },
-                    error: function (xhr, status, error) {
-                        // Show the error message
+                    error: function (xhr) {
                         $('.alert-danger').removeClass('hidden');
-                        var msg = xhr.responseText;
-                        $('#error-msg-add').text(msg.toString());
-                        // Hide the error message after 2 seconds
-                        setTimeout(function () {
-                            $('.alert-danger').addClass('hidden');
-                        }, 5000);
-
+                        if (xhr.responseText === "Please fill all fields.") {
+                            $('#error-msg-not-fill').show();
+                            $('#error-msg-duplicate').hide();
+                        } else if (xhr.responseText === "The details for the Country have already been added.") {
+                            $('#error-msg-not-fill').hide();
+                            $('#error-msg-duplicate').show();
+                        }
+                        setTimeout(() => $('.alert-danger').addClass('hidden'), 5000);
                     }
                 });
             });
         });
     </script>
 }
+<!-- #endregion -->

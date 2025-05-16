@@ -129,11 +129,8 @@
   <data name="Close" xml:space="preserve">
     <value>Close</value>
   </data>
-  <data name="DoctorDetails" xml:space="preserve">
-    <value>Doctor Details</value>
-  </data>
   <data name="Maids" xml:space="preserve">
-    <value>Doctors</value>
+    <value>Maids</value>
   </data>
   <data name="Home" xml:space="preserve">
     <value>Home</value>
@@ -149,8 +146,5 @@
   </data>
   <data name="Language" xml:space="preserve">
     <value>Language</value>
-  </data>
-  <data name="AllServices" xml:space="preserve">
-    <value>All Services</value>
   </data>
 </root>

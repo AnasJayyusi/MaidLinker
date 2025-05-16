@@ -29,7 +29,6 @@ namespace MaidLinker.Data
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<Country> Countries { get; set; }
         public DbSet<Nationality> Nationalities { get; set; }
-        public DbSet<City> Cities { get; set; }
         public DbSet<Maid> Maids { get; set; }
         public DbSet<Langauge> Langauges { get; set; }
     }
