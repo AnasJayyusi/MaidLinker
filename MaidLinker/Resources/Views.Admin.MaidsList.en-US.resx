@@ -117,121 +117,121 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Cancel" xml:space="preserve">
-    <value>إلغاء</value>
+  <data name="SavedSuccessfully" xml:space="preserve">
+    <value>Saved successfully</value>
   </data>
-  <data name="City" xml:space="preserve">
-    <value>مدينة </value>
+  <data name="DeletedSuccessfully" xml:space="preserve">
+    <value>Deleted successfully</value>
   </data>
-  <data name="ClinicInformation" xml:space="preserve">
-    <value>معلومات العيادة</value>
+  <data name="CannotDelete" xml:space="preserve">
+    <value>Cannot delete this item</value>
   </data>
-  <data name="ClinicName" xml:space="preserve">
-    <value>أسم العيادة </value>
+  <data name="MaidPageTitle" xml:space="preserve">
+    <value>Maids Management</value>
   </data>
-  <data name="Closed" xml:space="preserve">
-    <value>مغلق</value>
+  <data name="AddMaid" xml:space="preserve">
+    <value>Add New Maid</value>
   </data>
-  <data name="Country" xml:space="preserve">
-    <value>دولة</value>
+  <data name="EnglishNames" xml:space="preserve">
+    <value>English Names</value>
   </data>
-  <data name="Day" xml:space="preserve">
-    <value>اليوم</value>
+  <data name="FirstNameEn" xml:space="preserve">
+    <value>First Name (English)</value>
   </data>
-  <data name="DefaultLocation" xml:space="preserve">
-    <value>الرياض</value>
+  <data name="SecondNameEn" xml:space="preserve">
+    <value>Second Name (English)</value>
   </data>
-  <data name="DefaultName" xml:space="preserve">
-    <value>MaidLinker Clinic</value>
+  <data name="ThirdNameEn" xml:space="preserve">
+    <value>Third Name (English)</value>
   </data>
-  <data name="District" xml:space="preserve">
-    <value>منطقة</value>
+  <data name="LastNameEn" xml:space="preserve">
+    <value>Last Name (English)</value>
   </data>
-  <data name="EditClinicInfo" xml:space="preserve">
-    <value>تعديل معلومات العيادة</value>
+  <data name="ArabicNames" xml:space="preserve">
+    <value>Arabic Names</value>
   </data>
-  <data name="Error" xml:space="preserve">
-    <value>حدث خطأ </value>
+  <data name="FirstNameAr" xml:space="preserve">
+    <value>First Name (Arabic)</value>
   </data>
-  <data name="Failed" xml:space="preserve">
-    <value>فشل!!</value>
+  <data name="SecondNameAr" xml:space="preserve">
+    <value>Second Name (Arabic)</value>
   </data>
-  <data name="Friday" xml:space="preserve">
-    <value>الجمعة</value>
+  <data name="ThirdNameAr" xml:space="preserve">
+    <value>Third Name (Arabic)</value>
   </data>
-  <data name="From" xml:space="preserve">
-    <value>من</value>
+  <data name="LastNameAr" xml:space="preserve">
+    <value>Last Name (Arabic)</value>
   </data>
-  <data name="InsuranceComapnyAdded" xml:space="preserve">
-    <value>تمت إضافة شركة التأمين بنجاح</value>
+  <data name="DateOfBirth" xml:space="preserve">
+    <value>Date of Birth</value>
   </data>
-  <data name="InsuranceComapnyDeleted" xml:space="preserve">
-    <value>تم حذف شركة التأمين بنجاح</value>
+  <data name="TotalExperience" xml:space="preserve">
+    <value>Total Experience</value>
   </data>
-  <data name="InsuranceCompany" xml:space="preserve">
-    <value>شركات التأمين</value>
+  <data name="Years" xml:space="preserve">
+    <value>years</value>
   </data>
-  <data name="Location" xml:space="preserve">
-    <value>الموقع </value>
+  <data name="MaritalStatus" xml:space="preserve">
+    <value>Marital Status</value>
   </data>
-  <data name="Monday" xml:space="preserve">
-    <value>الاثنين</value>
+  <data name="SelectStatus" xml:space="preserve">
+    <value>Select Status</value>
   </data>
-  <data name="NoInsuranceCompanines" xml:space="preserve">
-    <value>لا يوجد شركات تأمين</value>
+  <data name="Single" xml:space="preserve">
+    <value>Single</value>
   </data>
-  <data name="OpeningHours" xml:space="preserve">
-    <value>ساعات العمل</value>
+  <data name="Married" xml:space="preserve">
+    <value>Married</value>
   </data>
-  <data name="Saturday" xml:space="preserve">
-    <value>السبت</value>
+  <data name="Divorced" xml:space="preserve">
+    <value>Divorced</value>
   </data>
-  <data name="Search" xml:space="preserve">
-    <value> بحث في شركات التأمين     </value>
+  <data name="Widowed" xml:space="preserve">
+    <value>Widowed</value>
   </data>
-  <data name="SelectCity" xml:space="preserve">
-    <value>اختر مدينة</value>
+  <data name="Childs" xml:space="preserve">
+    <value>Number of Children</value>
+  </data>
+  <data name="ServedCountries" xml:space="preserve">
+    <value>Served Countries</value>
   </data>
   <data name="SelectCountry" xml:space="preserve">
-    <value>اختر دولة</value>
+    <value>Select Country</value>
   </data>
-  <data name="SelectDistrict" xml:space="preserve">
-    <value>اختر المنطقة</value>
+  <data name="Languages" xml:space="preserve">
+    <value>Languages</value>
   </data>
-  <data name="SelectState" xml:space="preserve">
-    <value>اختر ولايه</value>
+  <data name="ImagePath" xml:space="preserve">
+    <value>Profile Image</value>
   </data>
-  <data name="State" xml:space="preserve">
-    <value>ولاية</value>
+  <data name="UploadImage" xml:space="preserve">
+    <value>Upload Image</value>
   </data>
-  <data name="Success" xml:space="preserve">
-    <value>نجاح!!</value>
+  <data name="VideoURL" xml:space="preserve">
+    <value>Video URL</value>
   </data>
-  <data name="Sunday" xml:space="preserve">
-    <value>الاحد</value>
+  <data name="Address" xml:space="preserve">
+    <value>Address</value>
   </data>
-  <data name="Thursday" xml:space="preserve">
-    <value>الخميس</value>
+  <data name="PleaseFillAllFields" xml:space="preserve">
+    <value>Please fill all required fields</value>
   </data>
-  <data name="Time&amp;LocationUpdated" xml:space="preserve">
-    <value>تم تحديث الوقت والموقع بنجاح</value>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
   </data>
-  <data name="To" xml:space="preserve">
-    <value>إلى</value>
+  <data name="Save" xml:space="preserve">
+    <value>Save</value>
   </data>
-  <data name="Tuesday" xml:space="preserve">
-    <value>الثلاثاء</value>
+  <data name="NoResultsFound" xml:space="preserve">
+    <value>No result found</value>
   </data>
-  <data name="Update" xml:space="preserve">
-    <value>تحديث</value>
+  <data name="Apply" xml:space="preserve">
+    <value>Apply</value>
   </data>
-  <data name="Wednesday" xml:space="preserve">
-    <value>الاربعاء</value>
+  <data name="Search" xml:space="preserve">
+    <value>Search</value>
   </data>
-  <data name="Working Hours" xml:space="preserve">
-    <value>ساعات العمل</value>
-  </data>
-  <data name="WorkingHours" xml:space="preserve">
-    <value>ساعات العمل</value>
+  <data name="Actions" xml:space="preserve">
+    <value>Actions</value>
   </data>
 </root>

@@ -117,118 +117,121 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="SavedSuccessfully" xml:space="preserve">
+    <value>Saved successfully</value>
+  </data>
+  <data name="DeletedSuccessfully" xml:space="preserve">
+    <value>Deleted successfully</value>
+  </data>
+  <data name="CannotDelete" xml:space="preserve">
+    <value>Cannot delete this item</value>
+  </data>
+  <data name="MaidPageTitle" xml:space="preserve">
+    <value>Maids Management</value>
+  </data>
+  <data name="AddMaid" xml:space="preserve">
+    <value>Add New Maid</value>
+  </data>
+  <data name="EnglishNames" xml:space="preserve">
+    <value>English Names</value>
+  </data>
+  <data name="FirstNameEn" xml:space="preserve">
+    <value>First Name (English)</value>
+  </data>
+  <data name="SecondNameEn" xml:space="preserve">
+    <value>Second Name (English)</value>
+  </data>
+  <data name="ThirdNameEn" xml:space="preserve">
+    <value>Third Name (English)</value>
+  </data>
+  <data name="LastNameEn" xml:space="preserve">
+    <value>Last Name (English)</value>
+  </data>
+  <data name="ArabicNames" xml:space="preserve">
+    <value>Arabic Names</value>
+  </data>
+  <data name="FirstNameAr" xml:space="preserve">
+    <value>First Name (Arabic)</value>
+  </data>
+  <data name="SecondNameAr" xml:space="preserve">
+    <value>Second Name (Arabic)</value>
+  </data>
+  <data name="ThirdNameAr" xml:space="preserve">
+    <value>Third Name (Arabic)</value>
+  </data>
+  <data name="LastNameAr" xml:space="preserve">
+    <value>Last Name (Arabic)</value>
+  </data>
+  <data name="DateOfBirth" xml:space="preserve">
+    <value>Date of Birth</value>
+  </data>
+  <data name="TotalExperience" xml:space="preserve">
+    <value>Total Experience</value>
+  </data>
+  <data name="Years" xml:space="preserve">
+    <value>years</value>
+  </data>
+  <data name="MaritalStatus" xml:space="preserve">
+    <value>Marital Status</value>
+  </data>
+  <data name="SelectStatus" xml:space="preserve">
+    <value>Select Status</value>
+  </data>
+  <data name="Single" xml:space="preserve">
+    <value>Single</value>
+  </data>
+  <data name="Married" xml:space="preserve">
+    <value>Married</value>
+  </data>
+  <data name="Divorced" xml:space="preserve">
+    <value>Divorced</value>
+  </data>
+  <data name="Widowed" xml:space="preserve">
+    <value>Widowed</value>
+  </data>
+  <data name="Childs" xml:space="preserve">
+    <value>Number of Children</value>
+  </data>
+  <data name="ServedCountries" xml:space="preserve">
+    <value>Served Countries</value>
+  </data>
+  <data name="SelectCountry" xml:space="preserve">
+    <value>Select Country</value>
+  </data>
+  <data name="Languages" xml:space="preserve">
+    <value>Languages</value>
+  </data>
+  <data name="ImagePath" xml:space="preserve">
+    <value>Profile Image</value>
+  </data>
+  <data name="UploadImage" xml:space="preserve">
+    <value>Upload Image</value>
+  </data>
+  <data name="VideoURL" xml:space="preserve">
+    <value>Video URL</value>
+  </data>
+  <data name="Address" xml:space="preserve">
+    <value>Address</value>
+  </data>
+  <data name="PleaseFillAllFields" xml:space="preserve">
+    <value>Please fill all required fields</value>
+  </data>
   <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
-  <data name="City" xml:space="preserve">
-    <value>City</value>
+  <data name="Save" xml:space="preserve">
+    <value>Save</value>
   </data>
-  <data name="ClinicInformation" xml:space="preserve">
-    <value>Clinic Information</value>
+  <data name="Nationality" xml:space="preserve">
+    <value>Nationality</value>
   </data>
-  <data name="ClinicName" xml:space="preserve">
-    <value>ClinicName</value>
+  <data name="Apply" xml:space="preserve">
+    <value>Apply</value>
   </data>
-  <data name="Closed" xml:space="preserve">
-    <value>Closed</value>
-  </data>
-  <data name="Country" xml:space="preserve">
-    <value>Country</value>
-  </data>
-  <data name="Day" xml:space="preserve">
-    <value>Day</value>
-  </data>
-  <data name="DefaultLocation" xml:space="preserve">
-    <value>Riyadh</value>
-  </data>
-  <data name="DefaultName" xml:space="preserve">
-    <value>MaidLinker Clinic</value>
-  </data>
-  <data name="District" xml:space="preserve">
-    <value>District</value>
-  </data>
-  <data name="EditClinicInfo" xml:space="preserve">
-    <value>Edit Clinic Info</value>
-  </data>
-  <data name="Error" xml:space="preserve">
-    <value>Error occurred</value>
-  </data>
-  <data name="Failed" xml:space="preserve">
-    <value>Failed !!</value>
-  </data>
-  <data name="Friday" xml:space="preserve">
-    <value>Friday</value>
-  </data>
-  <data name="From" xml:space="preserve">
-    <value>From</value>
-  </data>
-  <data name="InsuranceComapnyAdded" xml:space="preserve">
-    <value>Insurance Company Added successfully</value>
-  </data>
-  <data name="InsuranceComapnyDeleted" xml:space="preserve">
-    <value>Insurance Company Deleted successfully</value>
-  </data>
-  <data name="InsuranceCompany" xml:space="preserve">
-    <value>Insurance Company</value>
-  </data>
-  <data name="Location" xml:space="preserve">
-    <value>Location</value>
-  </data>
-  <data name="Monday" xml:space="preserve">
-    <value>Monday</value>
-  </data>
-  <data name="NoInsuranceCompanines" xml:space="preserve">
-    <value>No Insurance Companines</value>
-  </data>
-  <data name="OpeningHours" xml:space="preserve">
-    <value>Opening Hours</value>
-  </data>
-  <data name="Saturday" xml:space="preserve">
-    <value>Saturday</value>
+  <data name="NoResultsFound" xml:space="preserve">
+    <value>No results found.</value>
   </data>
   <data name="Search" xml:space="preserve">
-    <value>  Search In Insurance Companies  </value>
-  </data>
-  <data name="SelectCity" xml:space="preserve">
-    <value>Select a City</value>
-  </data>
-  <data name="SelectCountry" xml:space="preserve">
-    <value>Select a Country</value>
-  </data>
-  <data name="SelectDistrict" xml:space="preserve">
-    <value>Select a District</value>
-  </data>
-  <data name="SelectState" xml:space="preserve">
-    <value>Select a State</value>
-  </data>
-  <data name="State" xml:space="preserve">
-    <value>State</value>
-  </data>
-  <data name="Success" xml:space="preserve">
-    <value>Success !!</value>
-  </data>
-  <data name="Sunday" xml:space="preserve">
-    <value>Sunday</value>
-  </data>
-  <data name="Thursday" xml:space="preserve">
-    <value>Thursday</value>
-  </data>
-  <data name="Time&amp;LocationUpdated" xml:space="preserve">
-    <value>Time &amp; Location updated successfully</value>
-  </data>
-  <data name="To" xml:space="preserve">
-    <value>To</value>
-  </data>
-  <data name="Tuesday" xml:space="preserve">
-    <value>Tuesday</value>
-  </data>
-  <data name="Update" xml:space="preserve">
-    <value>Update</value>
-  </data>
-  <data name="Wednesday" xml:space="preserve">
-    <value>Wednesday</value>
-  </data>
-  <data name="WorkingHours" xml:space="preserve">
-    <value>Working Hours</value>
+    <value>Search</value>
   </data>
 </root>

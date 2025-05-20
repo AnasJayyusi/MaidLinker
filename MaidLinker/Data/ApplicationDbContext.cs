@@ -16,7 +16,7 @@ namespace MaidLinker.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<UserProfile>().HasQueryFilter(f => f.AccountTypeId != 0); // Ignore Admin User From All Queries
+            //modelBuilder.Entity<UserProfile>().HasQueryFilter(f => f.AccountTypeId != 0); // Ignore Admin User From All Queries
             base.OnModelCreating(modelBuilder);
         }
 
@@ -30,6 +30,6 @@ namespace MaidLinker.Data
         public DbSet<Country> Countries { get; set; }
         public DbSet<Nationality> Nationalities { get; set; }
         public DbSet<Maid> Maids { get; set; }
-        public DbSet<Langauge> Langauges { get; set; }
+        public DbSet<Language> Languages { get; set; }
     }
 }

@@ -117,112 +117,121 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="30DaysAgo" xml:space="preserve">
-    <value>30 days ago</value>
+  <data name="SavedSuccessfully" xml:space="preserve">
+    <value>تم الحفظ بنجاح</value>
   </data>
-  <data name="7DaysAgo" xml:space="preserve">
-    <value>7 days ago</value>
+  <data name="DeletedSuccessfully" xml:space="preserve">
+    <value>تم الحذف بنجاح</value>
   </data>
-  <data name="AddOrder" xml:space="preserve">
-    <value>Add Order</value>
+  <data name="CannotDelete" xml:space="preserve">
+    <value>لا يمكن حذف هذا العنصر</value>
   </data>
-  <data name="AllDates" xml:space="preserve">
-    <value>All Dates</value>
+  <data name="MaidPageTitle" xml:space="preserve">
+    <value>إدارة الخادمات</value>
   </data>
-  <data name="AllStatuses" xml:space="preserve">
-    <value>All Statuses</value>
+  <data name="AddMaid" xml:space="preserve">
+    <value>إضافة عاملة جديدة</value>
   </data>
-  <data name="Approved" xml:space="preserve">
-    <value>Approved</value>
+  <data name="EnglishNames" xml:space="preserve">
+    <value>الأسماء بالإنجليزية</value>
+  </data>
+  <data name="FirstNameEn" xml:space="preserve">
+    <value>الاسم الأول (إنجليزي)</value>
+  </data>
+  <data name="SecondNameEn" xml:space="preserve">
+    <value>الاسم الثاني (إنجليزي)</value>
+  </data>
+  <data name="ThirdNameEn" xml:space="preserve">
+    <value>الاسم الثالث (إنجليزي)</value>
+  </data>
+  <data name="LastNameEn" xml:space="preserve">
+    <value>الاسم الأخير (إنجليزي)</value>
+  </data>
+  <data name="ArabicNames" xml:space="preserve">
+    <value>الأسماء بالعربية</value>
+  </data>
+  <data name="FirstNameAr" xml:space="preserve">
+    <value>الاسم الأول (عربي)</value>
+  </data>
+  <data name="SecondNameAr" xml:space="preserve">
+    <value>الاسم الثاني (عربي)</value>
+  </data>
+  <data name="ThirdNameAr" xml:space="preserve">
+    <value>الاسم الثالث (عربي)</value>
+  </data>
+  <data name="LastNameAr" xml:space="preserve">
+    <value>الاسم الأخير (عربي)</value>
+  </data>
+  <data name="DateOfBirth" xml:space="preserve">
+    <value>تاريخ الميلاد</value>
+  </data>
+  <data name="TotalExperience" xml:space="preserve">
+    <value>إجمالي الخبرة</value>
+  </data>
+  <data name="Years" xml:space="preserve">
+    <value>سنوات</value>
+  </data>
+  <data name="MaritalStatus" xml:space="preserve">
+    <value>الحالة الاجتماعية</value>
+  </data>
+  <data name="SelectStatus" xml:space="preserve">
+    <value>اختر الحالة</value>
+  </data>
+  <data name="Single" xml:space="preserve">
+    <value>أعزب</value>
+  </data>
+  <data name="Married" xml:space="preserve">
+    <value>متزوج</value>
+  </data>
+  <data name="Divorced" xml:space="preserve">
+    <value>مطلق</value>
+  </data>
+  <data name="Widowed" xml:space="preserve">
+    <value>أرمل</value>
+  </data>
+  <data name="Childs" xml:space="preserve">
+    <value>عدد الأطفال</value>
+  </data>
+  <data name="ServedCountries" xml:space="preserve">
+    <value>الدول التي عملت بها</value>
+  </data>
+  <data name="SelectCountry" xml:space="preserve">
+    <value>اختر دولة</value>
+  </data>
+  <data name="Languages" xml:space="preserve">
+    <value>اللغات</value>
+  </data>
+  <data name="ImagePath" xml:space="preserve">
+    <value>صورة الملف الشخصي</value>
+  </data>
+  <data name="UploadImage" xml:space="preserve">
+    <value>رفع صورة</value>
+  </data>
+  <data name="VideoURL" xml:space="preserve">
+    <value>رابط الفيديو</value>
+  </data>
+  <data name="Address" xml:space="preserve">
+    <value>العنوان</value>
+  </data>
+  <data name="PleaseFillAllFields" xml:space="preserve">
+    <value>يرجى ملء جميع الحقول المطلوبة</value>
   </data>
   <data name="Cancel" xml:space="preserve">
-    <value>Cancel</value>
+    <value>إلغاء</value>
   </data>
-  <data name="Completed" xml:space="preserve">
-    <value>Completed</value>
+  <data name="Save" xml:space="preserve">
+    <value>حفظ</value>
   </data>
-  <data name="Confirmation" xml:space="preserve">
-    <value>Confirmation</value>
+  <data name="NoResultsFound" xml:space="preserve">
+    <value>لا يوجد نتائج</value>
   </data>
-  <data name="Date" xml:space="preserve">
-    <value>Date:</value>
-  </data>
-  <data name="Doctors" xml:space="preserve">
-    <value>Doctors</value>
-  </data>
-  <data name="Finish" xml:space="preserve">
-    <value>Finish:</value>
-  </data>
-  <data name="IncomingRequests" xml:space="preserve">
-    <value>Incoming Requests</value>
-  </data>
-  <data name="Next" xml:space="preserve">
-    <value>Next</value>
-  </data>
-  <data name="NoSelectedYet" xml:space="preserve">
-    <value>No Services Selected Yet.</value>
-  </data>
-  <data name="NoServicesFound" xml:space="preserve">
-    <value>No Services Found.</value>
-  </data>
-  <data name="NoteAboutDoctors" xml:space="preserve">
-    <value>Note: the doctors will appear based on your selection, please select at least one service</value>
-  </data>
-  <data name="OutgoingRequests" xml:space="preserve">
-    <value>Outgoing Requests</value>
-  </data>
-  <data name="PartiallyCompleted" xml:space="preserve">
-    <value>Partially Completed</value>
-  </data>
-  <data name="PatientInfo" xml:space="preserve">
-    <value>Patient Info</value>
-  </data>
-  <data name="PatientInformation" xml:space="preserve">
-    <value>Patient Information:</value>
-  </data>
-  <data name="Referrals" xml:space="preserve">
-    <value>الإحالات</value>
-  </data>
-  <data name="Rejected" xml:space="preserve">
-    <value>Rejected</value>
+  <data name="Apply" xml:space="preserve">
+    <value>تطبيق</value>
   </data>
   <data name="Search" xml:space="preserve">
-    <value>Search:</value>
+    <value>بحث</value>
   </data>
-  <data name="SearchByName" xml:space="preserve">
-    <value>Search by name</value>
-  </data>
-  <data name="SelectedServices" xml:space="preserve">
-    <value>Selected Services</value>
-  </data>
-  <data name="SentSuccessfully" xml:space="preserve">
-    <value>You Have Successfully Send The Order</value>
-  </data>
-  <data name="Services" xml:space="preserve">
-    <value>Services</value>
-  </data>
-  <data name="Status" xml:space="preserve">
-    <value>Status:</value>
-  </data>
-  <data name="Step1To4" xml:space="preserve">
-    <value>Step 1 - 4</value>
-  </data>
-  <data name="Step2To4" xml:space="preserve">
-    <value>Step 2 - 4</value>
-  </data>
-  <data name="Step3To4" xml:space="preserve">
-    <value>Step 3 - 4</value>
-  </data>
-  <data name="Step4To4" xml:space="preserve">
-    <value>Step 4 - 4</value>
-  </data>
-  <data name="SUCCESS" xml:space="preserve">
-    <value>SUCCESS !</value>
-  </data>
-  <data name="Today" xml:space="preserve">
-    <value>Today</value>
-  </data>
-  <data name="UnderReview" xml:space="preserve">
-    <value>Under Review</value>
+  <data name="Actions" xml:space="preserve">
+    <value>الإجرات </value>
   </data>
 </root>

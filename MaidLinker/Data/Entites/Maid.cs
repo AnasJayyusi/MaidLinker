@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Net.Mail;
 using static MaidLinker.Data.SharedEnum;
 
 namespace MaidLinker.Data.Entites
@@ -36,8 +37,10 @@ namespace MaidLinker.Data.Entites
         public List<Country> ServedCountries { get; set; }
         public MaritalStatus MaritalStatus { get; set; }
         public int Childs { get; set; }
-        public List<Langauge> Langauges { get; set; }
+        public List<Language> Langauges { get; set; }
         public DateTime DateOfBirth { get; set; }
+        public string Note { get; set; }
+
 
 
         #region Navagations
@@ -45,6 +48,7 @@ namespace MaidLinker.Data.Entites
 
         [ForeignKey("NationalityId")]
         public Nationality Nationality { get; set; }
+        public List<Attachment> Attachments { get; set; }
         #endregion
 
 

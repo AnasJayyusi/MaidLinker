@@ -174,6 +174,211 @@ namespace MaidLinker.Controllers
 
         #endregion
 
+        #region Countries
+        [Route("MasterList/Countries")]
+        public IActionResult Countries()
+        {
+            // Retrieve the value from TempData
+            bool? isFromDeleteRequest = TempData["isFromDeleteRequest"] as bool?;
+            bool? isSuccessDelete = TempData["isSuccessDelete"] as bool?;
+
+            if (isFromDeleteRequest != null && isSuccessDelete != null)
+            {
+                // Clear the TempData value to avoid persisting it across subsequent requests
+                TempData.Remove("isFromDeleteRequest");
+                TempData.Remove("isSuccessDelete");
+
+                // Use the value as needed
+                ViewBag.SuccessMessage = isSuccessDelete;
+            }
+
+            return View(_dbContext.Countries.ToList());
+        }
+
+        [Route("GetCountries")]
+        public IActionResult CountriesList()
+        {
+            var countrys = _dbContext.Countries.ToList();
+            return PartialView("CountriesList", countrys);
+        }
+
+        [HttpPost]
+        [Route("AddCountry")]
+        public IActionResult AddCountry([FromBody] Country country)
+        {
+            if (country == null || string.IsNullOrEmpty(country.TitleEn) || string.IsNullOrEmpty(country.TitleAr))
+            {
+                return BadRequest("Please fill all fields.");
+            }
+
+            bool isDuplicate = _dbContext.Countries.Any(w => w.TitleEn == country.TitleEn && w.TitleAr == country.TitleAr);
+            if (isDuplicate)
+            {
+                return BadRequest("The details for the Practitioner Type have already been added.");
+            }
+
+            else
+            {
+                if (!string.IsNullOrEmpty(country.TitleAr) || !string.IsNullOrEmpty(country.TitleEn))
+                {
+                    _dbContext.Countries.Add(country);
+                    _dbContext.SaveChanges();
+                }
+            }
+
+            return Ok();
+        }
+
+        [HttpPost]
+        [Route("UpdateCountry")]
+        public IActionResult UpdateCountry([FromBody] Country country)
+        {
+            if (country == null || string.IsNullOrEmpty(country.TitleEn) || string.IsNullOrEmpty(country.TitleAr))
+            {
+                return BadRequest("Please fill all fields.");
+            }
+
+            bool isDuplicate = _dbContext.Countries.Any(w => w.TitleEn == country.TitleEn && w.TitleAr == country.TitleAr);
+            if (isDuplicate)
+            {
+                return BadRequest("The details for the Practitioner Type have already been added.");
+            }
+
+            else
+            {
+                if (!string.IsNullOrEmpty(country.TitleAr) || !string.IsNullOrEmpty(country.TitleEn))
+                {
+                    _dbContext.Countries.Update(country);
+                    _dbContext.SaveChanges();
+                }
+            }
+
+            return Ok();
+        }
+
+        [HttpGet]
+        [Route("DeleteCountry/{id}")]
+        public IActionResult DeleteCountry(int id)
+        {
+
+
+            // Retrieve the Country from the database using the id
+            var country = _dbContext.Countries.Find(id);
+
+
+            if (country == null)
+            {
+                // Handle the case where the Country type doesn't exist
+                TempData["isSuccessDelete"] = false;
+            }
+
+            // Remove the practitioner type from the DbSet
+            _dbContext.Countries.Remove(country);
+
+            // Save the changes to the database
+            _dbContext.SaveChanges();
+            TempData["isSuccessDelete"] = true;
+
+
+            // Set the value in TempData
+            TempData["isFromDeleteRequest"] = true;
+            return RedirectToAction("Countries");
+        }
+
+
+        [HttpGet]
+        [Route("GetCountry/{id}")]
+        public Country GetCountry(int id)
+        {
+            var countrys = _dbContext.Countries.Single(w => w.Id == id);
+            return countrys;
+        }
+
+
+        #endregion
+
+
+        #region Maids
+        [Route("MaidsManagement/Maids")]
+        public IActionResult Maids()
+        {
+            // Retrieve the value from TempData
+            bool? isFromDeleteRequest = TempData["isFromDeleteRequest"] as bool?;
+            bool? isSuccessDelete = TempData["isSuccessDelete"] as bool?;
+
+            if (isFromDeleteRequest != null && isSuccessDelete != null)
+            {
+                // Clear the TempData value to avoid persisting it across subsequent requests
+                TempData.Remove("isFromDeleteRequest");
+                TempData.Remove("isSuccessDelete");
+
+                // Use the value as needed
+                ViewBag.SuccessMessage = isSuccessDelete;
+            }
+
+            return View(_dbContext.Maids.ToList());
+        }
+
+        [Route("GetMaids")]
+        public IActionResult MaidsList()
+        {
+            var result = _dbContext.Maids.ToList();
+            return PartialView("MaidsList", result);
+        }
+
+        [HttpPost]
+        [Route("AddMaid")]
+        public async Task<IActionResult> AddMaid([FromForm] MaidCreateDto dto)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var maid = new Maid
+            {
+                FirstNameEn = dto.FirstNameEn,
+                SecondNameEn = dto.SecondNameEn,
+                ThirdNameEn = dto.ThirdNameEn,
+                LastNameEn = dto.LastNameEn,
+
+                FirstNameAr = dto.FirstNameAr,
+                SecondNameAr = dto.SecondNameAr,
+                ThirdNameAr = dto.ThirdNameAr,
+                LastNameAr = dto.LastNameAr,
+
+                DateOfBirth = dto.DateOfBirth,
+                TotalExperience = dto.TotalExperience,
+                MaritalStatus = dto.MaritalStatus,
+                Childs = dto.Childs,
+                Note = dto.Note,
+                NationalityId = dto.NationalityId,
+                VideoURL = dto.VideoURL,
+
+                // Assuming you fetch countries/languages from DB
+                ServedCountries = await _dbContext.Countries.Where(c => dto.ServedCountryIds.Contains(c.Id)).ToListAsync(),
+                Langauges = await _dbContext.Languages.Where(l => dto.LanguageIds.Contains(l.Id)).ToListAsync(),
+            };
+
+            // Handle Image Upload
+            if (dto.ImagePath != null && dto.ImagePath.Length > 0)
+            {
+                var fileName = Guid.NewGuid() + Path.GetExtension(dto.ImagePath.FileName);
+                var filePath = Path.Combine("wwwroot/uploads/maids", fileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await dto.ImagePath.CopyToAsync(stream);
+                }
+
+                maid.ImagePath = "/uploads/maids/" + fileName;
+            }
+
+            _dbContext.Maids.Add(maid);
+            await _dbContext.SaveChangesAsync();
+
+            return Ok(new { message = "Maid created successfully." });
+        }
+        #endregion
+
         #region PractitionerTypes
         [Route("MasterList/PractitionerTypes")]
         public IActionResult PractitionerTypes()
@@ -280,7 +485,7 @@ namespace MaidLinker.Controllers
             }
         }
 
-      
+
 
 
         [HttpGet]
@@ -321,14 +526,14 @@ namespace MaidLinker.Controllers
             var generalSettings = _dbContext.GeneralSettings.FirstOrDefault();
             if (generalSettings == null)
                 generalSettings = new GeneralSettings();
-                _dbContext.GeneralSettings.Add(generalSettings);
+            _dbContext.GeneralSettings.Add(generalSettings);
             _dbContext.SaveChanges();
             return RedirectToAction("GeneralSettings");
         }
         #endregion
 
         #region ServicesReport
-      
+
 
         //[HttpGet]
         //[Route("ExportReport")]
@@ -399,132 +604,11 @@ namespace MaidLinker.Controllers
         }
         #endregion
 
-        #region Countries
-        [Route("MasterList/Countries")]
-        public IActionResult Countries()
-        {
-            // Retrieve the value from TempData
-            bool? isFromDeleteRequest = TempData["isFromDeleteRequest"] as bool?;
-            bool? isSuccessDelete = TempData["isSuccessDelete"] as bool?;
-
-            if (isFromDeleteRequest != null && isSuccessDelete != null)
-            {
-                // Clear the TempData value to avoid persisting it across subsequent requests
-                TempData.Remove("isFromDeleteRequest");
-                TempData.Remove("isSuccessDelete");
-
-                // Use the value as needed
-                ViewBag.SuccessMessage = isSuccessDelete;
-            }
-
-            return View(_dbContext.Countries.ToList());
-        }
-
-        [Route("GetCountries")]
-        public IActionResult CountriesList()
-        {
-            var countrys = _dbContext.Countries.ToList();
-            return PartialView("CountriesList", countrys);
-        }
-
-        [HttpPost]
-        [Route("AddCountry")]
-        public IActionResult AddCountry([FromBody] Country country)
-        {
-            if (country == null || string.IsNullOrEmpty(country.TitleEn) || string.IsNullOrEmpty(country.TitleAr))
-            {
-                return BadRequest("Please fill all fields.");
-            }
-
-            bool isDuplicate = _dbContext.Countries.Any(w => w.TitleEn == country.TitleEn && w.TitleAr == country.TitleAr);
-            if (isDuplicate)
-            {
-                return BadRequest("The details for the Practitioner Type have already been added.");
-            }
-
-            else
-            {
-                if (!string.IsNullOrEmpty(country.TitleAr) || !string.IsNullOrEmpty(country.TitleEn))
-                {
-                    _dbContext.Countries.Add(country);
-                    _dbContext.SaveChanges();
-                }
-            }
-
-            return Ok();
-        }
-
-        [HttpPost]
-        [Route("UpdateCountry")]
-        public IActionResult UpdateCountry([FromBody] Country country)
-        {
-            if (country == null || string.IsNullOrEmpty(country.TitleEn) || string.IsNullOrEmpty(country.TitleAr))
-            {
-                return BadRequest("Please fill all fields.");
-            }
-
-            bool isDuplicate = _dbContext.Countries.Any(w => w.TitleEn == country.TitleEn && w.TitleAr == country.TitleAr);
-            if (isDuplicate)
-            {
-                return BadRequest("The details for the Practitioner Type have already been added.");
-            }
-
-            else
-            {
-                if (!string.IsNullOrEmpty(country.TitleAr) || !string.IsNullOrEmpty(country.TitleEn))
-                {
-                    _dbContext.Countries.Update(country);
-                    _dbContext.SaveChanges();
-                }
-            }
-
-            return Ok();
-        }
-
-        [HttpGet]
-        [Route("DeleteCountry/{id}")]
-        public IActionResult DeleteCountry(int id)
-        {
-
-          
-                // Retrieve the Country from the database using the id
-                var country = _dbContext.Countries.Find(id);
 
 
-                if (country == null)
-                {
-                    // Handle the case where the Country type doesn't exist
-                    TempData["isSuccessDelete"] = false;
-                }
-
-                // Remove the practitioner type from the DbSet
-                _dbContext.Countries.Remove(country);
-
-                // Save the changes to the database
-                _dbContext.SaveChanges();
-                TempData["isSuccessDelete"] = true;
 
 
-            // Set the value in TempData
-            TempData["isFromDeleteRequest"] = true;
-            return RedirectToAction("Countries");
-        }
 
-
-        [HttpGet]
-        [Route("GetCountry/{id}")]
-        public Country GetCountry(int id)
-        {
-            var countrys = _dbContext.Countries.Single(w => w.Id == id);
-            return countrys;
-        }
-
-       
-        #endregion
-
-   
-
-   
 
         #region CustomChangePassword
         [Route("CustomChangePassword")]

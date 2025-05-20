@@ -124,7 +124,7 @@
     <value>No</value>
   </data>
   <data name="NoMaidsFound" xml:space="preserve">
-    <value>No Maids Found</value>
+    <value>No result found</value>
   </data>
   <data name="ReadMore" xml:space="preserve">
     <value>Read More</value>

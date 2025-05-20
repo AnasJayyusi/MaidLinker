@@ -53,11 +53,11 @@
                         <div class="form-group search-container col-md-8 p-0">
                             <input type="text" class="form-control margin-15-position-obselete" id="filterInput" onkeypress="searchUsingEnterButton(event)" name="search" style=" background-color: #f2f2f2;"
                                    placeholder="@Localizer["Search"]" value="">
-                            <i class="fas fa-search" style=" margin-right: 0.5%; color: #5F7AE7;cursor:pointer" onclick="filterDoctors()"></i>
+                            <i class="fas fa-search" style=" margin-right: 0.5%; color: #5F7AE7;cursor:pointer" onclick="doSearch()"></i>
                         </div>
 
                         <div class="col-md-4" style="padding-bottom:16px">
-                            <select class="form-control" id="sort-ddl" onchange="filterDoctors()">
+                            <select class="form-control" id="sort-ddl" onchange="doSearch()">
                                 <option value="0">@Localizer["SortBy"]</option>
                                 <option value="1">@Localizer["Nationality"]</option>
                                 <option value="2">@Localizer["Language"]</option>
@@ -66,34 +66,34 @@
                     </div>
                     <div class="row">
                          <div class="col-md-2 col-12 p-0">
-                            <select class="form-control" id="services-ddl" onchange="filterDoctors()">
+                            <select class="form-control" id="nationalities-ddl" onchange="doSearch()">
                                 <option value="">@Localizer["Nationality"] </option>
                             </select>
                         </div>
 
                         <div class="col-md-2 col-12 ">
-                            <select class="form-control" id="services-ddl" onchange="filterDoctors()">
+                            <select class="form-control" id="languages-ddl" onchange="doSearch()">
                                 <option value="">@Localizer["Language"] </option>
                             </select>
                         </div>
                         <div class="col-md-2 col-12">
-                            <select class="form-control" id="cities-ddl" onchange="getDistrictsThenFilter()">
+                            <select class="form-control" id="age-ddl" onchange="getDistrictsThenFilter()">
                                 <option value="">@Localizer["Age"] </option>
                             </select>
                         </div>
                         <div class="col-md-2 col-12 ">
-                            <select class="form-control" id="disctricts-ddl" onchange="filterDoctors()">
+                            <select class="form-control" id="experience-ddl" onchange="doSearch()">
                                 <option value="">@Localizer["Experience"] </option>
                             </select>
                         </div>
                         <div class="col-md-4 col-12 ">
-                            <select class="form-control" id="insurance-ddl" onchange="filterDoctors()">
+                            <select class="form-control" id="maritalStatus-ddl" onchange="doSearch()">
                                 <option value="0">@Localizer["MaritalStatus"]</option>
                             </select>
                         </div>
 
                     </div>
-                    <div id="doctorsListContainer">
+                    <div id="listContainer">
                         @Html.Partial("MaidList", Model)
                     </div>
                 </form>
@@ -103,8 +103,8 @@
             <div class="data-contain" style="margin-top: 84px;">
 
             <div style="padding-bottom:10px">
-            <select class="form-control" id="insurance-ddl" onchange="filterDoctors()">
-            <option value="0">All Insurance Companies</option>
+            <select class="form-control" id="maritalStatus-ddl" onchange="doSearch()">
+            <option value="0">All maritalStatus Companies</option>
             </select>
             </div>
 
@@ -135,20 +135,23 @@
 </div>
 
 @section Scripts {
+
+    <!--region DropDownLists  -->
     <script>
         $(document).ready(function () {
+            
+            // Nationalities
             $.ajax({
-                url: '@Url.Action("GetCitiesDDL", "Common")',
+                url: '@Url.Action("GetNationalitiesDDL", "Common")',
                 type: 'GET',
                 dataType: 'json',
                 success: function (data) {
                     // Clear existing options
-                    $('#cities-ddl').empty();
-                    // Populate the dropdown list
-                    var defaultSelect = "@Localizer["AllCities"]"
+                    $('#nationalities-ddl').empty();
+                    var defaultSelect = "@Localizer["Nationality"]"
                     var isEng = isEnglishCulture();
-
-                    var dropdown = $('#cities-ddl');
+                    // Populate the dropdown list
+                    var dropdown = $('#nationalities-ddl');
                     dropdown.append($('<option></option>').val(0).text(defaultSelect));
 
                     $.each(data, function (index, item) {
@@ -157,92 +160,118 @@
                 }
             });
 
-
-
+            // Languages
             $.ajax({
-                url: '@Url.Action("GetInsuranceCompaniesDDL", "Common")',
+                url: '@Url.Action("GetLanguagesDDL", "Common")',
                 type: 'GET',
                 dataType: 'json',
                 success: function (data) {
                     // Clear existing options
-                    $('#insurance-ddl').empty();
-                    // Populate the dropdown list
-                    var defaultSelect = "@Localizer["AllInsuranceCompanies"]"
+                    $('#languages-ddl').empty();
+                    var defaultSelect = "@Localizer["Language"]"
                     var isEng = isEnglishCulture();
-
-                    var dropdown = $('#insurance-ddl');
+                    // Populate the dropdown list
+                    var dropdown = $('#languages-ddl');
                     dropdown.append($('<option></option>').val(0).text(defaultSelect));
 
                     $.each(data, function (index, item) {
-                        dropdown.append($('<option></option>').val(item.id).text(isEng ? item.titleEn : item.titleAr));
+                        dropdown.append($('<option></option>').val(item.id).text(isEng ? item.nameEn : item.nameAr));
                     });
                 }
             });
+
+          
+              // Years Experiences
             $.ajax({
-                url: '@Url.Action("GetServicesDDL", "Common")',
+                url: '@Url.Action("GetYearsExperiencesDDL", "Common")',
                 type: 'GET',
                 dataType: 'json',
                 success: function (data) {
                     // Clear existing options
-                    $('#services-ddl').empty();
-                    var defaultSelect = "@Localizer["AllServices"]"
-                    var isEng = isEnglishCulture();
+                    $('#experience-ddl').empty();
                     // Populate the dropdown list
-                    var dropdown = $('#services-ddl');
+                    var defaultSelect = "@Localizer["Experience"]"
+                    var isEng = isEnglishCulture();
+
+                    var dropdown = $('#experience-ddl');
                     dropdown.append($('<option></option>').val(0).text(defaultSelect));
 
                     $.each(data, function (index, item) {
-                        dropdown.append($('<option></option>').val(item.id).text(isEng ? item.titleEn : item.titleAr));
+                        dropdown.append($('<option></option>').val(item.id).text(item.title));
                     });
                 }
             });
+
+          // Age
+            $.ajax({
+                url: '@Url.Action("GetAgeDDL", "Common")',
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    // Clear existing options
+                    $('#age-ddl').empty();
+                    // Populate the dropdown list
+                    var defaultSelect = "@Localizer["Age"]"
+                    var isEng = isEnglishCulture();
+
+                    var dropdown = $('#age-ddl');
+                    dropdown.append($('<option></option>').val(0).text(defaultSelect));
+
+                    $.each(data, function (index, item) {
+                        dropdown.append($('<option></option>').val(item.id).text(item.title));
+                    });
+                }
+            });
+
+            // MaritalStatus
+            $.ajax({
+                url: '@Url.Action("GetMaritalStatusDDL", "Common")',
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    // Clear existing options
+                    $('#maritalStatus-ddl').empty();
+                    // Populate the dropdown list
+                    var defaultSelect = "@Localizer["MaritalStatus"]"
+                    var isEng = isEnglishCulture();
+
+                    var dropdown = $('#maritalStatus-ddl');
+                    dropdown.append($('<option></option>').val(0).text(defaultSelect));
+
+                    $.each(data, function (index, item) {
+                        dropdown.append($('<option></option>').val(item.id).text(item.title));
+                    });
+                }
+            });
+
+           
+
             setTimeout(function () {
                 setSelectedOptions();
             }, 1000);
 
         });
+
+        // Helper search functions
         function searchUsingEnterButton(event) {
             if (event.keyCode === 13) {
                 event.preventDefault();
-                filterDoctors();
+                doSearch();
                 ;
             }
         }
 
-        function getDistrictsThenFilter() {
-            var cityId = $('#cities-ddl').val();
+        function doSearch() {
+            var doctorsContainer = $('#listContainer');
+            var serviceId = $('#nationalities-ddl').val();
+            var disctrictId = $('#experience-ddl').val();
 
-            $.ajax({
-                url: '@Url.Action("GetDistrictsDDL", "Common")' + "?cityId=" + cityId,
-                type: 'GET',
-                dataType: 'json',
-                success: function (data) {
-                    // Clear existing options
-                    $('#disctricts-ddl').empty();
-                    var defaultSelect = "@Localizer["AllDistricts"]"
-                    var isEng = isEnglishCulture();
-                    // Populate the dropdown list
-                    var dropdown = $('#disctricts-ddl');
-                    dropdown.append($('<option></option>').val(0).text(defaultSelect));
-                    $.each(data, function (index, item) {
-                        dropdown.append($('<option></option>').val(item.id).text(isEng ? item.titleEn : item.titleAr));
-                    });
-                    filterDoctors();
-                }
-            });
-        }
-
-        function filterDoctors() {
-            var doctorsContainer = $('#doctorsListContainer');
-            var serviceId = $('#services-ddl').val();
-            var disctrictId = $('#disctricts-ddl').val();
-
-            var cityId = $('#cities-ddl').val();
+            var cityId = $('#age-ddl').val();
             var sortBy = $('#sort-ddl').val();
-            var insuranceType = $('#insurance-ddl').val();
+            var maritalStatusType = $('#maritalStatus-ddl').val();
             var name = $('#filterInput').val();
             $.ajax({
-                url: '/Home/FillDoctorsList?name=' + name + '&serviceId=' + serviceId + '&cityId=' + cityId + '&disctrictId=' + disctrictId + '&sortBy=' + sortBy + '&insuranceType=' + insuranceType,
+                url: '/Home/FillDoctorsList?name=' + name + '&serviceId=' + serviceId + '&cityId=' + cityId + '&disctrictId=' + disctrictId + '&sortBy=' + sortBy + '&maritalStatusType=' + maritalStatusType,
                 type: 'GET',
                 success: function (response) {
                     doctorsContainer.html(response);
@@ -253,7 +282,7 @@
             });
         }
 
-        function fillDoctorDetails(userId) {
+        function fillDetails(userId) {
             var doctorDetailsContainer = $('#doctorDetailsContainer');
 
             $.ajax({
@@ -281,42 +310,12 @@
             return params;
         }
 
-        function getDistricts(selectedDistrictId) {
-            var cityId = $('#cities-ddl').val();
-
-            $.ajax({
-                url: '@Url.Action("GetDistrictsDDL", "Common")' + "?cityId=" + cityId,
-                type: 'GET',
-                dataType: 'json',
-                success: function (data) {
-                    // Clear existing options
-                    $('#disctricts-ddl').empty();
-                    var defaultSelect = "@Localizer["AllDistricts"]"
-                    var isEng = isEnglishCulture();
-                    // Populate the dropdown list
-                    var dropdown = $('#disctricts-ddl');
-                    dropdown.append($('<option></option>').val(0).text(defaultSelect));
-                    $.each(data, function (index, item) {
-                        dropdown.append($('<option></option>').val(item.id).text(isEng ? item.titleEn : item.titleAr));
-                    });
-                    const districtDropdown = document.getElementById('disctricts-ddl');
-
-                    // Set selected option for District dropdown
-                    if (selectedDistrictId) {
-                        districtDropdown.value = selectedDistrictId;
-                    } else {
-                        districtDropdown.value = ''; // Default value if disctrictId is not present in the query string
-                    }
-                }
-            });
-        }
-
         function setSelectedOptions() {
             const queryParams = getQueryParamsFromCurrentURL();
             if (queryParams == null)
                 return;
-            const serviceDropdown = document.getElementById('services-ddl');
-            const cityDropdown = document.getElementById('cities-ddl');
+            const nationalitiesDropdown = document.getElementById('nationalities-ddl');
+            const ageDropdown = document.getElementById('age-ddl');
 
 
             const nameField = document.getElementById('filterInput');
@@ -325,19 +324,19 @@
 
             // Set selected option for Service dropdown
             if (queryParams.serviceId) {
-                serviceDropdown.value = queryParams.serviceId;
+                nationalitiesDropdown.value = queryParams.serviceId;
             } else {
-                serviceDropdown.value = ''; // Default value if serviceId is not present in the query string
+                nationalitiesDropdown.value = ''; // Default value if serviceId is not present in the query string
             }
 
             // Set selected option for City dropdown
             if (queryParams.cityId) {
-                cityDropdown.value = queryParams.cityId;
+                ageDropdown.value = queryParams.cityId;
                 getDistricts(queryParams.disctrictId);
 
 
             } else {
-                cityDropdown.value = ''; // Default value if cityId is not present in the query string
+                ageDropdown.value = ''; // Default value if cityId is not present in the query string
             }
 
 

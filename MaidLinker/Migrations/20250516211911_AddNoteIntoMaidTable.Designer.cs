@@ -4,6 +4,7 @@ using MaidLinker.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MaidLinker.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250516211911_AddNoteIntoMaidTable")]
+    partial class AddNoteIntoMaidTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -72,38 +74,6 @@ namespace MaidLinker.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("AccountTypes");
-                });
-
-            modelBuilder.Entity("MaidLinker.Data.Entites.Attachment", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("AttachmentType")
-                        .HasColumnType("int");
-
-                    b.Property<string>("FileName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FilePath")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("MaidId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("UploadedAt")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MaidId");
-
-                    b.ToTable("Attachment");
                 });
 
             modelBuilder.Entity("MaidLinker.Data.Entites.Country", b =>
@@ -683,17 +653,6 @@ namespace MaidLinker.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("MaidLinker.Data.Entites.Attachment", b =>
-                {
-                    b.HasOne("MaidLinker.Data.Entites.Maid", "Maid")
-                        .WithMany("Attachments")
-                        .HasForeignKey("MaidId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Maid");
-                });
-
             modelBuilder.Entity("MaidLinker.Data.Entites.Maid", b =>
                 {
                     b.HasOne("MaidLinker.Data.Entites.Nationality", "Nationality")
@@ -806,11 +765,6 @@ namespace MaidLinker.Migrations
             modelBuilder.Entity("MaidLinker.Data.Entites.AccountType", b =>
                 {
                     b.Navigation("ApplicationUsers");
-                });
-
-            modelBuilder.Entity("MaidLinker.Data.Entites.Maid", b =>
-                {
-                    b.Navigation("Attachments");
                 });
 
             modelBuilder.Entity("MaidLinker.Data.Entites.Nationality", b =>

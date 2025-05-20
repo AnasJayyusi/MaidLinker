@@ -1,0 +1,198 @@
+﻿@model List<MaidLinker.Data.Entites.Maid>
+
+<!-- #region Localization Setup -->
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@{
+    string cultureCode = System.Threading.Thread.CurrentThread.CurrentCulture.Name;
+    string direction = cultureCode.StartsWith("ar", StringComparison.OrdinalIgnoreCase) ? "rtl" : "ltr";
+    string textAlign = direction == "rtl" ? "right" : "left";
+    bool isEng = cultureCode.StartsWith("en", StringComparison.OrdinalIgnoreCase);
+}
+<!-- #endregion -->
+<!-- #region Pagination Logic -->
+@{
+    var defaultPageSize = 5;
+    var currentPage = Context.Request.Query["page"].ToString();
+    if (string.IsNullOrEmpty(currentPage)) currentPage = "1";
+
+    var searchQuery = Context.Request.Query["search"].ToString().Trim();
+    var filteredItems = string.IsNullOrEmpty(searchQuery) ? Model :
+        Model.Where(m => m.FirstNameEn.ToLower().Contains(searchQuery.ToLower()) ||
+                         m.FirstNameAr.ToLower().Contains(searchQuery.ToLower())).ToList();
+    var totalItems = filteredItems.Count;
+
+    var pageSizeParam = Context.Request.Query["pageSize"].ToString();
+    var pageSize = string.IsNullOrEmpty(pageSizeParam) ? defaultPageSize : int.Parse(pageSizeParam);
+    pageSize = Math.Max(1, Math.Min(pageSize, totalItems));
+
+    var totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
+    var startIndex = (int.Parse(currentPage) - 1) * pageSize;
+    var endIndex = Math.Min(startIndex + pageSize - 1, totalItems - 1);
+
+    var visibleItems = filteredItems.GetRange(startIndex, endIndex - startIndex + 1);
+}
+<!-- #endregion -->
+<!-- #region Filter UI -->
+<div class="row justify-content-between">
+    <div class="col-md-6">
+        <form method="get" class="d-flex flex-wrap align-items-center">
+            <div class="form-group mr-2">
+                <input type="text" class="form-control" name="search" placeholder="@Localizer["Search"]" value="@searchQuery">
+            </div>
+            <div class="form-group mr-2">
+                <button type="submit" class="btn btn-primary">@Localizer["Search"]</button>
+            </div>
+        </form>
+    </div>
+    <div class="col-md-6 d-flex justify-content-end">
+        <form method="get" class="d-flex flex-wrap align-items-center">
+            <div class="form-group mr-2">
+                <input type="number" class="form-control" name="pageSize" min="1" max="@totalItems" value="@pageSize">
+            </div>
+            <div class="form-group mr-2">
+                <button type="submit" class="btn btn-primary">@Localizer["Apply"]</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- #endregion -->
+<!-- #region Table -->
+<table class="table table-striped" dir="@direction">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>@Localizer["FirstNameEn"]</th>
+            <th>@Localizer["FirstNameAr"]</th>
+            <th>@Localizer["Actions"]</th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (int i = 0; i < visibleItems.Count; i++)
+        {
+            var maid = visibleItems[i];
+            <tr>
+                <td>@(startIndex + i + 1)</td>
+                <td>@maid.FirstNameEn</td>
+                <td>@maid.FirstNameAr</td>
+                <td>
+                    <div>
+                        <button onclick="getMaid(@maid.Id)" class="btn btn-success btn-sm rounded-pill" data-toggle="modal" data-target="#EditMaid" title="@Localizer["Edit"]">
+                            <i class="fa fa-edit"></i>
+                        </button>
+                        <a href="#" class="btn btn-danger btn-sm rounded-pill ml-1" data-toggle="modal" data-target="#confirmDeleteModal_@maid.Id">
+                            <i class="fa fa-trash"></i>
+                        </a>
+                    </div>
+
+                    <!-- Delete Modal -->
+                    <div class="modal fade" id="confirmDeleteModal_@maid.Id" tabindex="-1" role="dialog">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">@Localizer["Confirmation"]</h5>
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                </div>
+                                <div class="modal-body">@Localizer["DeleteConfirmation"]</div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-secondary" data-dismiss="modal">@Localizer["Cancel"]</button>
+                                    <a href="/Admin/DeleteMaid/@maid.Id" class="btn btn-danger">@Localizer["Delete"]</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<!-- #endregion -->
+<!-- #region Edit Modal -->
+<div class="modal fade" id="EditMaid" tabindex="-1" role="dialog" aria-labelledby="EditMaidModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">@Localizer["Edit"]</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <input type="hidden" id="maidId" />
+                    <div class="form-group">
+                        <label style="font-weight:bold;color:#5F7AE7">@Localizer["FirstNameEn"]:</label>
+                        <input type="text" class="form-control" id="firstNameEnEdit" required>
+                    </div>
+                    <div class="form-group">
+                        <label style="font-weight:bold;color:#5F7AE7">@Localizer["FirstNameAr"]:</label>
+                        <input type="text" class="form-control" id="firstNameArEdit" required>
+                    </div>
+                  
+                </form>
+                <div class="alert alert-danger hidden" role="alert">
+                    <span id="error-msg-edit"></span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="close-edit-Maid" type="button" class="btn btn-danger" data-dismiss="modal">@Localizer["Cancel"]</button>
+                <button id="edit-Maid" type="button" class="btn btn-success" style="background-color:#5F7AE7">@Localizer["Save"]</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- #endregion -->
+<!-- #region No Results -->
+@if (totalItems == 0)
+{
+    <div class="text-center">
+        <label style="font-weight:bold">@Localizer["NoResultsFound"]</label>
+        <img src="~/icon/no-result-found-icon.png" width="25" height="25" />
+    </div>
+}
+<!-- #endregion -->
+<!-- #region Pagination -->
+<div class="text-center">
+    <ul class="pagination">
+        @for (int i = 1; i <= totalPages; i++)
+        {
+            <li class="page-item @(i == int.Parse(currentPage) ? "active" : "")">
+                <a class="page-link" href="?page=@i&search=@searchQuery&pageSize=@pageSize">@i</a>
+            </li>
+        }
+    </ul>
+</div>
+<!-- #endregion -->
+<!-- #region Scripts -->
+<script>
+    function getMaid(id) {
+        $.get('/Admin/GetMaid/' + id, function (data) {
+            $('#firstNameArEdit').val(data.firstNameAr);
+            $('#firstNameEnEdit').val(data.firstNameEn);
+            $('#maidId').val(data.id);
+        });
+    }
+
+    $('#edit-Maid').click(function () {
+        var maid = {
+            FirstNameAr: $('#firstNameArEdit').val(),
+            FirstNameEn: $('#firstNameEnEdit').val(),
+            Id: $('#maidId').val()
+        };
+
+        $.ajax({
+            url: '/Admin/UpdateMaid',
+            type: 'POST',
+            data: JSON.stringify(maid),
+            contentType: 'application/json',
+            success: function () {
+                $("#close-edit-Maid").click();
+                $('#dataTableContainer').load('/Admin/GetMaids');
+            },
+            error: function (xhr) {
+                $('.alert-danger').removeClass('hidden');
+                $('#error-msg-edit').text(xhr.responseText);
+                setTimeout(() => $('.alert-danger').addClass('hidden'), 5000);
+            }
+        });
+    });
+</script>
+<!-- #endregion -->

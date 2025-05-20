@@ -4,6 +4,7 @@ using MaidLinker.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MaidLinker.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250516200936_EditTaleLangName")]
+    partial class EditTaleLangName
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -37,7 +39,7 @@ namespace MaidLinker.Migrations
                     b.ToTable("CountryMaid");
                 });
 
-            modelBuilder.Entity("LanguageMaid", b =>
+            modelBuilder.Entity("LanguagesMaid", b =>
                 {
                     b.Property<int>("LangaugesId")
                         .HasColumnType("int");
@@ -49,7 +51,7 @@ namespace MaidLinker.Migrations
 
                     b.HasIndex("MaidsId");
 
-                    b.ToTable("LanguageMaid");
+                    b.ToTable("LanguagesMaid");
                 });
 
             modelBuilder.Entity("MaidLinker.Data.Entites.AccountType", b =>
@@ -72,38 +74,6 @@ namespace MaidLinker.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("AccountTypes");
-                });
-
-            modelBuilder.Entity("MaidLinker.Data.Entites.Attachment", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("AttachmentType")
-                        .HasColumnType("int");
-
-                    b.Property<string>("FileName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FilePath")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("MaidId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("UploadedAt")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MaidId");
-
-                    b.ToTable("Attachment");
                 });
 
             modelBuilder.Entity("MaidLinker.Data.Entites.Country", b =>
@@ -181,7 +151,7 @@ namespace MaidLinker.Migrations
                     b.ToTable("GeneralSettings");
                 });
 
-            modelBuilder.Entity("MaidLinker.Data.Entites.Language", b =>
+            modelBuilder.Entity("MaidLinker.Data.Entites.Languages", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -200,7 +170,7 @@ namespace MaidLinker.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Languages");
+                    b.ToTable("Langauges");
                 });
 
             modelBuilder.Entity("MaidLinker.Data.Entites.Maid", b =>
@@ -245,10 +215,6 @@ namespace MaidLinker.Migrations
 
                     b.Property<int>("NationalityId")
                         .HasColumnType("int");
-
-                    b.Property<string>("Note")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SecondNameAr")
                         .IsRequired()
@@ -668,9 +634,9 @@ namespace MaidLinker.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("LanguageMaid", b =>
+            modelBuilder.Entity("LanguagesMaid", b =>
                 {
-                    b.HasOne("MaidLinker.Data.Entites.Language", null)
+                    b.HasOne("MaidLinker.Data.Entites.Languages", null)
                         .WithMany()
                         .HasForeignKey("LangaugesId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -681,17 +647,6 @@ namespace MaidLinker.Migrations
                         .HasForeignKey("MaidsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("MaidLinker.Data.Entites.Attachment", b =>
-                {
-                    b.HasOne("MaidLinker.Data.Entites.Maid", "Maid")
-                        .WithMany("Attachments")
-                        .HasForeignKey("MaidId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Maid");
                 });
 
             modelBuilder.Entity("MaidLinker.Data.Entites.Maid", b =>
@@ -806,11 +761,6 @@ namespace MaidLinker.Migrations
             modelBuilder.Entity("MaidLinker.Data.Entites.AccountType", b =>
                 {
                     b.Navigation("ApplicationUsers");
-                });
-
-            modelBuilder.Entity("MaidLinker.Data.Entites.Maid", b =>
-                {
-                    b.Navigation("Attachments");
                 });
 
             modelBuilder.Entity("MaidLinker.Data.Entites.Nationality", b =>

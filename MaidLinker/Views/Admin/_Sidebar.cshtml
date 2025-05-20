@@ -17,10 +17,8 @@
 
         <!-- Sidebar - Brand -->
         <a class="sidebar-brand d-flex align-items-center justify-content-center" href="#">
-            <div class="sidebar-brand-icon rotate-n-15">
-                <i class="fas fa-laugh-wink"></i>
-            </div>
-            <div class="sidebar-brand-text mx-3">MaidLinker Admin </div>
+
+            <div class="sidebar-brand-text mx-4"><img src="/images/logo.png" class="navbar-logo" alt="logo" style="height:50px"> </div>
         </a>
 
         <!-- Divider -->
@@ -86,15 +84,15 @@
     </li>
 
 
-    <li class="nav-item @(currentPath.Contains("Referrals".ToString().ToLower()) == true ? "active" : "")">
-        <a class="nav-link  @(currentPath.Contains("Referrals".ToString().ToLower()) == true ? "" : "collapsed")" href="#" data-toggle="collapse" data-target="#collapseReferrals"
+    <li class="nav-item @(currentPath.Contains("MaidsManagement".ToString().ToLower()) == true ? "active" : "")">
+            <a class="nav-link  @(currentPath.Contains("MaidsManagement".ToString().ToLower()) == true ? "" : "collapsed")" href="#" data-toggle="collapse" data-target="#collapseReferrals"
            aria-expanded="true" aria-controls="collapseTwo">
-            <i class="fas fa-share-alt"></i>
-            <span>Referrals</span>
+                <i class="fas fa-person"></i>
+                <span>@Localizer["MaidsManagement"]</span>
         </a>
-        <div id="collapseReferrals" class="collapse @(currentPath.Contains("Referrals".ToString().ToLower()) == true ? "show" : "")" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div id="collapseReferrals" class="collapse @(currentPath.Contains("MaidsManagement".ToString().ToLower()) == true ? "show" : "")" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item @(currentPath.Contains("ReferralsOrder".ToString().ToLower()) == true ? "active" : "")" asp-area="" asp-controller="Admin" asp-action="ReferralsOrder">Orders Statuses</a>
+                    <a class="collapse-item @(currentPath.Contains("Maids".ToString().ToLower()) == true ? "active" : "")" asp-area="" asp-controller="Admin" asp-action="Maids">Maids</a>
 
             </div>
         </div>

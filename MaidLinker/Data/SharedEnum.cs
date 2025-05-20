@@ -54,5 +54,12 @@
             Widowed = 3,
         }
 
+        public enum AttachmentType
+        {
+            Medical = 0,
+            Residency = 1,
+            Passport = 2
+        }
+
     }
 }
