@@ -234,4 +234,13 @@
   <data name="Actions" xml:space="preserve">
     <value>الإجرات </value>
   </data>
+  <data name="Attachments" xml:space="preserve">
+    <value>المرفقات</value>
+  </data>
+  <data name="Confirmation" xml:space="preserve">
+    <value>تأكيد</value>
+  </data>
+  <data name="DeleteConfirmation" xml:space="preserve">
+    <value>هل أنت متأكد أنك تريد حذف هذا العنصر؟</value>
+  </data>
 </root>

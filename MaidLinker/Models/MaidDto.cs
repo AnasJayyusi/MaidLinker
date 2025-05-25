@@ -3,8 +3,9 @@ using static MaidLinker.Data.SharedEnum;
 
 namespace MaidLinker.Models
 {
-    public class MaidCreateDto
+    public class MaidDto
     {
+        public int? Id { get; set; }
         public string? VideoURL { get; set; }
 
         public string FirstNameEn { get; set; }

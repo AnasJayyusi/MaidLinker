@@ -40,10 +40,9 @@
 <!-- #region Toast -->
 <div id="toast-container" class="toast-container toast-center">
 	<div class="alert alert-success hidden" role="alert">@Localizer["SavedSuccessfully"]</div>
-
 	@if (ViewBag.SuccessMessage != null)
 	{
-		if (ViewBag.SuccessMessage == true)
+		if (ViewBag.SuccessMessage.ToString().ToLower() == "true")
 		{
 			<div class="alert alert-success" role="alert">@Localizer["DeletedSuccessfully"]</div>
 		}
@@ -270,7 +269,6 @@
 				 loadCountries();
 				 loadMaritalStatuses();
 				 loadNationalities();
-				 loadCountries();
 			  });
 
 			  $('#add-Maid').on('click', function (e) {

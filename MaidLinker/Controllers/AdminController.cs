@@ -1,17 +1,16 @@
-﻿using MaidLinker.Areas.Identity.Pages.Account.Manage;
-using MaidLinker.Data;
+﻿using MaidLinker.Data;
 using MaidLinker.Data.Entites;
 using MaidLinker.Hubs;
 using MaidLinker.Models;
-using MaidLinker.Tools;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Razor.Language.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
+using NPOI.SS.Formula.Functions;
 using System.Globalization;
-using static MaidLinker.Data.SharedEnum;
+
 
 
 namespace MaidLinker.Controllers
@@ -328,7 +327,7 @@ namespace MaidLinker.Controllers
 
         [HttpPost]
         [Route("AddMaid")]
-        public async Task<IActionResult> AddMaid([FromForm] MaidCreateDto dto)
+        public async Task<IActionResult> AddMaid([FromForm] MaidDto dto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -377,6 +376,154 @@ namespace MaidLinker.Controllers
 
             return Ok(new { message = "Maid created successfully." });
         }
+
+        [HttpGet]
+        [Route("GetMaid/{id}")]
+        public JsonResult GetMaid(int id)
+        {
+            var maid = _dbContext.Maids.Include(i=>i.Nationality)
+                                       .Include(i=>i.ServedCountries)
+                                       .Include(i=>i.Langauges)
+                                       .Where(w=>w.Id == id)
+                                       .Single(); 
+            if (maid == null)
+            {
+                return null;
+            }
+
+            var result = new
+            {
+                Id=maid.Id,
+                firstNameEn = maid.FirstNameEn,
+                secondNameEn = maid.SecondNameEn,
+                thirdNameEn = maid.ThirdNameEn,
+                lastNameEn = maid.LastNameEn,
+                firstNameAr = maid.FirstNameAr,
+                secondNameAr = maid.SecondNameAr,
+                thirdNameAr = maid.ThirdNameAr,
+                lastNameAr = maid.LastNameAr,
+                dateOfBirth = maid.DateOfBirth.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture),
+                totalExperience = maid.TotalExperience,
+                maritalStatusId = maid.MaritalStatus,
+                childs = maid.Childs,
+                nationalityId = maid.NationalityId,
+                servedCountryIds = maid.ServedCountries.Select(s=>s.Id), 
+                languageIds = maid.Langauges.Select(s=>s.Id),          
+                note = maid.Note,
+                videoURL = maid.VideoURL,
+                imagePath=maid.ImagePath
+            };
+
+            return Json(result);
+        }
+
+        [HttpGet]
+        [Route("DeleteMaid/{id}")]
+        public IActionResult DeleteMaid(int id)
+        {
+            // Retrieve the obj from the database using the id
+            var obj = _dbContext.Maids.Find(id);
+
+
+            if (obj == null)
+            {
+                // Handle the case where the obj type doesn't exist
+                TempData["isSuccessDelete"] = false;
+            }
+
+            // Remove the practitioner type from the DbSet
+            _dbContext.Maids.Remove(obj);
+
+            // Save the changes to the database
+            _dbContext.SaveChanges();
+            TempData["isSuccessDelete"] = true;
+
+
+            // Set the value in TempData
+            TempData["isFromDeleteRequest"] = true;
+            return RedirectToAction("Maids");
+        }
+
+        [HttpPost]
+        [Route("UpdateMaid")]
+        public async Task<IActionResult> UpdateMaid([FromForm] MaidDto dto)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var maid = await _dbContext.Maids
+                .Include(m => m.Nationality)
+                .Include(m => m.ServedCountries)
+                .Include(m => m.Langauges)
+                .FirstOrDefaultAsync(m => m.Id == dto.Id);
+
+            if (maid == null)
+                return NotFound("Maid not found.");
+
+            // Update simple properties
+            maid.FirstNameEn = dto.FirstNameEn;
+            maid.SecondNameEn = dto.SecondNameEn;
+            maid.ThirdNameEn = dto.ThirdNameEn;
+            maid.LastNameEn = dto.LastNameEn;
+
+            maid.FirstNameAr = dto.FirstNameAr;
+            maid.SecondNameAr = dto.SecondNameAr;
+            maid.ThirdNameAr = dto.ThirdNameAr;
+            maid.LastNameAr = dto.LastNameAr;
+
+            maid.DateOfBirth = dto.DateOfBirth;
+            maid.TotalExperience = dto.TotalExperience;
+            maid.MaritalStatus = dto.MaritalStatus;
+            maid.Childs = dto.Childs;
+            maid.Note = dto.Note;
+            maid.NationalityId = dto.NationalityId;
+            maid.VideoURL = dto.VideoURL;
+
+            // Update many-to-many relationships
+            // ServedCountries
+            maid.ServedCountries.Clear();
+            var countries = await _dbContext.Countries.Where(c => dto.ServedCountryIds.Contains(c.Id)).ToListAsync();
+            foreach (var country in countries)
+                maid.ServedCountries.Add(country);
+
+            // Languages
+            maid.Langauges.Clear();
+            var languages = await _dbContext.Languages.Where(l => dto.LanguageIds.Contains(l.Id)).ToListAsync();
+            foreach (var lang in languages)
+                maid.Langauges.Add(lang);
+
+            // Handle Image upload if present
+            if (dto.ImagePath != null && dto.ImagePath.Length > 0)
+            {
+                var uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "uploads/maids");
+                if (!Directory.Exists(uploadsFolder))
+                    Directory.CreateDirectory(uploadsFolder);
+
+                var fileName = Guid.NewGuid() + Path.GetExtension(dto.ImagePath.FileName);
+                var filePath = Path.Combine(uploadsFolder, fileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await dto.ImagePath.CopyToAsync(stream);
+                }
+
+                // Optionally delete old image file if exists
+                if (!string.IsNullOrEmpty(maid.ImagePath))
+                {
+                    var oldImagePath = Path.Combine(_webHostEnvironment.WebRootPath, maid.ImagePath.TrimStart('/').Replace('/', Path.DirectorySeparatorChar));
+                    if (System.IO.File.Exists(oldImagePath))
+                        System.IO.File.Delete(oldImagePath);
+                }
+
+                maid.ImagePath = "/uploads/maids/" + fileName;
+            }
+
+            await _dbContext.SaveChangesAsync();
+
+            return Ok(new { message = "Maid updated successfully." });
+        }
+
+
         #endregion
 
         #region PractitionerTypes

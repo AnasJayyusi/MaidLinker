@@ -64,6 +64,7 @@
             <th>#</th>
             <th>@Localizer["FirstNameEn"]</th>
             <th>@Localizer["FirstNameAr"]</th>
+            <th>@Localizer["Attachments"]</th>
             <th>@Localizer["Actions"]</th>
         </tr>
     </thead>
@@ -75,6 +76,13 @@
                 <td>@(startIndex + i + 1)</td>
                 <td>@maid.FirstNameEn</td>
                 <td>@maid.FirstNameAr</td>
+                <td>
+                    <div>
+                        <button onclick="getAttachments(@maid.Id)" class="btn btn-warning btn-sm rounded-pill" data-toggle="modal" data-target="#EditAttachments" title="@Localizer["Attachments"]">
+                            <i class="fa fa-file"></i>
+                        </button>
+                    </div>
+                </td>
                 <td>
                     <div>
                         <button onclick="getMaid(@maid.Id)" class="btn btn-success btn-sm rounded-pill" data-toggle="modal" data-target="#EditMaid" title="@Localizer["Edit"]">
@@ -91,7 +99,7 @@
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h5 class="modal-title">@Localizer["Confirmation"]</h5>
-                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <button type="button" class="btn-close" data-dismiss="modal">&times;</button>
                                 </div>
                                 <div class="modal-body">@Localizer["DeleteConfirmation"]</div>
                                 <div class="modal-footer">
@@ -109,28 +117,147 @@
 <!-- #endregion -->
 <!-- #region Edit Modal -->
 <div class="modal fade" id="EditMaid" tabindex="-1" role="dialog" aria-labelledby="EditMaidModal" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">@Localizer["Edit"]</h5>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <button type="button" class="btn-close" data-dismiss="modal">&times;</button>
             </div>
+
             <div class="modal-body">
-                <form>
-                    <input type="hidden" id="maidId" />
-                    <div class="form-group">
-                        <label style="font-weight:bold;color:#5F7AE7">@Localizer["FirstNameEn"]:</label>
-                        <input type="text" class="form-control" id="firstNameEnEdit" required>
+                <form id="maidForm" enctype="multipart/form-data">
+                    <div class="row">
+                        <!-- English Names -->
+                        <input type="hidden" id="maidId" />
+                        <div class="col-md-5">
+                            <h6 style="color:#4c65d1" class="modal-title">@Localizer["EnglishNames"]</h6>
+                            <div class="form-group" style="text-align:@textAlign">
+                                <label>@Localizer["FirstNameEn"]</label>
+                                <input type="text" class="form-control" id="firstNameEn" maxlength="250" required />
+                            </div>
+                            <div class="form-group" style="text-align:@textAlign">
+                                <label>@Localizer["SecondNameEn"]</label>
+                                <input type="text" class="form-control" id="secondNameEn" maxlength="250" />
+                            </div>
+                            <div class="form-group" style="text-align:@textAlign">
+                                <label>@Localizer["ThirdNameEn"]</label>
+                                <input type="text" class="form-control" id="thirdNameEn" maxlength="250" />
+                            </div>
+                            <div class="form-group" style="text-align:@textAlign">
+                                <label>@Localizer["LastNameEn"]</label>
+                                <input type="text" class="form-control" id="lastNameEn" maxlength="250" />
+                            </div>
+                        </div>
+
+                        <!-- Vertical Separator Line -->
+                        <div class="col-md-1 d-flex justify-content-center">
+                            <div style="border-left: 1px solid #ddd; height: 100%;"></div>
+                        </div>
+
+                        <!-- Arabic Names -->
+                        <div class="col-md-5">
+                            <h6 style="color:#4c65d1">@Localizer["ArabicNames"]</h6>
+                            <div class="form-group" style="text-align:@textAlign">
+                                <label>@Localizer["FirstNameAr"]</label>
+                                <input type="text" class="form-control" id="firstNameAr" maxlength="250" required />
+                            </div>
+                            <div class="form-group" style="text-align:@textAlign">
+                                <label>@Localizer["SecondNameAr"]</label>
+                                <input type="text" class="form-control" id="secondNameAr" maxlength="250" />
+                            </div>
+                            <div class="form-group" style="text-align:@textAlign">
+                                <label>@Localizer["ThirdNameAr"]</label>
+                                <input type="text" class="form-control" id="thirdNameAr" maxlength="250" />
+                            </div>
+                            <div class="form-group" style="text-align:@textAlign">
+                                <label>@Localizer["LastNameAr"]</label>
+                                <input type="text" class="form-control" id="lastNameAr" maxlength="250" />
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label style="font-weight:bold;color:#5F7AE7">@Localizer["FirstNameAr"]:</label>
-                        <input type="text" class="form-control" id="firstNameArEdit" required>
+
+                    <hr />
+
+                    <div class="row">
+                        <!-- Left side: Experience, Date of Birth, Marital Status, Childs -->
+                        <div class="col-md-6">
+                            <div class="form-group" style="text-align:@textAlign">
+                                <label>@Localizer["DateOfBirth"]</label>
+                                <input type="date" class="form-control" id="dateOfBirth" placeholder="dd-mm-yyyy" required />
+                            </div>
+                            <div class="form-group" style="text-align:@textAlign">
+                                <label>@Localizer["TotalExperience"] (@Localizer["Years"])</label>
+                                <input type="number" class="form-control" id="totalExperience" min="0" step="1" />
+                            </div>
+                            <div class="form-group" style="text-align:@textAlign">
+                                <label>@Localizer["MaritalStatus"]</label>
+                                <select class="form-control" id="maritalStatus">
+                                </select>
+                            </div>
+                            <div class="form-group" style="text-align:@textAlign">
+                                <label>@Localizer["Childs"]</label>
+                                <input type="number" class="form-control" id="childs" min="0" />
+                            </div>
+
+
+                            <div class="form-group" style="text-align:@textAlign">
+                                <label>@Localizer["Nationality"]</label>
+                                <select class="form-control" id="nationalities">
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Right side: Served Countries, Languages -->
+                        <div class="col-md-6">
+                            <div class="form-group" style="text-align:@textAlign">
+                                <label>@Localizer["ServedCountries"] <span class="alert-warning">(@Localizer["UseCtrlToMultiSelect"])</span></label>
+                                <select multiple class="form-control" id="countries">
+                                    <!-- Populate dynamically -->
+
+                                </select>
+                            </div>
+                            <div class="form-group" style="text-align:@textAlign">
+                                <label>@Localizer["Languages"] <span class="alert-warning">(@Localizer["UseCtrlToMultiSelect"])</span></label>
+                                <select multiple class="form-control" id="languages">
+                                    <!-- Populate dynamically -->
+
+                                </select>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="form-group" style="text-align:@textAlign">
+                                    <label>@Localizer["Note"]</label>
+                                    <textarea class="form-control" style="background-color:beige" id="note" rows="3"></textarea>
+                                </div>
+                            </div>
+
+
+                        </div>
+
                     </div>
-                  
+
+                    <hr />
+
+                    <div class="text-center my-3">
+                        <img id="maidImagePreview" src="/images/female.png" alt="Maid Image"
+                             style="width: 150px; height: 150px; border-radius: 50%; object-fit: contain; border: 2px solid #ccc;" />
+                    </div>
+                    <div class="row">
+                        <!-- Media URLs and Address -->
+                        <div class="col-md-12">
+                            <div class="form-group" style="text-align:@textAlign">
+                                <label>@Localizer["ImagePath"] (@Localizer["UploadImage"])</label>
+                                <input type="file" accept="image/*" class="form-control" id="imagePath" />
+                            </div>
+                            <div class="form-group" style="text-align:@textAlign">
+                                <label>@Localizer["VideoURL"]</label>
+                                <input type="url" class="form-control" id="videoURL" placeholder="https://www.youtube.com/watch?v=example" />
+                            </div>
+                        </div>
+                    </div>
                 </form>
-                <div class="alert alert-danger hidden" role="alert">
-                    <span id="error-msg-edit"></span>
-                </div>
+
+                <div class="alert alert-danger hidden" role="alert" id="error-msg">@Localizer["PleaseFillAllFields"]</div>
             </div>
             <div class="modal-footer">
                 <button id="close-edit-Maid" type="button" class="btn btn-danger" data-dismiss="modal">@Localizer["Cancel"]</button>
@@ -163,36 +290,219 @@
 <!-- #endregion -->
 <!-- #region Scripts -->
 <script>
+
     function getMaid(id) {
-        $.get('/Admin/GetMaid/' + id, function (data) {
-            $('#firstNameArEdit').val(data.firstNameAr);
-            $('#firstNameEnEdit').val(data.firstNameEn);
+         loadLanguages();
+         loadCountries();
+         loadMaritalStatuses();
+         loadNationalities();
+         loadCountries();
+         $.ajax({
+        url: '/Admin/GetMaid/' + id,
+        type: 'GET',
+        success: function (data) {
             $('#maidId').val(data.id);
-        });
+            // English names
+            $('#firstNameEn').val(data.firstNameEn);
+            $('#secondNameEn').val(data.secondNameEn);
+            $('#thirdNameEn').val(data.thirdNameEn);
+            $('#lastNameEn').val(data.lastNameEn);
+
+            // Arabic names
+            $('#firstNameAr').val(data.firstNameAr);
+            $('#secondNameAr').val(data.secondNameAr);
+            $('#thirdNameAr').val(data.thirdNameAr);
+            $('#lastNameAr').val(data.lastNameAr);
+
+            // Other fields
+            
+            $('#dateOfBirth').val(data.dateOfBirth?.split('T')[0]); // Format if needed
+            $('#totalExperience').val(data.totalExperience);
+            $('#maritalStatus').val(data.maritalStatusId);
+            $('#childs').val(data.childs);
+            $('#nationalities').val(data.nationalityId);
+            $('#note').val(data.note);
+            $('#videoURL').val(data.videoURL);
+
+            // Multi-select: Served countries and languages
+            $('#countries').val(data.servedCountryIds).change();
+            $('#languages').val(data.languageIds).change();
+
+
+            setImage(data.imagePath); // Set the image preview
+            // Clear image field (cannot set value for security reasons)
+            $('#imagePath').val('');
+
+
+            // Show the modal
+            // $('#EditMaid').modal('show');
+        },
+        error: function (xhr, status, error) {
+            alert('Error loading maid data');
+        }
+    });
     }
 
-    $('#edit-Maid').click(function () {
-        var maid = {
-            FirstNameAr: $('#firstNameArEdit').val(),
-            FirstNameEn: $('#firstNameEnEdit').val(),
-            Id: $('#maidId').val()
-        };
+    function setImage(imagePath)
+    {
+    // Set the image if path exists
+    if (imagePath) {
+        document.getElementById("maidImagePreview").src = imagePath.startsWith("/")
+            ? imagePath
+            : "/" +imagePath; // ensure leading slash
+    } else {
+        // fallback placeholder
+        document.getElementById("maidImagePreview").src = "/images/female.png";
+    }
+
+    }
+    function loadLanguages() {
+           var isEng = isEnglishCulture();
+           $.ajax({
+              url: '@Url.Action("GetLanguagesDDL", "Common")',
+              method: 'GET',
+              success: function (data) {
+                 const $languages = $('#languages');
+                 $languages.empty();
+                 data.forEach(function (lang) {
+                    // Use lang instead of item, and use a proper ternary operator
+                    $languages.append(
+                       `<option value="${lang.id}">${isEng ? lang.nameEn : lang.nameAr}</option>`
+                    );
+                 });
+              },
+              error: function () {
+                 alert("Failed to load languages.");
+              }
+           });
+        }
+
+                function loadCountries() {
+                   var isEng = isEnglishCulture();
+                   $.ajax({
+                              url: '@Url.Action("GetCountriesDDL", "Common")',
+                      method: 'GET',
+                      success: function (data) {
+                                 const $languages = $('#countries');
+                         $languages.empty();
+                         data.forEach(function (cont) {
+                            // Use lang instead of item, and use a proper ternary operator
+                            $languages.append(
+                                               `<option value="${cont.id}">${isEng ? cont.titleEn : cont.titleAr}</option>`
+                            );
+                         });
+                      },
+                      error: function () {
+                         alert("Failed to load countries.");
+                      }
+                   });
+                }
+
+        function loadMaritalStatuses() {
+           var isEng = isEnglishCulture();
+           $.ajax({
+              url: '@Url.Action("GetMaritalStatusDDL", "Common")',
+              method: 'GET',
+              success: function (data) {
+                 const $status = $('#maritalStatus');
+                 $status.empty().append(`<option value="">@Localizer["MaritalStatus"]</option>`);
+                 data.forEach(function (status) {
+                    $status.append(`<option value="${status.id}">${status.title}</option>`);
+                 });
+              },
+              error: function () {
+                 alert("Failed to load marital statuses.");
+              }
+           });
+        }
+
+        function loadNationalities() {
+           var isEng = isEnglishCulture();
+           $.ajax({
+              url: '@Url.Action("GetNationalitiesDDL", "Common")',
+              method: 'GET',
+              success: function (data) {
+                 const $nationality = $('#nationalities');
+                 $nationality.empty().append(`<option value="">@Localizer["Nationality"]</option>`);
+                 data.forEach(function (nation) {
+                    $nationality.append(`<option value="${nation.id}">${isEng ? nation.titleEn : nation.titleAr}</option>`);
+                 });
+              },
+              error: function () {
+                 alert("Failed to load nationalities.");
+              }
+           });
+        }
+
+       $('#edit-Maid').on('click', function() {
+        var formData = new FormData();
+        var maidId = $('#maidId').val();
+
+        // Add form fields
+        formData.append('Id', maidId);
+        formData.append('FirstNameEn', $('#firstNameEn').val());
+        formData.append('SecondNameEn', $('#secondNameEn').val());
+        formData.append('ThirdNameEn', $('#thirdNameEn').val());
+        formData.append('LastNameEn', $('#lastNameEn').val());
+
+        formData.append('FirstNameAr', $('#firstNameAr').val());
+        formData.append('SecondNameAr', $('#secondNameAr').val());
+        formData.append('ThirdNameAr', $('#thirdNameAr').val());
+        formData.append('LastNameAr', $('#lastNameAr').val());
+
+        const rawDate = $('#dateOfBirth').val();  // usually "1994-01-14"
+        const formattedDate =new Date(rawDate).toISOString();  // still "1994-01-14"
+        formData.append("DateOfBirth", formattedDate);
+        formData.append('TotalExperience', $('#totalExperience').val());
+        formData.append('MaritalStatus', $('#maritalStatus').val());
+        formData.append('Childs', $('#childs').val());
+        formData.append('Note', $('#note').val());
+        formData.append('NationalityId', $('#nationalities').val());
+        formData.append('VideoURL', $('#videoURL').val());
+
+        // Add ServedCountryIds - multiple select
+        $('#countries option:selected').each(function() {
+            formData.append('ServedCountryIds', $(this).val());
+        });
+
+        // Add LanguageIds - multiple select
+        $('#languages option:selected').each(function() {
+            formData.append('LanguageIds', $(this).val());
+        });
+
+        // Add Image file if selected
+        var fileInput = $('#imagePath')[0];
+        if (fileInput.files.length > 0) {
+            formData.append('ImagePath', fileInput.files[0]);
+        }
 
         $.ajax({
-            url: '/Admin/UpdateMaid',
+            url: '/Admin/UpdateMaid', // change to your update endpoint
             type: 'POST',
-            data: JSON.stringify(maid),
-            contentType: 'application/json',
-            success: function () {
-                $("#close-edit-Maid").click();
-                $('#dataTableContainer').load('/Admin/GetMaids');
+            data: formData,
+            processData: false,  // Important for FormData
+            contentType: false,  // Important for FormData
+            success: function(response) {
+                // Optionally close modal and refresh data
+                 $('#close-edit-Maid').trigger('click');
+                // reload or update UI accordingly
             },
-            error: function (xhr) {
-                $('.alert-danger').removeClass('hidden');
-                $('#error-msg-edit').text(xhr.responseText);
-                setTimeout(() => $('.alert-danger').addClass('hidden'), 5000);
+            error: function(xhr) {
+               $('#error-msg').removeClass('hidden').text(@Localizer["FillAllRequiredFeildsPlease"]);
             }
         });
+    });
+
+    // Load Image
+      document.getElementById('imagePath').addEventListener('change', function (event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                document.getElementById('maidImagePreview').src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
     });
 </script>
 <!-- #endregion -->

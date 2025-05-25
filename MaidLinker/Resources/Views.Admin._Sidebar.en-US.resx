@@ -120,6 +120,9 @@
   <data name="Countries" xml:space="preserve">
     <value>Countries</value>
   </data>
+  <data name="MaidsManagement" xml:space="preserve">
+    <value>Maids Management</value>
+  </data>
   <data name="MasterList" xml:space="preserve">
     <value>Master List</value>
   </data>
