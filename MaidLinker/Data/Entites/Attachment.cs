@@ -11,7 +11,7 @@ namespace MaidLinker.Data.Entites
 
         public string FileName { get; set; }
         public string FilePath { get; set; }       
-        public AttachmentType AttachmentType { get; set; } // e.g. "Medical", "Residency", "Passport"
+        public AttachmentType AttachmentType { get; set; } // e.g. "Medical", "Residency", "Passport" ,"Other"
 
         public DateTime UploadedAt { get; set; }
     }

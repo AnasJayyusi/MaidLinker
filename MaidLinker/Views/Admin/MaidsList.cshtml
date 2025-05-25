@@ -191,7 +191,7 @@
                             </div>
                             <div class="form-group" style="text-align:@textAlign">
                                 <label>@Localizer["MaritalStatus"]</label>
-                                <select class="form-control" id="maritalStatus">
+                                <select class="form-control" id="maidsListlMaritalStatus">
                                 </select>
                             </div>
                             <div class="form-group" style="text-align:@textAlign">
@@ -211,14 +211,14 @@
                         <div class="col-md-6">
                             <div class="form-group" style="text-align:@textAlign">
                                 <label>@Localizer["ServedCountries"] <span class="alert-warning">(@Localizer["UseCtrlToMultiSelect"])</span></label>
-                                <select multiple class="form-control" id="countries">
+                                <select multiple class="form-control" id="maidsListCountries">
                                     <!-- Populate dynamically -->
 
                                 </select>
                             </div>
                             <div class="form-group" style="text-align:@textAlign">
                                 <label>@Localizer["Languages"] <span class="alert-warning">(@Localizer["UseCtrlToMultiSelect"])</span></label>
-                                <select multiple class="form-control" id="languages">
+                                <select multiple class="form-control" id="maidsListlanguages">
                                     <!-- Populate dynamically -->
 
                                 </select>
@@ -267,6 +267,114 @@
     </div>
 </div>
 <!-- #endregion -->
+<!-- #Attachment Edit Modal -->
+<div class="modal fade" id="EditAttachments" tabindex="-1" role="dialog" aria-labelledby="EditAttachmentsLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <form id="attachmentForm" enctype="multipart/form-data">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">@Localizer["ManageAttachments"]</h5>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="attachmentMaidId" name="MaidId" />
+
+                    <!-- MEDICAL Attachment -->
+                    <div class="form-group" id="medicalGroup">
+                        <label>@Localizer["Medical"]</label>
+                        <div class="position-relative d-flex align-items-center">
+                            <input type="file" name="MedicalFile" class="d-none" id="medicalInput" onchange="handleFileChange(this, 'medical')">
+                            <button type="button" class="btn btn-outline-secondary btn-sm icon-upload" onclick="document.getElementById('medicalInput').click()">
+                                <i class="fa fa-upload"></i>
+                            </button>
+                            <span class="ml-2 text-muted" id="medicalFileName">@Localizer["NoFileSelected"]</span>
+                        </div>
+                        <div id="medicalLink" class="mt-2 d-none">
+                            <a href="#" target="_blank" id="medicalAnchor" class="btn btn-outline-primary btn-sm mr-2">
+                                <i class="fa fa-file"></i> @Localizer["ViewFile"]
+                            </a>
+
+                            <button type="button" class="btn btn-outline-secondary btn-sm" onclick="toggleInput('medical')">
+                                <i class="fa fa-edit"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- RESIDENCY Attachment -->
+                    <div class="form-group" id="residencyGroup">
+                        <label>@Localizer["Residency"]</label>
+                        <div class="position-relative d-flex align-items-center">
+                            <input type="file" name="ResidencyFile" class="d-none" id="residencyInput" onchange="handleFileChange(this, 'residency')">
+                            <button type="button" class="btn btn-outline-secondary btn-sm icon-upload" onclick="document.getElementById('residencyInput').click()">
+                                <i class="fa fa-upload"></i>
+                            </button>
+                            <span class="ml-2 text-muted" id="residencyFileName">@Localizer["NoFileSelected"]</span>
+                        </div>
+                        <div id="residencyLink" class="mt-2 d-none">
+                            <a href="#" target="_blank" id="residencyAnchor" class="btn btn-outline-primary btn-sm mr-2">
+                                <i class="fa fa-file"></i> @Localizer["ViewFile"]
+                            </a>
+                            <button type="button" class="btn btn-outline-secondary btn-sm" onclick="toggleInput('residency')">
+                                <i class="fa fa-edit"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- PASSPORT Attachment -->
+                    <div class="form-group" id="passportGroup">
+                        <label>@Localizer["Passport"]</label>
+                        <div class="position-relative d-flex align-items-center">
+                            <input type="file" name="PassportFile" class="d-none" id="passportInput" onchange="handleFileChange(this, 'passport')">
+                            <button type="button" class="btn btn-outline-secondary btn-sm icon-upload" onclick="document.getElementById('passportInput').click()">
+                                <i class="fa fa-upload"></i>
+                            </button>
+                            <span class="ml-2 text-muted" id="passportFileName">@Localizer["NoFileSelected"]</span>
+                        </div>
+                        <div id="passportLink" class="mt-2 d-none">
+                            <a href="#" target="_blank" id="passportAnchor" class="btn btn-outline-primary btn-sm mr-2">
+                                <i class="fa fa-file"></i> @Localizer["ViewFile"]
+                            </a>
+                            <button type="button" class="btn btn-outline-secondary btn-sm" onclick="toggleInput('passport')">
+                                <i class="fa fa-edit"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- OTHER Attachment -->
+                    <div class="form-group" id="otherGroup">
+                        <label>@Localizer["Other"]</label>
+                        <div class="position-relative d-flex align-items-center">
+                            <input type="file" name="OtherFile" class="d-none" id="otherInput" onchange="handleFileChange(this, 'other')">
+                            <button type="button" class="btn btn-outline-secondary btn-sm icon-upload" onclick="document.getElementById('otherInput').click()">
+                                <i class="fa fa-upload"></i>
+                            </button>
+                            <span class="ml-2 text-muted" id="otherFileName">@Localizer["NoFileSelected"]</span>
+                        </div>
+                        <div id="otherLink" class="mt-2 d-none">
+                            <a href="#" target="_blank" id="otherAnchor" class="btn btn-outline-primary btn-sm mr-2">
+                                <i class="fa fa-file"></i> @Localizer["ViewFile"]
+                            </a>
+                            <button type="button" class="btn btn-outline-secondary btn-sm" onclick="toggleInput('other')">
+                                <i class="fa fa-edit"></i>
+                            </button>
+                        </div>
+                    </div>
+
+
+
+
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">@Localizer["Upload"]</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- #endregion -->
+
 <!-- #region No Results -->
 @if (totalItems == 0)
 {
@@ -292,11 +400,10 @@
 <script>
 
     function getMaid(id) {
-         loadLanguages();
-         loadCountries();
-         loadMaritalStatuses();
-         loadNationalities();
-         loadCountries();
+         loadLanguages("#maidsListlanguages");
+         loadCountries('#maidsListCountries');
+         loadMaritalStatuses('#maidsListlMaritalStatus');
+         loadNationalities('#maidsListNationalities');
          $.ajax({
         url: '/Admin/GetMaid/' + id,
         type: 'GET',
@@ -318,15 +425,15 @@
             
             $('#dateOfBirth').val(data.dateOfBirth?.split('T')[0]); // Format if needed
             $('#totalExperience').val(data.totalExperience);
-            $('#maritalStatus').val(data.maritalStatusId);
+            $('#maidsListlMaritalStatus').val(data.maritalStatusId);
             $('#childs').val(data.childs);
-            $('#nationalities').val(data.nationalityId);
+            $('#maidsListNationalities').val(data.nationalityId);
             $('#note').val(data.note);
             $('#videoURL').val(data.videoURL);
 
             // Multi-select: Served countries and languages
-            $('#countries').val(data.servedCountryIds).change();
-            $('#languages').val(data.languageIds).change();
+            $('#maidsListCountries').val(data.servedCountryIds).change();
+            $('#maidsListlanguages').val(data.languageIds).change();
 
 
             setImage(data.imagePath); // Set the image preview
@@ -356,83 +463,11 @@
     }
 
     }
-    function loadLanguages() {
-           var isEng = isEnglishCulture();
-           $.ajax({
-              url: '@Url.Action("GetLanguagesDDL", "Common")',
-              method: 'GET',
-              success: function (data) {
-                 const $languages = $('#languages');
-                 $languages.empty();
-                 data.forEach(function (lang) {
-                    // Use lang instead of item, and use a proper ternary operator
-                    $languages.append(
-                       `<option value="${lang.id}">${isEng ? lang.nameEn : lang.nameAr}</option>`
-                    );
-                 });
-              },
-              error: function () {
-                 alert("Failed to load languages.");
-              }
-           });
-        }
 
-                function loadCountries() {
-                   var isEng = isEnglishCulture();
-                   $.ajax({
-                              url: '@Url.Action("GetCountriesDDL", "Common")',
-                      method: 'GET',
-                      success: function (data) {
-                                 const $languages = $('#countries');
-                         $languages.empty();
-                         data.forEach(function (cont) {
-                            // Use lang instead of item, and use a proper ternary operator
-                            $languages.append(
-                                               `<option value="${cont.id}">${isEng ? cont.titleEn : cont.titleAr}</option>`
-                            );
-                         });
-                      },
-                      error: function () {
-                         alert("Failed to load countries.");
-                      }
-                   });
-                }
 
-        function loadMaritalStatuses() {
-           var isEng = isEnglishCulture();
-           $.ajax({
-              url: '@Url.Action("GetMaritalStatusDDL", "Common")',
-              method: 'GET',
-              success: function (data) {
-                 const $status = $('#maritalStatus');
-                 $status.empty().append(`<option value="">@Localizer["MaritalStatus"]</option>`);
-                 data.forEach(function (status) {
-                    $status.append(`<option value="${status.id}">${status.title}</option>`);
-                 });
-              },
-              error: function () {
-                 alert("Failed to load marital statuses.");
-              }
-           });
-        }
+      
 
-        function loadNationalities() {
-           var isEng = isEnglishCulture();
-           $.ajax({
-              url: '@Url.Action("GetNationalitiesDDL", "Common")',
-              method: 'GET',
-              success: function (data) {
-                 const $nationality = $('#nationalities');
-                 $nationality.empty().append(`<option value="">@Localizer["Nationality"]</option>`);
-                 data.forEach(function (nation) {
-                    $nationality.append(`<option value="${nation.id}">${isEng ? nation.titleEn : nation.titleAr}</option>`);
-                 });
-              },
-              error: function () {
-                 alert("Failed to load nationalities.");
-              }
-           });
-        }
+     
 
        $('#edit-Maid').on('click', function() {
         var formData = new FormData();
@@ -454,19 +489,19 @@
         const formattedDate =new Date(rawDate).toISOString();  // still "1994-01-14"
         formData.append("DateOfBirth", formattedDate);
         formData.append('TotalExperience', $('#totalExperience').val());
-        formData.append('MaritalStatus', $('#maritalStatus').val());
+        formData.append('MaritalStatus', $('#maidsListlMaritalStatus').val());
         formData.append('Childs', $('#childs').val());
         formData.append('Note', $('#note').val());
-        formData.append('NationalityId', $('#nationalities').val());
+        formData.append('NationalityId', $('#maidsListNationalities').val());
         formData.append('VideoURL', $('#videoURL').val());
 
         // Add ServedCountryIds - multiple select
-        $('#countries option:selected').each(function() {
+        $('#maidsListCountries option:selected').each(function() {
             formData.append('ServedCountryIds', $(this).val());
         });
 
         // Add LanguageIds - multiple select
-        $('#languages option:selected').each(function() {
+        $('#maidsListlanguages option:selected').each(function() {
             formData.append('LanguageIds', $(this).val());
         });
 
@@ -504,5 +539,144 @@
             reader.readAsDataURL(file);
         }
     });
+
+
+
 </script>
 <!-- #endregion -->
+<script>
+
+$('#attachmentForm').submit(function (e) {
+    debugger;
+    e.preventDefault();
+
+    const formData = new FormData();
+    formData.append("MaidId", $('#attachmentMaidId').val());
+
+    ['medical', 'residency', 'passport', 'other'].forEach(type => {
+        const fileInput = document.getElementById(type + 'Input');
+        if (fileInput.files.length > 0) {
+            // Append only if user selected file to upload
+            formData.append(type.charAt(0).toUpperCase() + type.slice(1) + "File", fileInput.files[0]);
+        }
+    });
+
+    $.ajax({
+
+     url: '/Admin/UploadAttachments', // your API endpoint here
+        type: 'POST',
+        data: formData,
+        contentType: false,
+        processData: false,
+        success: function (res) {
+            alert('Attachments uploaded successfully');
+            $('#EditAttachments').modal('hide');
+            // optionally reload attachments list or update UI
+        },
+        error: function (xhr) {
+            alert('Upload failed: ' + xhr.responseText);
+        }
+    });
+});
+
+
+
+    function handleFileChange(input, type) {
+        const file = input.files[0];
+        if (file) {
+            const fileName = file.name;
+            const fileUrl = URL.createObjectURL(file);
+            const fileIcon = getFileIcon(fileName);
+
+            document.getElementById(`${type}FileName`).innerText = fileName;
+            document.getElementById(`${type}Group`).querySelector('.icon-upload').classList.add('d-none');
+
+            const iconElement = document.getElementById(`${type}Anchor`).querySelector('i');
+            iconElement.className = fileIcon;
+
+            document.getElementById(`${type}Anchor`).href = fileUrl;
+            document.getElementById(`${type}Link`).classList.remove('d-none');
+        }
+    }
+
+    function toggleInput(type) {
+        document.getElementById(`${type}Input`).value = "";
+        document.getElementById(`${type}FileName`).innerText = "@Localizer["NoFileSelected"]";
+        document.getElementById(`${type}Group`).querySelector('.icon-upload').classList.remove('d-none');
+        document.getElementById(`${type}Link`).classList.add('d-none');
+        document.getElementById(`${type}Anchor`).href = "#";
+    }
+
+    function getFileIcon(fileName) {
+        const ext = fileName.split('.').pop().toLowerCase();
+
+        switch (ext) {
+            case 'pdf': return 'fa fa-file-pdf text-danger';
+            case 'doc':
+            case 'docx': return 'fa fa-file-word text-primary';
+            case 'xls':
+            case 'xlsx': return 'fa fa-file-excel text-success';
+            case 'ppt':
+            case 'pptx': return 'fa fa-file-powerpoint text-warning';
+            case 'jpg':
+            case 'jpeg':
+            case 'png':
+            case 'gif': return 'fa fa-file-image text-info';
+            case 'zip':
+            case 'rar': return 'fa fa-file-archive';
+            case 'mp4':
+            case 'webm': return 'fa fa-file-video';
+            default: return 'fa fa-file';
+        }
+    }
+
+
+            function populateAttachments(attachments) {
+            debugger;
+     
+
+        // Define mapping from attachment type to UI ids
+        const types = ['medical', 'residency', 'passport', 'other'];
+
+        types.forEach(type => {
+            const attach =attachments.find(a => a.type.toLowerCase() === type);
+            const input = document.getElementById(type + 'Input');
+            const linkDiv = document.getElementById(type + 'Link');
+            const anchor = document.getElementById(type + 'Anchor');
+            const fileNameSpan = document.getElementById(type + 'FileName');
+
+            if (attach) {
+                // Hide file input
+                input.classList.add('d-none');
+                // Show link with href and file name
+                    anchor.href = attach.filePath;
+                        anchor.textContent = attach.filePath.split('/').pop(); // just filename
+                linkDiv.classList.remove('d-none');
+                // Clear filename span since input hidden
+                fileNameSpan.textContent = '';
+            } else {
+                // No attachment - show input, hide link
+                input.value = ''; // clear file input
+                input.classList.remove('d-none');
+                linkDiv.classList.add('d-none');
+                fileNameSpan.textContent = '@Localizer["NoFileSelected"]';
+            }
+        });
+    }
+
+        function getAttachments(maidId) {
+          document.getElementById('attachmentMaidId').value = maidId;
+        $.ajax({
+                url: '/Admin/GetAttachments/' + maidId,
+            type: 'GET',
+                success: function (attachments) {
+                    populateAttachments(attachments);
+                $('#EditAttachments').modal('show');
+            },
+            error: function () {
+                // alert('Failed to load attachments.');
+            }
+        });
+    }
+
+</script>

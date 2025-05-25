@@ -31,5 +31,6 @@ namespace MaidLinker.Data
         public DbSet<Nationality> Nationalities { get; set; }
         public DbSet<Maid> Maids { get; set; }
         public DbSet<Language> Languages { get; set; }
+        public DbSet<Attachment> Attachments { get; set; }
     }
 }

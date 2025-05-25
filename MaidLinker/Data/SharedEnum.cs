@@ -58,7 +58,8 @@
         {
             Medical = 0,
             Residency = 1,
-            Passport = 2
+            Passport = 2,
+            Other=3
         }
 
     }

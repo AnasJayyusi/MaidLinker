@@ -1,5 +1,6 @@
 ﻿using MaidLinker.Data;
 using MaidLinker.Data.Entites;
+using MaidLinker.Dto;
 using MaidLinker.Hubs;
 using MaidLinker.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -10,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 using NPOI.SS.Formula.Functions;
 using System.Globalization;
+using static MaidLinker.Data.SharedEnum;
 
 
 
@@ -361,7 +363,7 @@ namespace MaidLinker.Controllers
             if (dto.ImagePath != null && dto.ImagePath.Length > 0)
             {
                 var fileName = Guid.NewGuid() + Path.GetExtension(dto.ImagePath.FileName);
-                var filePath = Path.Combine("wwwroot/uploads/maids", fileName);
+                var filePath = Path.Combine(_webHostEnvironment.WebRootPath,"/uploads/maids", fileName);
 
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {
@@ -381,11 +383,11 @@ namespace MaidLinker.Controllers
         [Route("GetMaid/{id}")]
         public JsonResult GetMaid(int id)
         {
-            var maid = _dbContext.Maids.Include(i=>i.Nationality)
-                                       .Include(i=>i.ServedCountries)
-                                       .Include(i=>i.Langauges)
-                                       .Where(w=>w.Id == id)
-                                       .Single(); 
+            var maid = _dbContext.Maids.Include(i => i.Nationality)
+                                       .Include(i => i.ServedCountries)
+                                       .Include(i => i.Langauges)
+                                       .Where(w => w.Id == id)
+                                       .Single();
             if (maid == null)
             {
                 return null;
@@ -393,7 +395,7 @@ namespace MaidLinker.Controllers
 
             var result = new
             {
-                Id=maid.Id,
+                Id = maid.Id,
                 firstNameEn = maid.FirstNameEn,
                 secondNameEn = maid.SecondNameEn,
                 thirdNameEn = maid.ThirdNameEn,
@@ -407,11 +409,11 @@ namespace MaidLinker.Controllers
                 maritalStatusId = maid.MaritalStatus,
                 childs = maid.Childs,
                 nationalityId = maid.NationalityId,
-                servedCountryIds = maid.ServedCountries.Select(s=>s.Id), 
-                languageIds = maid.Langauges.Select(s=>s.Id),          
+                servedCountryIds = maid.ServedCountries.Select(s => s.Id),
+                languageIds = maid.Langauges.Select(s => s.Id),
                 note = maid.Note,
                 videoURL = maid.VideoURL,
-                imagePath=maid.ImagePath
+                imagePath = maid.ImagePath
             };
 
             return Json(result);
@@ -523,6 +525,89 @@ namespace MaidLinker.Controllers
             return Ok(new { message = "Maid updated successfully." });
         }
 
+
+        [HttpPost]
+        [Route("UploadAttachments")]
+        public async Task<IActionResult> UploadAttachments([FromForm] AttachmentDto model)
+        {
+            var maid = await _dbContext.Maids
+                .Include(m => m.Attachments)
+                .FirstOrDefaultAsync(m => m.Id == model.MaidId);
+
+            if (maid == null)
+                return NotFound("Maid not found");
+
+            // Directory for maid attachments - adjust as needed
+            string uploadFolder = Path.Combine(_webHostEnvironment.WebRootPath, "uploads", "maids", maid.Id.ToString());
+
+            if (!Directory.Exists(uploadFolder))
+                Directory.CreateDirectory(uploadFolder);
+
+            // Helper function to save file and update database attachment
+            async Task SaveFileAndUpdateAttachment(IFormFile file, AttachmentType type)
+            {
+                if (file == null) return;
+
+                // Remove existing attachment of this type
+                var existing = maid.Attachments.FirstOrDefault(a => a.AttachmentType == type);
+                if (existing != null)
+                {
+                    // Optional: delete old file physically if needed
+                    var oldFilePath = Path.Combine(_webHostEnvironment.WebRootPath, existing.FilePath.TrimStart('/').Replace('/', Path.DirectorySeparatorChar));
+                    if (System.IO.File.Exists(oldFilePath))
+                        System.IO.File.Delete(oldFilePath);
+
+                    _dbContext.Attachments.Remove(existing);
+                }
+
+                // Save new file
+                var uniqueFileName = $"{type}_{DateTime.Now:yyyyMMddHHmmss}_{Path.GetFileName(file.FileName)}";
+                var filePath = Path.Combine(uploadFolder, uniqueFileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await file.CopyToAsync(stream);
+                }
+
+                // Save attachment record
+                var attachment = new Attachment
+                {
+                    FileName = uniqueFileName,
+                    MaidId = maid.Id,
+                    AttachmentType = type,
+                    FilePath = "/uploads/maids/" + maid.Id + "/" + uniqueFileName,
+                    UploadedAt = DateTime.Now
+                };
+                _dbContext.Attachments.Add(attachment);
+            }
+
+            // Call helper for each file from model
+            await SaveFileAndUpdateAttachment(model.MedicalFile, AttachmentType.Medical);
+            await SaveFileAndUpdateAttachment(model.ResidencyFile, AttachmentType.Residency);
+            await SaveFileAndUpdateAttachment(model.PassportFile, AttachmentType.Passport);
+            await SaveFileAndUpdateAttachment(model.OtherFile, AttachmentType.Other);
+
+            await _dbContext.SaveChangesAsync();
+
+            return Ok(new { Message = "Attachments uploaded successfully" });
+        }
+
+        [HttpGet]
+        [Route("GetAttachments/{id}")]
+        public IActionResult GetAttachments(int id)
+        {
+            var attachments = _dbContext.Attachments
+                .Where(a => a.MaidId == id)
+                .Select(a => new
+                {
+                    type = a.AttachmentType.ToString(),
+                    filePath = Url.Content($"~/uploads/maids/{id}/{a.FileName}"),
+                    fileName = a.FileName
+                })
+                .ToList();
+
+            return Json(attachments);
+        }
 
         #endregion
 

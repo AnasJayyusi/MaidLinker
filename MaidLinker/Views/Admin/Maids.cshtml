@@ -253,7 +253,6 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 	<script>
 		   $(document).ready(function () {
-			  debugger;
 
 			  // Auto fade success alert after 3 seconds
 			  setTimeout(() => $('.alert-success').fadeOut(), 3000);
@@ -265,10 +264,10 @@
 				 $('#error-msg').addClass('hidden');
 
 				 // Load dropdowns only when modal is opened
-				 loadLanguages();
-				 loadCountries();
-				 loadMaritalStatuses();
-				 loadNationalities();
+				 loadLanguages('#languages');
+				 loadCountries('#countries');
+				 loadMaritalStatuses('#maritalStatus');
+				 loadNationalities('#nationalities');
 			  });
 
 			  $('#add-Maid').on('click', function (e) {
@@ -350,17 +349,17 @@
 				 $('#dataTableContainer').load('/Admin/GetMaids');
 		   }
 
-		function loadLanguages() {
+		function loadLanguages(targetSelector) {
 		   var isEng = isEnglishCulture();
 		   $.ajax({
 			  url: '@Url.Action("GetLanguagesDDL", "Common")',
 			  method: 'GET',
 			  success: function (data) {
-				 const $languages = $('#languages');
-				 $languages.empty();
+				const $dropdown = $(targetSelector);
+				 $dropdown.empty();
 				 data.forEach(function (lang) {
 					// Use lang instead of item, and use a proper ternary operator
-					$languages.append(
+					$dropdown.append(
 					   `<option value="${lang.id}">${isEng ? lang.nameEn : lang.nameAr}</option>`
 					);
 				 });
@@ -371,37 +370,36 @@
 		   });
 		}
 
-				function loadCountries() {
-				   var isEng = isEnglishCulture();
-				   $.ajax({
-							  url: '@Url.Action("GetCountriesDDL", "Common")',
-					  method: 'GET',
-					  success: function (data) {
-								 const $languages = $('#countries');
-						 $languages.empty();
-						 data.forEach(function (cont) {
-							// Use lang instead of item, and use a proper ternary operator
-							$languages.append(
-											   `<option value="${cont.id}">${isEng ? cont.titleEn : cont.titleAr}</option>`
-							);
-						 });
-					  },
-					  error: function () {
-						 alert("Failed to load countries.");
-					  }
-				   });
+		function loadCountries(targetSelector) {
+			var isEng = isEnglishCulture();
+			$.ajax({
+				url: '@Url.Action("GetCountriesDDL", "Common")',
+				method: 'GET',
+				success: function (data) {
+					const $dropdown = $(targetSelector);
+					$dropdown.empty();
+					data.forEach(function (country) {
+						$dropdown.append(
+							`<option value="${country.id}">${isEng ? country.titleEn : country.titleAr}</option>`
+						);
+					});
+				},
+				error: function () {
+					alert("Failed to load countries.");
 				}
+			});
+		}
 
-		function loadMaritalStatuses() {
+		function loadMaritalStatuses(targetSelector) {
 		   var isEng = isEnglishCulture();
 		   $.ajax({
 			  url: '@Url.Action("GetMaritalStatusDDL", "Common")',
 			  method: 'GET',
 			  success: function (data) {
-				 const $status = $('#maritalStatus');
-				 $status.empty().append(`<option value="">@Localizer["MaritalStatus"]</option>`);
+				 const $dropdown = $(targetSelector);
+				 $dropdown.empty().append(`<option value="">@Localizer["MaritalStatus"]</option>`);
 				 data.forEach(function (status) {
-					$status.append(`<option value="${status.id}">${status.title}</option>`);
+					$dropdown.append(`<option value="${status.id}">${status.title}</option>`);
 				 });
 			  },
 			  error: function () {
@@ -410,16 +408,16 @@
 		   });
 		}
 
-		function loadNationalities() {
+		function loadNationalities(targetSelector) {
 		   var isEng = isEnglishCulture();
 		   $.ajax({
 			  url: '@Url.Action("GetNationalitiesDDL", "Common")',
 			  method: 'GET',
 			  success: function (data) {
-				 const $nationality = $('#nationalities');
-				 $nationality.empty().append(`<option value="">@Localizer["Nationality"]</option>`);
+				const $dropdown = $(targetSelector);
+				 $dropdown.empty().append(`<option value="">@Localizer["Nationality"]</option>`);
 				 data.forEach(function (nation) {
-					$nationality.append(`<option value="${nation.id}">${isEng ? nation.titleEn : nation.titleAr}</option>`);
+					$dropdown.append(`<option value="${nation.id}">${isEng ? nation.titleEn : nation.titleAr}</option>`);
 				 });
 			  },
 			  error: function () {
