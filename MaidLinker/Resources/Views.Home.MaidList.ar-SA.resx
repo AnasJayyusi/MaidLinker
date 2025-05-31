@@ -135,4 +135,55 @@
   <data name="Yes" xml:space="preserve">
     <value>نعم</value>
   </data>
+  <data name="Age" xml:space="preserve">
+    <value>العمر</value>
+  </data>
+  <data name="Years" xml:space="preserve">
+    <value>سنه</value>
+  </data>
+  <data name="Experience" xml:space="preserve">
+    <value>الخبرة</value>
+  </data>
+  <data name="Children" xml:space="preserve">
+    <value>أطفال</value>
+  </data>
+  <data name="Back to list" xml:space="preserve">
+    <value>تخطى واستمر في تصفح الآخرين.</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>الاسم</value>
+  </data>
+  <data name="Nationality" xml:space="preserve">
+    <value>الجنسية</value>
+  </data>
+  <data name="MaritalStatus" xml:space="preserve">
+    <value>الحالة الاجتماعية</value>
+  </data>
+  <data name="Languages" xml:space="preserve">
+    <value>اللغات</value>
+  </data>
+  <data name="ServedCountries" xml:space="preserve">
+    <value>الدول التي خدمت بها</value>
+  </data>
+  <data name="Notes" xml:space="preserve">
+    <value>ملاحظات</value>
+  </data>
+  <data name="RequestThisMaid" xml:space="preserve">
+    <value>طلب هذه العاملة</value>
+  </data>
+  <data name="RequestSentForMaid" xml:space="preserve">
+    <value>تم إرسال الطلب</value>
+  </data>
+  <data name="MaritalStatus_Divorced" xml:space="preserve">
+    <value>مطلقة</value>
+  </data>
+  <data name="MaritalStatus_Married" xml:space="preserve">
+    <value>متزوجة</value>
+  </data>
+  <data name="MaritalStatus_Single" xml:space="preserve">
+    <value>عزباء</value>
+  </data>
+  <data name="MaritalStatus_Widowed" xml:space="preserve">
+    <value>أرملة</value>
+  </data>
 </root>

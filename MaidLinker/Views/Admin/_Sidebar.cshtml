@@ -69,19 +69,7 @@
 
   
 
-    <li class="nav-item @(currentPath.Contains("Users".ToString().ToLower()) == true ? "active" : "")">
-        <a class="nav-link  @(currentPath.Contains("Users".ToString().ToLower()) == true ? "" : "collapsed")" href="#" data-toggle="collapse" data-target="#collapseUsers"
-           aria-expanded="true" aria-controls="collapseTwo">
-            <i class="fas fa-fw fa-users"></i>
-            <span>Users</span>
-        </a>
-        <div id="collapseUsers" class="collapse @(currentPath.Contains("Users".ToString().ToLower()) == true ? "show" : "")" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item @(currentPath.Contains("ServiceReviewRequests".ToString().ToLower()) == true ? "active" : "")" asp-area="" asp-controller="Admin" asp-action="ServiceReviewRequests">Service Review Requests</a>
-                <a class="collapse-item @(currentPath.Contains("UsersProfilesReviews".ToString().ToLower()) == true ? "active" : "")" asp-area="" asp-controller="Admin" asp-action="UsersProfilesReviews"> Users Profiles Reviews</a>
-            </div>
-        </div>
-    </li>
+ 
 
 
     <li class="nav-item @(currentPath.Contains("MaidsManagement".ToString().ToLower()) == true ? "active" : "")">
@@ -92,11 +80,25 @@
         </a>
             <div id="collapseReferrals" class="collapse @(currentPath.Contains("MaidsManagement".ToString().ToLower()) == true ? "show" : "")" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item @(currentPath.Contains("Maids".ToString().ToLower()) == true ? "active" : "")" asp-area="" asp-controller="Admin" asp-action="Maids">Maids</a>
+                    <a class="collapse-item @(currentPath.Contains("Maids".ToString().ToLower()) == true ? "active" : "")" asp-area="" asp-controller="Admin" asp-action="Maids">@Localizer["Maids"]</a>
 
             </div>
         </div>
     </li>
+
+        <li class="nav-item @(currentPath.Contains("Users".ToString().ToLower()) == true ? "active" : "")">
+            <a class="nav-link  @(currentPath.Contains("Users".ToString().ToLower()) == true ? "" : "collapsed")" href="#" data-toggle="collapse" data-target="#collapseUsers"
+               aria-expanded="true" aria-controls="collapseTwo">
+                <i class="fas fa-fw fa-users"></i>
+                <span>Users</span>
+            </a>
+            <div id="collapseUsers" class="collapse @(currentPath.Contains("Users".ToString().ToLower()) == true ? "show" : "")" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="collapse-item @(currentPath.Contains("ServiceReviewRequests".ToString().ToLower()) == true ? "active" : "")" asp-area="" asp-controller="Admin" asp-action="ServiceReviewRequests">Service Review Requests</a>
+                    <a class="collapse-item @(currentPath.Contains("UsersProfilesReviews".ToString().ToLower()) == true ? "active" : "")" asp-area="" asp-controller="Admin" asp-action="UsersProfilesReviews"> Users Profiles Reviews</a>
+                </div>
+            </div>
+        </li>
       
 
     <li class="nav-item @(currentPath.Contains("Reports".ToString().ToLower()) == true ? "active" : "")">

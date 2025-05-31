@@ -1372,6 +1372,7 @@ button {
 }
 
 :root {
+    background-color:lavender;
     --primary-color: #00333f;
     --secondary-color: #4c65d1;
     --light: #fff;
@@ -6749,14 +6750,14 @@ body {
 }
 
 
-.doctor-card {
+.item-card {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     position: relative;
     cursor: pointer;
     transition: transform 0.3s ease;
 }
 
-    .doctor-card:hover {
+    .item-card:hover {
         transform: translateY(-5px);
         box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
     }
@@ -6768,14 +6769,14 @@ body {
     font-weight: 700;
 }
 
-.doctor-card-title {
+.item-card-title {
     color: #5F7AE7;
     font-size: 18px;
     margin-bottom: 10px;
     color: #5F7AE7
 }
 
-.doctor-card-text {
+.item-card-text {
     color: #666;
     margin-bottom: 5px;
 }
@@ -6852,7 +6853,7 @@ body {
         margin: 0;
     }
 
-.doctor-card {
+.item-card {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     position: relative;
     cursor: pointer;
@@ -6863,26 +6864,26 @@ body {
     border-radius: 10px;
 }
 
-    .doctor-card:hover {
+    .item-card:hover {
         transform: translateY(-5px);
         box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
     }
 
-.doctor-card-body {
+.item-card-body {
     background-color: white;
     padding: 10%;
     border-radius: 10px;
 }
 
 
-.doctor-card-title {
+.item-card-title {
     color: #333;
     font-size: 18px;
     margin-bottom: 10px;
     color: #5F7AE7
 }
 
-.doctor-card-text {
+.item-card-text {
     color: #666;
     margin-bottom: 5px;
 }

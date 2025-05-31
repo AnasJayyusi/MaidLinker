@@ -317,13 +317,13 @@ namespace MaidLinker.Controllers
                 ViewBag.SuccessMessage = isSuccessDelete;
             }
 
-            return View(_dbContext.Maids.ToList());
+            return View(_dbContext.Maids.Include(i => i.Nationality).ToList());
         }
 
         [Route("GetMaids")]
         public IActionResult MaidsList()
         {
-            var result = _dbContext.Maids.ToList();
+            var result = _dbContext.Maids.Include(i=>i.Nationality).ToList();
             return PartialView("MaidsList", result);
         }
 
@@ -331,9 +331,6 @@ namespace MaidLinker.Controllers
         [Route("AddMaid")]
         public async Task<IActionResult> AddMaid([FromForm] MaidDto dto)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
             var maid = new Maid
             {
                 FirstNameEn = dto.FirstNameEn,
@@ -362,8 +359,9 @@ namespace MaidLinker.Controllers
             // Handle Image Upload
             if (dto.ImagePath != null && dto.ImagePath.Length > 0)
             {
+                var uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "uploads/maids");
                 var fileName = Guid.NewGuid() + Path.GetExtension(dto.ImagePath.FileName);
-                var filePath = Path.Combine(_webHostEnvironment.WebRootPath,"/uploads/maids", fileName);
+                var filePath = Path.Combine(uploadsFolder, fileName);
 
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {
@@ -546,7 +544,7 @@ namespace MaidLinker.Controllers
             // Helper function to save file and update database attachment
             async Task SaveFileAndUpdateAttachment(IFormFile file, AttachmentType type)
             {
-                if (file == null) return;
+                
 
                 // Remove existing attachment of this type
                 var existing = maid.Attachments.FirstOrDefault(a => a.AttachmentType == type);
@@ -560,6 +558,7 @@ namespace MaidLinker.Controllers
                     _dbContext.Attachments.Remove(existing);
                 }
 
+                if (file == null) return;
                 // Save new file
                 var uniqueFileName = $"{type}_{DateTime.Now:yyyyMMddHHmmss}_{Path.GetFileName(file.FileName)}";
                 var filePath = Path.Combine(uploadFolder, uniqueFileName);
@@ -572,7 +571,7 @@ namespace MaidLinker.Controllers
                 // Save attachment record
                 var attachment = new Attachment
                 {
-                    FileName = uniqueFileName,
+                    FileName = file.FileName,
                     MaidId = maid.Id,
                     AttachmentType = type,
                     FilePath = "/uploads/maids/" + maid.Id + "/" + uniqueFileName,
@@ -601,7 +600,7 @@ namespace MaidLinker.Controllers
                 .Select(a => new
                 {
                     type = a.AttachmentType.ToString(),
-                    filePath = Url.Content($"~/uploads/maids/{id}/{a.FileName}"),
+                    filePath = a.FilePath,
                     fileName = a.FileName
                 })
                 .ToList();

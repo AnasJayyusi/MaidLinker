@@ -127,7 +127,7 @@
     <value>لا يمكن حذف هذا العنصر</value>
   </data>
   <data name="MaidPageTitle" xml:space="preserve">
-    <value>إدارة العاملات</value>
+    <value>بيانات العاملات </value>
   </data>
   <data name="AddMaid" xml:space="preserve">
     <value>إضافة عاملة جديدة</value>

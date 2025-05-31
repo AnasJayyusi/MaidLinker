@@ -243,4 +243,34 @@
   <data name="DeleteConfirmation" xml:space="preserve">
     <value>Are you sure you want to delete this item?</value>
   </data>
+  <data name="UseCtrlToMultiSelect" xml:space="preserve">
+    <value>Use Ctrl To MultiSelect</value>
+  </data>
+  <data name="NoFileSelected" xml:space="preserve">
+    <value>No File Selected</value>
+  </data>
+  <data name="Nationality" xml:space="preserve">
+    <value>Nationality</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="ManageAttachments" xml:space="preserve">
+    <value>Manage Attachments</value>
+  </data>
+  <data name="Medical" xml:space="preserve">
+    <value>Medical report</value>
+  </data>
+  <data name="ViewFile" xml:space="preserve">
+    <value>View file</value>
+  </data>
+  <data name="Residency" xml:space="preserve">
+    <value>Residency</value>
+  </data>
+  <data name="Passport" xml:space="preserve">
+    <value>Passport</value>
+  </data>
+  <data name="Other" xml:space="preserve">
+    <value>Other attachments</value>
+  </data>
 </root>

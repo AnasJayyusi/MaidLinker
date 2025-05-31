@@ -64,6 +64,7 @@
             <th>#</th>
             <th>@Localizer["FirstNameEn"]</th>
             <th>@Localizer["FirstNameAr"]</th>
+            <th>@Localizer["Nationality"]</th>
             <th>@Localizer["Attachments"]</th>
             <th>@Localizer["Actions"]</th>
         </tr>
@@ -77,41 +78,51 @@
                 <td>@maid.FirstNameEn</td>
                 <td>@maid.FirstNameAr</td>
                 <td>
-                    <div>
-                        <button onclick="getAttachments(@maid.Id)" class="btn btn-warning btn-sm rounded-pill" data-toggle="modal" data-target="#EditAttachments" title="@Localizer["Attachments"]">
-                            <i class="fa fa-file"></i>
-                        </button>
-                    </div>
-                </td>
-                <td>
-                    <div>
-                        <button onclick="getMaid(@maid.Id)" class="btn btn-success btn-sm rounded-pill" data-toggle="modal" data-target="#EditMaid" title="@Localizer["Edit"]">
-                            <i class="fa fa-edit"></i>
-                        </button>
-                        <a href="#" class="btn btn-danger btn-sm rounded-pill ml-1" data-toggle="modal" data-target="#confirmDeleteModal_@maid.Id">
-                            <i class="fa fa-trash"></i>
-                        </a>
-                    </div>
+                    @if (isEng)
+                    {
+                        @maid.Nationality.TitleEn
+                    }
+                    @if (!isEng)
+                    {
+                        @maid.Nationality.TitleAr
+                    }
+                    </td>
+                    <td>
+                        <div>
+                            <button onclick="getAttachments(@maid.Id)" class="btn btn-warning btn-sm rounded-pill" data-toggle="modal" data-target="#EditAttachments" title="@Localizer["Attachments"]">
+                                <i class="fa fa-file"></i>
+                            </button>
+                        </div>
+                    </td>
+                    <td>
+                        <div>
+                            <button onclick="getMaid(@maid.Id)" class="btn btn-success btn-sm rounded-pill" data-toggle="modal" data-target="#EditMaid" title="@Localizer["Edit"]">
+                                <i class="fa fa-edit"></i>
+                            </button>
+                            <a href="#" class="btn btn-danger btn-sm rounded-pill ml-1" data-toggle="modal" data-target="#confirmDeleteModal_@maid.Id">
+                                <i class="fa fa-trash"></i>
+                            </a>
+                        </div>
 
-                    <!-- Delete Modal -->
-                    <div class="modal fade" id="confirmDeleteModal_@maid.Id" tabindex="-1" role="dialog">
-                        <div class="modal-dialog modal-dialog-centered">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title">@Localizer["Confirmation"]</h5>
-                                    <button type="button" class="btn-close" data-dismiss="modal">&times;</button>
-                                </div>
-                                <div class="modal-body">@Localizer["DeleteConfirmation"]</div>
-                                <div class="modal-footer">
-                                    <button class="btn btn-secondary" data-dismiss="modal">@Localizer["Cancel"]</button>
-                                    <a href="/Admin/DeleteMaid/@maid.Id" class="btn btn-danger">@Localizer["Delete"]</a>
+                        <!-- Delete Modal -->
+                        <div class="modal fade" id="confirmDeleteModal_@maid.Id" tabindex="-1" role="dialog">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">@Localizer["Confirmation"]</h5>
+                                        <button type="button" class="btn-close" data-dismiss="modal">&times;</button>
+                                    </div>
+                                    <div class="modal-body">@Localizer["DeleteConfirmation"]</div>
+                                    <div class="modal-footer">
+                                        <button class="btn btn-secondary" data-dismiss="modal">@Localizer["Cancel"]</button>
+                                        <a href="/Admin/DeleteMaid/@maid.Id" class="btn btn-danger">@Localizer["Delete"]</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </td>
-            </tr>
-        }
+                    </td>
+                </tr>
+                }
     </tbody>
 </table>
 <!-- #endregion -->
@@ -133,19 +144,19 @@
                             <h6 style="color:#4c65d1" class="modal-title">@Localizer["EnglishNames"]</h6>
                             <div class="form-group" style="text-align:@textAlign">
                                 <label>@Localizer["FirstNameEn"]</label>
-                                <input type="text" class="form-control" id="firstNameEn" maxlength="250" required />
+                                <input type="text" class="form-control" id="firstNameEnMaidList" maxlength="250" required />
                             </div>
                             <div class="form-group" style="text-align:@textAlign">
                                 <label>@Localizer["SecondNameEn"]</label>
-                                <input type="text" class="form-control" id="secondNameEn" maxlength="250" />
+                                <input type="text" class="form-control" id="secondNameEnMaidList" maxlength="250" />
                             </div>
                             <div class="form-group" style="text-align:@textAlign">
                                 <label>@Localizer["ThirdNameEn"]</label>
-                                <input type="text" class="form-control" id="thirdNameEn" maxlength="250" />
+                                <input type="text" class="form-control" id="thirdNameEnMaidList" maxlength="250" />
                             </div>
                             <div class="form-group" style="text-align:@textAlign">
                                 <label>@Localizer["LastNameEn"]</label>
-                                <input type="text" class="form-control" id="lastNameEn" maxlength="250" />
+                                <input type="text" class="form-control" id="lastNameEnMaidList" maxlength="250" />
                             </div>
                         </div>
 
@@ -159,19 +170,19 @@
                             <h6 style="color:#4c65d1">@Localizer["ArabicNames"]</h6>
                             <div class="form-group" style="text-align:@textAlign">
                                 <label>@Localizer["FirstNameAr"]</label>
-                                <input type="text" class="form-control" id="firstNameAr" maxlength="250" required />
+                                <input type="text" class="form-control" id="firstNameArMaidList" maxlength="250" required />
                             </div>
                             <div class="form-group" style="text-align:@textAlign">
                                 <label>@Localizer["SecondNameAr"]</label>
-                                <input type="text" class="form-control" id="secondNameAr" maxlength="250" />
+                                <input type="text" class="form-control" id="secondNameArMaidList" maxlength="250" />
                             </div>
                             <div class="form-group" style="text-align:@textAlign">
                                 <label>@Localizer["ThirdNameAr"]</label>
-                                <input type="text" class="form-control" id="thirdNameAr" maxlength="250" />
+                                <input type="text" class="form-control" id="thirdNameArMaidList" maxlength="250" />
                             </div>
                             <div class="form-group" style="text-align:@textAlign">
                                 <label>@Localizer["LastNameAr"]</label>
-                                <input type="text" class="form-control" id="lastNameAr" maxlength="250" />
+                                <input type="text" class="form-control" id="lastNameArMaidList" maxlength="250" />
                             </div>
                         </div>
                     </div>
@@ -183,11 +194,11 @@
                         <div class="col-md-6">
                             <div class="form-group" style="text-align:@textAlign">
                                 <label>@Localizer["DateOfBirth"]</label>
-                                <input type="date" class="form-control" id="dateOfBirth" placeholder="dd-mm-yyyy" required />
+                                <input type="date" class="form-control" id="dateOfBirthMaidList" placeholder="dd-mm-yyyy" required />
                             </div>
                             <div class="form-group" style="text-align:@textAlign">
                                 <label>@Localizer["TotalExperience"] (@Localizer["Years"])</label>
-                                <input type="number" class="form-control" id="totalExperience" min="0" step="1" />
+                                <input type="number" class="form-control" id="totalExperienceMaidList" min="0" step="1" />
                             </div>
                             <div class="form-group" style="text-align:@textAlign">
                                 <label>@Localizer["MaritalStatus"]</label>
@@ -196,13 +207,13 @@
                             </div>
                             <div class="form-group" style="text-align:@textAlign">
                                 <label>@Localizer["Childs"]</label>
-                                <input type="number" class="form-control" id="childs" min="0" />
+                                <input type="number" class="form-control" id="childsMaidList" min="0" />
                             </div>
 
 
                             <div class="form-group" style="text-align:@textAlign">
                                 <label>@Localizer["Nationality"]</label>
-                                <select class="form-control" id="nationalities">
+                                <select class="form-control" id="maidsListNationalities">
                                 </select>
                             </div>
                         </div>
@@ -227,7 +238,7 @@
                             <div class="col-md-12">
                                 <div class="form-group" style="text-align:@textAlign">
                                     <label>@Localizer["Note"]</label>
-                                    <textarea class="form-control" style="background-color:beige" id="note" rows="3"></textarea>
+                                    <textarea class="form-control" style="background-color:beige" id="noteMaidList" rows="3"></textarea>
                                 </div>
                             </div>
 
@@ -247,11 +258,11 @@
                         <div class="col-md-12">
                             <div class="form-group" style="text-align:@textAlign">
                                 <label>@Localizer["ImagePath"] (@Localizer["UploadImage"])</label>
-                                <input type="file" accept="image/*" class="form-control" id="imagePath" />
+                                <input type="file" accept="image/*" class="form-control" id="imagePathMaidList" />
                             </div>
                             <div class="form-group" style="text-align:@textAlign">
                                 <label>@Localizer["VideoURL"]</label>
-                                <input type="url" class="form-control" id="videoURL" placeholder="https://www.youtube.com/watch?v=example" />
+                                <input type="url" class="form-control" id="videoURLMaidList" placeholder="https://www.youtube.com/watch?v=example" />
                             </div>
                         </div>
                     </div>
@@ -274,58 +285,76 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">@Localizer["ManageAttachments"]</h5>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <button type="button" class="btn-close" data-dismiss="modal">&times;</button>
                 </div>
                 <div class="modal-body">
                     <input type="hidden" id="attachmentMaidId" name="MaidId" />
 
                     <!-- MEDICAL Attachment -->
-                    <div class="form-group" id="medicalGroup">
-                        <label>@Localizer["Medical"]</label>
+                    <div class="form-group" id="medicalGroup" style="text-align:@textAlign">
+                        <label for="medicalInput">@Localizer["Medical"]</label>
                         <div class="position-relative d-flex align-items-center">
-                            <input type="file" name="MedicalFile" class="d-none" id="medicalInput" onchange="handleFileChange(this, 'medical')">
-                            <button type="button" class="btn btn-outline-secondary btn-sm icon-upload" onclick="document.getElementById('medicalInput').click()">
+                            <!-- Hidden file input -->
+                            <input type="file" name="MedicalFile" id="medicalInput"
+                                   class="form-control-file"
+                                   style="display: none;"
+                                   onchange="handleFileChange(this, 'medical')">
+
+                            <!-- Custom trigger button -->
+                            <button type="button" class="btn btn-outline-warning btn-sm icon-upload" onclick="document.getElementById('medicalInput').click()">
                                 <i class="fa fa-upload"></i>
                             </button>
+
+                            <!-- File name -->
                             <span class="ml-2 text-muted" id="medicalFileName">@Localizer["NoFileSelected"]</span>
                         </div>
+
+                        <!-- View/Delete UI -->
                         <div id="medicalLink" class="mt-2 d-none">
                             <a href="#" target="_blank" id="medicalAnchor" class="btn btn-outline-primary btn-sm mr-2">
                                 <i class="fa fa-file"></i> @Localizer["ViewFile"]
                             </a>
-
-                            <button type="button" class="btn btn-outline-secondary btn-sm" onclick="toggleInput('medical')">
-                                <i class="fa fa-edit"></i>
+                            <button type="button" class="btn btn-outline-danger btn-sm" onclick="toggleInput('medical')">
+                                <i class="fa fa-remove"></i>
                             </button>
                         </div>
                     </div>
 
                     <!-- RESIDENCY Attachment -->
-                    <div class="form-group" id="residencyGroup">
-                        <label>@Localizer["Residency"]</label>
+                    <div class="form-group" id="residencyGroup" style="text-align:@textAlign">
+                        <label for="residencyInput">@Localizer["Residency"]</label>
                         <div class="position-relative d-flex align-items-center">
-                            <input type="file" name="ResidencyFile" class="d-none" id="residencyInput" onchange="handleFileChange(this, 'residency')">
-                            <button type="button" class="btn btn-outline-secondary btn-sm icon-upload" onclick="document.getElementById('residencyInput').click()">
+                            <!-- Hidden file input -->
+                            <input style="display: none;" type="file" name="ResidencyFile" id="residencyInput" class="d-none" onchange="handleFileChange(this, 'residency')">
+
+                            <!-- Trigger button -->
+                            <button type="button" class="btn btn-outline-warning btn-sm icon-upload" onclick="document.getElementById('residencyInput').click()">
                                 <i class="fa fa-upload"></i>
                             </button>
+
+                            <!-- Display selected file name -->
                             <span class="ml-2 text-muted" id="residencyFileName">@Localizer["NoFileSelected"]</span>
                         </div>
+
+                        <!-- File preview & remove controls -->
                         <div id="residencyLink" class="mt-2 d-none">
                             <a href="#" target="_blank" id="residencyAnchor" class="btn btn-outline-primary btn-sm mr-2">
                                 <i class="fa fa-file"></i> @Localizer["ViewFile"]
                             </a>
-                            <button type="button" class="btn btn-outline-secondary btn-sm" onclick="toggleInput('residency')">
-                                <i class="fa fa-edit"></i>
+                            <button type="button" class="btn btn-outline-danger btn-sm" onclick="toggleInput('residency')">
+                                <i class="fa fa-remove"></i>
                             </button>
                         </div>
                     </div>
 
+
+
                     <!-- PASSPORT Attachment -->
-                    <div class="form-group" id="passportGroup">
+                    <div class="form-group" id="passportGroup" style="text-align:@textAlign">
                         <label>@Localizer["Passport"]</label>
                         <div class="position-relative d-flex align-items-center">
-                            <input type="file" name="PassportFile" class="d-none" id="passportInput" onchange="handleFileChange(this, 'passport')">
-                            <button type="button" class="btn btn-outline-secondary btn-sm icon-upload" onclick="document.getElementById('passportInput').click()">
+                            <input style="display: none;" type="file" name="PassportFile" class="d-none" id="passportInput" onchange="handleFileChange(this, 'passport')">
+                            <button type="button" class="btn btn-outline-warning btn-sm icon-upload" onclick="document.getElementById('passportInput').click()">
                                 <i class="fa fa-upload"></i>
                             </button>
                             <span class="ml-2 text-muted" id="passportFileName">@Localizer["NoFileSelected"]</span>
@@ -334,18 +363,18 @@
                             <a href="#" target="_blank" id="passportAnchor" class="btn btn-outline-primary btn-sm mr-2">
                                 <i class="fa fa-file"></i> @Localizer["ViewFile"]
                             </a>
-                            <button type="button" class="btn btn-outline-secondary btn-sm" onclick="toggleInput('passport')">
-                                <i class="fa fa-edit"></i>
+                            <button type="button" class="btn btn-outline-danger btn-sm" onclick="toggleInput('passport')">
+                                <i class="fa fa-remove"></i>
                             </button>
                         </div>
                     </div>
 
                     <!-- OTHER Attachment -->
-                    <div class="form-group" id="otherGroup">
+                    <div class="form-group" id="otherGroup" style="text-align:@textAlign">
                         <label>@Localizer["Other"]</label>
                         <div class="position-relative d-flex align-items-center">
-                            <input type="file" name="OtherFile" class="d-none" id="otherInput" onchange="handleFileChange(this, 'other')">
-                            <button type="button" class="btn btn-outline-secondary btn-sm icon-upload" onclick="document.getElementById('otherInput').click()">
+                            <input style="display: none;" type="file" name="OtherFile" class="d-none" id="otherInput" onchange="handleFileChange(this, 'other')">
+                            <button type="button" class="btn btn-outline-warning btn-sm icon-upload" onclick="document.getElementById('otherInput').click()">
                                 <i class="fa fa-upload"></i>
                             </button>
                             <span class="ml-2 text-muted" id="otherFileName">@Localizer["NoFileSelected"]</span>
@@ -354,8 +383,8 @@
                             <a href="#" target="_blank" id="otherAnchor" class="btn btn-outline-primary btn-sm mr-2">
                                 <i class="fa fa-file"></i> @Localizer["ViewFile"]
                             </a>
-                            <button type="button" class="btn btn-outline-secondary btn-sm" onclick="toggleInput('other')">
-                                <i class="fa fa-edit"></i>
+                            <button type="button" class="btn btn-outline-danger btn-sm" onclick="toggleInput('other')">
+                                <i class="fa fa-remove"></i>
                             </button>
                         </div>
                     </div>
@@ -367,14 +396,14 @@
                 </div>
 
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">@Localizer["Upload"]</button>
+                    <button id="close-attachments-Maid" type="button" class="btn btn-danger" data-dismiss="modal">@Localizer["Cancel"]</button>
+                    <button type="submit" class="btn btn-primary">@Localizer["Save"]</button>
                 </div>
             </div>
         </form>
     </div>
 </div>
 <!-- #endregion -->
-
 <!-- #region No Results -->
 @if (totalItems == 0)
 {
@@ -410,26 +439,26 @@
         success: function (data) {
             $('#maidId').val(data.id);
             // English names
-            $('#firstNameEn').val(data.firstNameEn);
-            $('#secondNameEn').val(data.secondNameEn);
-            $('#thirdNameEn').val(data.thirdNameEn);
-            $('#lastNameEn').val(data.lastNameEn);
+            $('#firstNameEnMaidList').val(data.firstNameEn);
+            $('#secondNameEnMaidList').val(data.secondNameEn);
+            $('#thirdNameEnMaidList').val(data.thirdNameEn);
+            $('#lastNameEnMaidList').val(data.lastNameEn);
 
             // Arabic names
-            $('#firstNameAr').val(data.firstNameAr);
-            $('#secondNameAr').val(data.secondNameAr);
-            $('#thirdNameAr').val(data.thirdNameAr);
-            $('#lastNameAr').val(data.lastNameAr);
+            $('#firstNameArMaidList').val(data.firstNameAr);
+            $('#secondNameArMaidList').val(data.secondNameAr);
+            $('#thirdNameArMaidList').val(data.thirdNameAr);
+            $('#lastNameArMaidList').val(data.lastNameAr);
 
             // Other fields
-            
-            $('#dateOfBirth').val(data.dateOfBirth?.split('T')[0]); // Format if needed
-            $('#totalExperience').val(data.totalExperience);
+
+            $('#dateOfBirthMaidList').val(data.dateOfBirth?.split('T')[0]); // Format if needed
+            $('#totalExperienceMaidList').val(data.totalExperience);
             $('#maidsListlMaritalStatus').val(data.maritalStatusId);
-            $('#childs').val(data.childs);
+            $('#childsMaidList').val(data.childs);
             $('#maidsListNationalities').val(data.nationalityId);
-            $('#note').val(data.note);
-            $('#videoURL').val(data.videoURL);
+            $('#noteMaidList').val(data.note);
+            $('#videoURLMaidList').val(data.videoURL);
 
             // Multi-select: Served countries and languages
             $('#maidsListCountries').val(data.servedCountryIds).change();
@@ -438,7 +467,7 @@
 
             setImage(data.imagePath); // Set the image preview
             // Clear image field (cannot set value for security reasons)
-            $('#imagePath').val('');
+            $('#imagePathMaidList').val('');
 
 
             // Show the modal
@@ -464,36 +493,31 @@
 
     }
 
-
-      
-
-     
-
-       $('#edit-Maid').on('click', function() {
+    $('#edit-Maid').on('click', function() {
         var formData = new FormData();
         var maidId = $('#maidId').val();
 
         // Add form fields
         formData.append('Id', maidId);
-        formData.append('FirstNameEn', $('#firstNameEn').val());
-        formData.append('SecondNameEn', $('#secondNameEn').val());
-        formData.append('ThirdNameEn', $('#thirdNameEn').val());
-        formData.append('LastNameEn', $('#lastNameEn').val());
+        formData.append('FirstNameEn', $('#firstNameEnMaidList').val());
+        formData.append('SecondNameEn', $('#secondNameEnMaidList').val());
+        formData.append('ThirdNameEn', $('#thirdNameEnMaidList').val());
+        formData.append('LastNameEn', $('#lastNameEnMaidList').val());
 
-        formData.append('FirstNameAr', $('#firstNameAr').val());
-        formData.append('SecondNameAr', $('#secondNameAr').val());
-        formData.append('ThirdNameAr', $('#thirdNameAr').val());
-        formData.append('LastNameAr', $('#lastNameAr').val());
+        formData.append('FirstNameAr', $('#firstNameArMaidList').val());
+        formData.append('SecondNameAr', $('#secondNameArMaidList').val());
+        formData.append('ThirdNameAr', $('#thirdNameArMaidList').val());
+        formData.append('LastNameAr', $('#lastNameArMaidList').val());
 
-        const rawDate = $('#dateOfBirth').val();  // usually "1994-01-14"
+        const rawDate = $('#dateOfBirthMaidList').val();  // usually "1994-01-14"
         const formattedDate =new Date(rawDate).toISOString();  // still "1994-01-14"
         formData.append("DateOfBirth", formattedDate);
-        formData.append('TotalExperience', $('#totalExperience').val());
+        formData.append('TotalExperience', $('#totalExperienceMaidList').val());
         formData.append('MaritalStatus', $('#maidsListlMaritalStatus').val());
-        formData.append('Childs', $('#childs').val());
-        formData.append('Note', $('#note').val());
+        formData.append('Childs', $('#childsMaidList').val());
+        formData.append('Note', $('#noteMaidList').val());
         formData.append('NationalityId', $('#maidsListNationalities').val());
-        formData.append('VideoURL', $('#videoURL').val());
+        formData.append('VideoURL', $('#videoURLMaidList').val());
 
         // Add ServedCountryIds - multiple select
         $('#maidsListCountries option:selected').each(function() {
@@ -502,11 +526,12 @@
 
         // Add LanguageIds - multiple select
         $('#maidsListlanguages option:selected').each(function() {
+         
             formData.append('LanguageIds', $(this).val());
         });
 
         // Add Image file if selected
-        var fileInput = $('#imagePath')[0];
+        var fileInput = $('#imagePathMaidList')[0];
         if (fileInput.files.length > 0) {
             formData.append('ImagePath', fileInput.files[0]);
         }
@@ -528,8 +553,8 @@
         });
     });
 
-    // Load Image
-      document.getElementById('imagePath').addEventListener('change', function (event) {
+      // Load Image
+      document.getElementById('imagePathMaidList').addEventListener('change', function (event) {
         const file = event.target.files[0];
         if (file) {
             const reader = new FileReader();
@@ -546,137 +571,134 @@
 <!-- #endregion -->
 <script>
 
-$('#attachmentForm').submit(function (e) {
-    debugger;
-    e.preventDefault();
+    $('#attachmentForm').submit(function (e) {
+        e.preventDefault();
 
-    const formData = new FormData();
-    formData.append("MaidId", $('#attachmentMaidId').val());
+        const formData = new FormData();
+        formData.append("MaidId", $('#attachmentMaidId').val());
 
-    ['medical', 'residency', 'passport', 'other'].forEach(type => {
-        const fileInput = document.getElementById(type + 'Input');
-        if (fileInput.files.length > 0) {
-            // Append only if user selected file to upload
-            formData.append(type.charAt(0).toUpperCase() + type.slice(1) + "File", fileInput.files[0]);
-        }
-    });
-
-    $.ajax({
-
-     url: '/Admin/UploadAttachments', // your API endpoint here
-        type: 'POST',
-        data: formData,
-        contentType: false,
-        processData: false,
-        success: function (res) {
-            alert('Attachments uploaded successfully');
-            $('#EditAttachments').modal('hide');
-            // optionally reload attachments list or update UI
-        },
-        error: function (xhr) {
-            alert('Upload failed: ' + xhr.responseText);
-        }
-    });
-});
-
-
-
-    function handleFileChange(input, type) {
-        const file = input.files[0];
-        if (file) {
-            const fileName = file.name;
-            const fileUrl = URL.createObjectURL(file);
-            const fileIcon = getFileIcon(fileName);
-
-            document.getElementById(`${type}FileName`).innerText = fileName;
-            document.getElementById(`${type}Group`).querySelector('.icon-upload').classList.add('d-none');
-
-            const iconElement = document.getElementById(`${type}Anchor`).querySelector('i');
-            iconElement.className = fileIcon;
-
-            document.getElementById(`${type}Anchor`).href = fileUrl;
-            document.getElementById(`${type}Link`).classList.remove('d-none');
-        }
-    }
-
-    function toggleInput(type) {
-        document.getElementById(`${type}Input`).value = "";
-        document.getElementById(`${type}FileName`).innerText = "@Localizer["NoFileSelected"]";
-        document.getElementById(`${type}Group`).querySelector('.icon-upload').classList.remove('d-none');
-        document.getElementById(`${type}Link`).classList.add('d-none');
-        document.getElementById(`${type}Anchor`).href = "#";
-    }
-
-    function getFileIcon(fileName) {
-        const ext = fileName.split('.').pop().toLowerCase();
-
-        switch (ext) {
-            case 'pdf': return 'fa fa-file-pdf text-danger';
-            case 'doc':
-            case 'docx': return 'fa fa-file-word text-primary';
-            case 'xls':
-            case 'xlsx': return 'fa fa-file-excel text-success';
-            case 'ppt':
-            case 'pptx': return 'fa fa-file-powerpoint text-warning';
-            case 'jpg':
-            case 'jpeg':
-            case 'png':
-            case 'gif': return 'fa fa-file-image text-info';
-            case 'zip':
-            case 'rar': return 'fa fa-file-archive';
-            case 'mp4':
-            case 'webm': return 'fa fa-file-video';
-            default: return 'fa fa-file';
-        }
-    }
-
-
-            function populateAttachments(attachments) {
-            debugger;
-     
-
-        // Define mapping from attachment type to UI ids
-        const types = ['medical', 'residency', 'passport', 'other'];
-
-        types.forEach(type => {
-            const attach =attachments.find(a => a.type.toLowerCase() === type);
-            const input = document.getElementById(type + 'Input');
-            const linkDiv = document.getElementById(type + 'Link');
-            const anchor = document.getElementById(type + 'Anchor');
-            const fileNameSpan = document.getElementById(type + 'FileName');
-
-            if (attach) {
-                // Hide file input
-                input.classList.add('d-none');
-                // Show link with href and file name
-                    anchor.href = attach.filePath;
-                        anchor.textContent = attach.filePath.split('/').pop(); // just filename
-                linkDiv.classList.remove('d-none');
-                // Clear filename span since input hidden
-                fileNameSpan.textContent = '';
-            } else {
-                // No attachment - show input, hide link
-                input.value = ''; // clear file input
-                input.classList.remove('d-none');
-                linkDiv.classList.add('d-none');
-                fileNameSpan.textContent = '@Localizer["NoFileSelected"]';
+        ['medical', 'residency', 'passport', 'other'].forEach(type => {
+            const fileInput = document.getElementById(type + 'Input');
+            if (fileInput.files.length > 0) {
+                // Append only if user selected file to upload
+                formData.append(type.charAt(0).toUpperCase() + type.slice(1) + "File", fileInput.files[0]);
             }
         });
-    }
 
-        function getAttachments(maidId) {
-          document.getElementById('attachmentMaidId').value = maidId;
         $.ajax({
-                url: '/Admin/GetAttachments/' + maidId,
-            type: 'GET',
-                success: function (attachments) {
-                    populateAttachments(attachments);
-                $('#EditAttachments').modal('show');
+
+         url: '/Admin/UploadAttachments', // your API endpoint here
+            type: 'POST',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (res) {
+              $('#close-attachments-Maid').trigger('click');
             },
-            error: function () {
-                // alert('Failed to load attachments.');
+            error: function (xhr) {
+                alert('Upload failed: ' + xhr.responseText);
             }
         });
-    }
+    });
+
+
+
+        function handleFileChange(input, type) {
+            const file = input.files[0];
+            if (file) {
+                const fileName = file.name;
+                const fileUrl = URL.createObjectURL(file);
+                const fileIcon = getFileIcon(fileName);
+
+                document.getElementById(`${type}FileName`).innerText = fileName;
+                document.getElementById(`${type}Group`).querySelector('.icon-upload').classList.add('d-none');
+
+                const iconElement = document.getElementById(`${type}Anchor`).querySelector('i');
+                iconElement.className = fileIcon;
+
+                document.getElementById(`${type}Anchor`).href = fileUrl;
+                document.getElementById(`${type}Link`).classList.remove('d-none');
+            }
+        }
+
+        function toggleInput(type) {
+            document.getElementById(`${type}Input`).value = "";
+            document.getElementById(`${type}FileName`).innerText = "@Localizer["NoFileSelected"]";
+            document.getElementById(`${type}Group`).querySelector('.icon-upload').classList.remove('d-none');
+            document.getElementById(`${type}Link`).classList.add('d-none');
+            document.getElementById(`${type}Anchor`).href = "#";
+        }
+
+        function getFileIcon(fileName) {
+            const ext = fileName.split('.').pop().toLowerCase();
+
+            switch (ext) {
+                case 'pdf': return 'fa fa-file-pdf text-danger';
+                case 'doc':
+                case 'docx': return 'fa fa-file-word text-primary';
+                case 'xls':
+                case 'xlsx': return 'fa fa-file-excel text-success';
+                case 'ppt':
+                case 'pptx': return 'fa fa-file-powerpoint text-warning';
+                case 'jpg':
+                case 'jpeg':
+                case 'png':
+                case 'gif': return 'fa fa-file-image text-info';
+                case 'zip':
+                case 'rar': return 'fa fa-file-archive';
+                case 'mp4':
+                case 'webm': return 'fa fa-file-video';
+                default: return 'fa fa-file';
+            }
+        }
+
+
+                function populateAttachments(attachments) {
+                debugger;
+
+
+            // Define mapping from attachment type to UI ids
+            const types = ['medical', 'residency', 'passport', 'other'];
+
+            types.forEach(type => {
+                const attach =attachments.find(a => a.type.toLowerCase() === type);
+                const input = document.getElementById(type + 'Input');
+                const linkDiv = document.getElementById(type + 'Link');
+                const anchor = document.getElementById(type + 'Anchor');
+                const fileNameSpan = document.getElementById(type + 'FileName');
+
+                if (attach) {
+                    // Hide file input
+                    input.classList.add('d-none');
+                    // Show link with href and file name
+                        anchor.href = attach.filePath;
+                            anchor.textContent = attach.fileName.split('/').pop(); // just filename
+                    linkDiv.classList.remove('d-none');
+                    // Clear filename span since input hidden
+                    fileNameSpan.textContent = '';
+                } else {
+                    // No attachment - show input, hide link
+                    input.value = ''; // clear file input
+                    input.classList.remove('d-none');
+                    linkDiv.classList.add('d-none');
+                    fileNameSpan.textContent = '@Localizer["NoFileSelected"]';
+                }
+            });
+        }
+
+            function getAttachments(maidId) {
+              document.getElementById('attachmentMaidId').value = maidId;
+            $.ajax({
+                    url: '/Admin/GetAttachments/' + maidId,
+                    type: 'GET',
+                    success: function (attachments) {
+                        populateAttachments(attachments);
+                    // $('#EditAttachments').modal('show');
+                },
+                error: function () {
+                    // alert('Failed to load attachments.');
+                }
+            });
+        }
 
 </script>

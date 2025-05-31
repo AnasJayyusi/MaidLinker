@@ -117,121 +117,58 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="SavedSuccessfully" xml:space="preserve">
-    <value>Saved successfully</value>
+	<data name="Name" xml:space="preserve">
+    <value>Name</value>
   </data>
-  <data name="DeletedSuccessfully" xml:space="preserve">
-    <value>Deleted successfully</value>
-  </data>
-  <data name="CannotDelete" xml:space="preserve">
-    <value>Cannot delete this item</value>
-  </data>
-  <data name="MaidPageTitle" xml:space="preserve">
-    <value>Maids' data</value>
-  </data>
-  <data name="AddMaid" xml:space="preserve">
-    <value>Add New Maid</value>
-  </data>
-  <data name="EnglishNames" xml:space="preserve">
-    <value>English Names</value>
-  </data>
-  <data name="FirstNameEn" xml:space="preserve">
-    <value>First Name (English)</value>
-  </data>
-  <data name="SecondNameEn" xml:space="preserve">
-    <value>Second Name (English)</value>
-  </data>
-  <data name="ThirdNameEn" xml:space="preserve">
-    <value>Third Name (English)</value>
-  </data>
-  <data name="LastNameEn" xml:space="preserve">
-    <value>Last Name (English)</value>
-  </data>
-  <data name="ArabicNames" xml:space="preserve">
-    <value>Arabic Names</value>
-  </data>
-  <data name="FirstNameAr" xml:space="preserve">
-    <value>First Name (Arabic)</value>
-  </data>
-  <data name="SecondNameAr" xml:space="preserve">
-    <value>Second Name (Arabic)</value>
-  </data>
-  <data name="ThirdNameAr" xml:space="preserve">
-    <value>Third Name (Arabic)</value>
-  </data>
-  <data name="LastNameAr" xml:space="preserve">
-    <value>Last Name (Arabic)</value>
-  </data>
-  <data name="DateOfBirth" xml:space="preserve">
-    <value>Date of Birth</value>
-  </data>
-  <data name="TotalExperience" xml:space="preserve">
-    <value>Total Experience</value>
-  </data>
-  <data name="Years" xml:space="preserve">
-    <value>years</value>
-  </data>
-  <data name="MaritalStatus" xml:space="preserve">
-    <value>Marital Status</value>
-  </data>
-  <data name="SelectStatus" xml:space="preserve">
-    <value>Select Status</value>
-  </data>
-  <data name="Single" xml:space="preserve">
-    <value>Single</value>
-  </data>
-  <data name="Married" xml:space="preserve">
-    <value>Married</value>
-  </data>
-  <data name="Divorced" xml:space="preserve">
-    <value>Divorced</value>
-  </data>
-  <data name="Widowed" xml:space="preserve">
-    <value>Widowed</value>
-  </data>
-  <data name="Childs" xml:space="preserve">
-    <value>Number of Children</value>
-  </data>
-  <data name="ServedCountries" xml:space="preserve">
-    <value>Served Countries</value>
-  </data>
-  <data name="SelectCountry" xml:space="preserve">
-    <value>Select Country</value>
-  </data>
-  <data name="Languages" xml:space="preserve">
-    <value>Languages</value>
-  </data>
-  <data name="ImagePath" xml:space="preserve">
-    <value>Profile Image</value>
-  </data>
-  <data name="UploadImage" xml:space="preserve">
-    <value>Upload Image</value>
-  </data>
-  <data name="VideoURL" xml:space="preserve">
-    <value>Video URL</value>
-  </data>
-  <data name="Address" xml:space="preserve">
-    <value>Address</value>
-  </data>
-  <data name="PleaseFillAllFields" xml:space="preserve">
-    <value>Please fill all required fields</value>
-  </data>
-  <data name="Cancel" xml:space="preserve">
-    <value>Cancel</value>
-  </data>
-  <data name="Save" xml:space="preserve">
-    <value>Save</value>
-  </data>
-  <data name="Nationality" xml:space="preserve">
+	<data name="Nationality" xml:space="preserve">
     <value>Nationality</value>
   </data>
-  <data name="Apply" xml:space="preserve">
-    <value>Apply</value>
+	<data name="Age" xml:space="preserve">
+    <value>Age</value>
   </data>
-  <data name="NoResultsFound" xml:space="preserve">
-    <value>No results found.</value>
+	<data name="Years" xml:space="preserve">
+    <value>Years</value>
   </data>
-  <data name="Search" xml:space="preserve">
-    <value>Search</value>
+	<data name="Experience" xml:space="preserve">
+    <value>Experience</value>
   </data>
+	<data name="MaritalStatus" xml:space="preserve">
+    <value>Marital Status</value>
+  </data>
+	<data name="Children" xml:space="preserve">
+    <value>Children</value>
+  </data>
+	<data name="Languages" xml:space="preserve">
+    <value>Languages</value>
+  </data>
+	<data name="ServedCountries" xml:space="preserve">
+    <value>Served Countries</value>
+  </data>
+	<data name="Notes" xml:space="preserve">
+    <value>Notes</value>
+  </data>
+	<data name="RequestThisMaid" xml:space="preserve">
+    <value>Request this maid</value>
+  </data>
+	<data name="Back to list" xml:space="preserve">
+    <value>Skip this maid and continue browsing others.</value>
+  </data>
+	<data name="RequestSentForMaid" xml:space="preserve">
+    <value>Request has been sent for maid</value>
+  </data>
+	<data name="MaritalStatus_Single" xml:space="preserve">
+  <value>Single</value>
+</data>
+	<data name="MaritalStatus_Married" xml:space="preserve">
+  <value>Married</value>
+</data>
+	<data name="MaritalStatus_Divorced" xml:space="preserve">
+  <value>Divorced</value>
+</data>
+	<data name="MaritalStatus_Widowed" xml:space="preserve">
+  <value>Widowed</value>
+</data>
+	<data name="MaidDetails" xml:space="preserve">
+  <value>Details</value>
+</data>
 </root>

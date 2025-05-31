@@ -71,14 +71,35 @@ namespace MaidLinker.Controllers
         #region Maids 
         public IActionResult Maids()
         {
-            var maids = _dbContext.Maids.ToList();
+            var maids = _dbContext.Maids.Include(i => i.Nationality).Include(i=>i.Langauges).ToList();
             return View(maids);
         }
         public ActionResult FillMaidsList()
         {
-            var maids = _dbContext.Maids.ToList();
+            var maids = _dbContext.Maids.Include(i=>i.Nationality).Include(i => i.Langauges).ToList();
             return PartialView("MaidList", maids);
         }
+
+        public ActionResult FillMaidsList()
+        {
+            var maids = _dbContext.Maids.Include(i => i.Nationality).Include(i => i.Langauges).ToList();
+            return PartialView("MaidList", maids);
+        }
+
+        public IActionResult GetDetails(int id)
+        {
+            var maid = _dbContext.Maids
+                               .Include(m => m.Nationality)
+                               .Include(m => m.Langauges)
+                               .Include(m => m.ServedCountries)
+                               .FirstOrDefault(m => m.Id == id);
+
+            if (maid == null)
+                return NotFound();
+
+            return PartialView("_MaidDetailsPartial", maid);
+        }
+
         //public ActionResult GetDoctorDetails(string userId)
         //{
 

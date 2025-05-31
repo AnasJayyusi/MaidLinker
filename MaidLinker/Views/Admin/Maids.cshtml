@@ -235,7 +235,7 @@
 
 				</form>
 
-				<div class="alert alert-danger hidden" role="alert" id="error-msg">@Localizer["PleaseFillAllFields"]</div>
+				<div class="alert alert-danger hidden" role="alert" id="error-msg-add">@Localizer["PleaseFillAllFields"]</div>
 			</div>
 			<div class="modal-footer">
 				<button id="close-add-Maid" type="button" class="btn btn-danger" data-dismiss="modal">@Localizer["Cancel"]</button>
@@ -254,6 +254,7 @@
 	<script>
 		   $(document).ready(function () {
 
+
 			  // Auto fade success alert after 3 seconds
 			  setTimeout(() => $('.alert-success').fadeOut(), 3000);
 
@@ -261,7 +262,7 @@
 			  $('#popup_btn').click(function () {
 
 				 $('#maidForm input, #maidForm select, #maidForm textarea').val('');
-				 $('#error-msg').addClass('hidden');
+				 $('#error-msg-add').addClass('hidden');
 
 				 // Load dropdowns only when modal is opened
 				 loadLanguages('#languages');
@@ -287,7 +288,8 @@
 				 formData.append("ThirdNameAr", $('#thirdNameAr').val());
 				 formData.append("LastNameAr", $('#lastNameAr').val());
 				 const rawDate = $('#dateOfBirth').val();  // usually "1994-01-14"
-				 const formattedDate =new Date(rawDate).toISOString();  // still "1994-01-14"
+				 if (rawDate != '')
+				 var formattedDate =new Date(rawDate).toISOString();  // still "1994-01-14"
 				 formData.append("DateOfBirth", formattedDate);
 				 formData.append("TotalExperience", $('#totalExperience').val());
 				 formData.append("MaritalStatus", $('#maritalStatus').val());
@@ -330,7 +332,7 @@
 					processData: false, // Required for FormData
 					success: function (response) {
 					   // Success logic here
-					   $('#error-msg').addClass('hidden');
+					   $('#error-msg-add').addClass('hidden');
 					   $('#maidForm')[0].reset();
 					   // Optionally close modal
 					   $('#close-add-Maid').trigger('click');
@@ -338,7 +340,7 @@
 					   loadMaids(); 
 					},
 					error: function (xhr) {
-					   $('#error-msg').removeClass('hidden').text(@Localizer["FillAllRequiredFeildsPlease"]);
+					   $('#error-msg-add').removeClass('hidden').text(@Localizer["FillAllRequiredFeildsPlease"]);
 					}
 				 });
 			  });

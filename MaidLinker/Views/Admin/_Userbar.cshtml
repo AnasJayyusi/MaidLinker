@@ -10,7 +10,7 @@
 <!-- #endregion For Localization -->
 <div class="dropdown" style="margin-right: 5%;" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
     <a href="#">
-        <label style="font-weight:bold;color:#5F7AE7 ">@Localizer["Administrator"]</label>
+        <label style="font-weight:bold;color:#5F7AE7 ">@User.Identity.Name?.Split('@')[0]</label>
         <img src="~/users/images/Default-User-Profile.jpg" width="40" height="40" alt="user-profile">
     </a>
 
@@ -24,5 +24,6 @@
                 </form>
             </span>
         </a>
+      
     </div>
 </div>

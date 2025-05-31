@@ -1,4 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Razor.TagHelpers;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Globalization;
 
 namespace MaidLinker.Data.Entites
 {
@@ -17,5 +20,24 @@ namespace MaidLinker.Data.Entites
         public bool IsDeleted { get; set; } = false;
 
         public ICollection<Maid> Users { get; set; }
+
+        [NotMapped]
+        public string Title
+        {
+            get
+            {
+                var culture = CultureInfo.CurrentCulture.Name;
+
+                // Check if the culture starts with "ar" for Arabic
+                if (culture.StartsWith("ar", StringComparison.OrdinalIgnoreCase))
+                {
+                    return TitleAr;
+                }
+                else
+                {
+                    return TitleEn;
+                }
+            }
+        }
     }
 }

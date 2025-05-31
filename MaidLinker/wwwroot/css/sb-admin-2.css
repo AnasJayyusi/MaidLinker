@@ -2663,11 +2663,11 @@ fieldset:disabled a.btn {
   border-color: #00333F;
 }
 
-.btn-outline-primary:hover {
-  color: #fff;
-  background-color: #00333F;
-  border-color: #00333F;
-}
+    .btn-outline-primary:hover {
+        color: #fff;
+        background-color: #4c65d1;
+        border-color: #4c65d1;
+    }
 
 .btn-outline-primary:focus, .btn-outline-primary.focus {
   box-shadow: 0 0 0 0.2rem rgba(78, 115, 223, 0.5);

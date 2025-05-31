@@ -243,4 +243,34 @@
   <data name="DeleteConfirmation" xml:space="preserve">
     <value>هل أنت متأكد أنك تريد حذف هذا العنصر؟</value>
   </data>
+  <data name="UseCtrlToMultiSelect" xml:space="preserve">
+    <value>استخدم Ctrl لتحديد متعدد</value>
+  </data>
+  <data name="NoFileSelected" xml:space="preserve">
+    <value>لم يتم تحديد أي ملف</value>
+  </data>
+  <data name="Nationality" xml:space="preserve">
+    <value>الجنسية </value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>حذف</value>
+  </data>
+  <data name="ManageAttachments" xml:space="preserve">
+    <value>إدارة المرفقات</value>
+  </data>
+  <data name="Medical" xml:space="preserve">
+    <value> التقرير الطبي </value>
+  </data>
+  <data name="ViewFile" xml:space="preserve">
+    <value>عرض الملف</value>
+  </data>
+  <data name="Residency" xml:space="preserve">
+    <value>الإقامة</value>
+  </data>
+  <data name="Passport" xml:space="preserve">
+    <value>جواز سفر</value>
+  </data>
+  <data name="Other" xml:space="preserve">
+    <value>مرفقات اخرى </value>
+  </data>
 </root>
