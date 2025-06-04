@@ -3,12 +3,11 @@ using MaidLinker.Data.Entites;
 using MaidLinker.Hubs;
 using MaidLinker.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.DotNet.Scaffolding.Shared.Project;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using System.Globalization;
 using static MaidLinker.Areas.Identity.Pages.Account.LoginModel;
+using static MaidLinker.Data.SharedEnum;
 
 namespace MaidLinker.Controllers
 {
@@ -71,20 +70,123 @@ namespace MaidLinker.Controllers
         #region Maids 
         public IActionResult Maids()
         {
-            var maids = _dbContext.Maids.Include(i => i.Nationality).Include(i=>i.Langauges).ToList();
+            var maids = _dbContext.Maids.Include(i => i.Nationality).Include(i => i.Langauges).ToList();
             return View(maids);
         }
-        public ActionResult FillMaidsList()
-        {
-            var maids = _dbContext.Maids.Include(i=>i.Nationality).Include(i => i.Langauges).ToList();
-            return PartialView("MaidList", maids);
-        }
-
         public ActionResult FillMaidsList()
         {
             var maids = _dbContext.Maids.Include(i => i.Nationality).Include(i => i.Langauges).ToList();
             return PartialView("MaidList", maids);
         }
+
+
+        public IActionResult FillMaidsListWithFilter(string name, int nationalityId, int langId, Age age, Experience experience, MaritalStatus maritalStatus, string sortBy)
+        {
+            IQueryable<Maid> query = _dbContext.Maids
+                               .Include(m => m.Nationality)
+                               .Include(m => m.Langauges)
+                               .Include(m => m.ServedCountries);
+
+            if (!string.IsNullOrWhiteSpace(name))
+            {
+                var loweredName = name.ToLower();
+
+                query = query.Where(m =>
+          (m.FirstNameEn != null && EF.Functions.Like(m.FirstNameEn, $"%{name}%")) ||
+          (m.SecondNameEn != null && EF.Functions.Like(m.SecondNameEn, $"%{name}%")) ||
+          (m.ThirdNameEn != null && EF.Functions.Like(m.ThirdNameEn, $"%{name}%")) ||
+          (m.LastNameEn != null && EF.Functions.Like(m.LastNameEn, $"%{name}%")) ||
+          (m.FirstNameAr != null && EF.Functions.Like(m.FirstNameAr, $"%{name}%")) ||
+          (m.SecondNameAr != null && EF.Functions.Like(m.SecondNameAr, $"%{name}%")) ||
+          (m.ThirdNameAr != null && EF.Functions.Like(m.ThirdNameAr, $"%{name}%")) ||
+          (m.LastNameAr != null && EF.Functions.Like(m.LastNameAr, $"%{name}%")));
+            }
+
+            if (nationalityId > 0)
+            {
+                query = query.Where(m => m.NationalityId == nationalityId);
+            }
+
+            if (langId > 0)
+            {
+                query = query.Where(m => m.Langauges.Any(l => l.Id == langId));
+            }
+
+            if (age > 0)
+            {
+                var ageRange = GetDateRangeFromAgeEnum(age);
+                if (ageRange.From.HasValue && ageRange.To.HasValue)
+                {
+                    query = query.Where(m => m.DateOfBirth >= ageRange.From.Value && m.DateOfBirth <= ageRange.To.Value);
+                }
+                else if (ageRange.To.HasValue) // Age.Old case
+                {
+                    query = query.Where(m => m.DateOfBirth <= ageRange.To.Value);
+                }
+            }
+
+            if (experience > 0)
+            {
+                var experienceRange = GetExperienceRange(experience);
+                if (experienceRange.Value.Min is not null)
+                {
+                    query = query.Where(m => m.TotalExperience >= experienceRange.Value.Min.Value);
+                }
+
+                if (experienceRange.Value.Max is not null)
+                {
+                    query = query.Where(m => m.TotalExperience <= experienceRange.Value.Max.Value);
+                }
+            }
+
+            if (maritalStatus > 0)
+            {
+                query = query.Where(m => m.MaritalStatus == maritalStatus);
+            }
+
+            if (!string.IsNullOrEmpty(sortBy))
+            {
+                if (sortBy == "Experience")
+                {
+                    query = query.OrderByDescending(m => m.TotalExperience);
+                }
+                if (sortBy == "Age")
+                {
+                    query = query.OrderByDescending(m => m.DateOfBirth);
+                }
+            }
+
+            return PartialView("MaidList", query.ToList());
+        }
+
+        private (DateTime? From, DateTime? To) GetDateRangeFromAgeEnum(Age age)
+        {
+            var today = DateTime.Today;
+
+            return age switch
+            {
+                Age.Child => (today.AddYears(-25), today.AddYears(-18)),
+                Age.Teenager => (today.AddYears(-35), today.AddYears(-26)),
+                Age.Young => (today.AddYears(-45), today.AddYears(-36)),
+                Age.Aged => (today.AddYears(-50), today.AddYears(-46)),
+                Age.Old => (null, today.AddYears(-51)), // Only before this
+                _ => (null, null)
+            };
+        }
+
+        private (double? Min, double? Max)? GetExperienceRange(Experience experience)
+        {
+            return experience switch
+            {
+                Experience.NoExperience => (0, 1),
+                Experience.LowExperience => (2, 3),
+                Experience.MediumExperience => (4, 5),
+                Experience.HighExperience => (6, 10),
+                Experience.Expert => (10.01, null), // أكبر من 10
+                _ => null
+            };
+        }
+
 
         public IActionResult GetDetails(int id)
         {
@@ -100,159 +202,7 @@ namespace MaidLinker.Controllers
             return PartialView("_MaidDetailsPartial", maid);
         }
 
-        //public ActionResult GetDoctorDetails(string userId)
-        //{
-
-        //    var doctorDetails = new DoctorDetailsModel();
-
-        //    doctorDetails = _dbContext.UserProfiles.Where(w => w.UserId == userId)
-        //                                                    .Include(i => i.Certifications)
-        //                                                    .ThenInclude(cer => cer.Degree)
-        //                                                     .Select(s => new DoctorDetailsModel
-        //                                                     {
-        //                                                         UserProfileId = s.Id,
-        //                                                         UserId = s.UserId,
-        //                                                         FullName = s.FullName,
-        //                                                         ProfilePicturePath = s.ProfilePicturePath,
-        //                                                         InsuranceAccepted = s.InsuranceAccepted ?? false,
-        //                                                         OverView = new OverView()
-        //                                                         {
-        //                                                             Bio = s.Bio ?? "-",
-        //                                                             SpecialtiesTitlesAr = s.SpecialtiesTitlesAr ?? "-",
-        //                                                             SpecialtiesTitlesEn = s.SpecialtiesTitlesEn ?? "-",
-        //                                                             Certifications = s.Certifications
-        //                                                         }
-
-        //                                                     }).Single();
-
-
-
-        //    return PartialView("DoctorDetails", doctorDetails);
-        //}
-        //public ActionResult GetMaidservices(int userProfileId)
-        //{
-        //    List<UserServices> model = _dbContext.UserServices
-        //                                        .Where(a => a.UserId == userProfileId && a.Status == Enums.ServicesStatusEnum.Approved)
-        //                                        .ToList();
-
-        //    return PartialView("Maidservices", model);
-        //}
-        //public ActionResult GetTimeClinicLocations(int userProfileId)
-        //{
-        //    string cultureCode = System.Threading.Thread.CurrentThread.CurrentCulture.Name;
-        //    string direction = cultureCode.StartsWith("ar", StringComparison.OrdinalIgnoreCase) ? "rtl" : "ltr";
-        //    bool isEng = direction == "ltr" ? true : false;
-
-
-        //    var model = _dbContext.TimeClinicLocations.Include(i => i.State)
-        //                                              .Include(i => i.Country)
-        //                                              .Include(i => i.City)
-        //                                              .Include(i => i.Districts)
-        //                                              .SingleOrDefault(w => w.UserProfileId == userProfileId);
-
-
-        //    if (model == null)
-        //        model = new TimeClinicLocation();
-
-        //    if (string.IsNullOrWhiteSpace(model?.ClinicName))
-        //    {
-        //        model.ClinicName = "MaidLinker Clinic";
-        //    }
-
-        //    if (isEng)
-        //    {
-        //        model.Location = string.Join("-",
-        //            model.Country?.TitleEn ?? "",
-        //            model.State?.TitleEn ?? "",
-        //            model.City?.TitleEn ?? "",
-        //            model.Districts?.TitleEn ?? "");
-        //    }
-        //    else
-        //    {
-        //        model.Location = string.Join("-",
-        //                            model.Country?.TitleAr ?? "",
-        //                            model.State?.TitleAr ??"",
-        //                            model.City?.TitleAr ?? "",
-        //                            model.Districts?.TitleAr ?? "");
-        //    }
-
-
-        //    if (string.IsNullOrWhiteSpace(model.SundayOpenAt))
-        //    {
-        //        model.SundayOpenAt = "00:00";
-        //    }
-        //    if (string.IsNullOrWhiteSpace(model.SundayClosedAt))
-        //    {
-        //        model.SundayClosedAt = "00:00";
-        //    }
-
-        //    if (string.IsNullOrWhiteSpace(model.MondayOpenAt))
-        //    {
-        //        model.MondayOpenAt = "00:00";
-        //    }
-        //    if (string.IsNullOrWhiteSpace(model.MondayClosedAt))
-        //    {
-        //        model.MondayClosedAt = "00:00";
-        //    }
-
-        //    if (string.IsNullOrWhiteSpace(model.TuesdayOpenAt))
-        //    {
-        //        model.TuesdayOpenAt = "00:00";
-        //    }
-        //    if (string.IsNullOrWhiteSpace(model.TuesdayClosedAt))
-        //    {
-        //        model.TuesdayClosedAt = "00:00";
-        //    }
-
-        //    if (string.IsNullOrWhiteSpace(model.WednesdayOpenAt))
-        //    {
-        //        model.WednesdayOpenAt = "00:00";
-        //    }
-        //    if (string.IsNullOrWhiteSpace(model.WednesdayClosedAt))
-        //    {
-        //        model.WednesdayClosedAt = "00:00";
-        //    }
-
-        //    if (string.IsNullOrWhiteSpace(model.ThursdayOpenAt))
-        //    {
-        //        model.ThursdayOpenAt = "00:00";
-        //    }
-        //    if (string.IsNullOrWhiteSpace(model.ThursdayClosedAt))
-        //    {
-        //        model.ThursdayClosedAt = "00:00";
-        //    }
-
-        //    if (string.IsNullOrWhiteSpace(model.FridayOpenAt))
-        //    {
-        //        model.FridayOpenAt = "00:00";
-        //    }
-        //    if (string.IsNullOrWhiteSpace(model.FridayClosedAt))
-        //    {
-        //        model.FridayClosedAt = "00:00";
-        //    }
-
-        //    if (string.IsNullOrWhiteSpace(model.SaturdayOpenAt))
-        //    {
-        //        model.SaturdayOpenAt = "00:00";
-        //    }
-        //    if (string.IsNullOrWhiteSpace(model.SaturdayClosedAt))
-        //    {
-        //        model.SaturdayClosedAt = "00:00";
-        //    }
-
-        //    return PartialView("DoctorTimeClinicLocations", model);
-        //}
-
-        //[HttpGet]
-        //public ActionResult GetUserCompanies(int userProfileId)
-        //{
-        //    var result = _dbContext.UserCompanies
-        //                           .Include(i => i.Company)
-        //                           .Where(w => w.UserProfileId == userProfileId).Select(s => s.Company).ToList();
-        //    return Json(result);
-        //}
         #endregion
-
         #region Culture
         [HttpGet]
         public IActionResult SetCulture(string culureCode, string returnUrl)

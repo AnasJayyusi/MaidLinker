@@ -56,11 +56,11 @@ namespace MaidLinker.Controllers
         {
             var dropdownData = new List<object>
                              {
-                                 new { Id = "18-25", Title = "18-25" },
-                                 new { Id = "26-35", Title = "26-35" },
-                                 new { Id = "36-45", Title = "36-45" },
-                                 new { Id = "46-60", Title = "46-60" },
-                                 new { Id = "60+", Title = "60+" }
+                                 new { Id = "1", Title = "18-25" },
+                                 new { Id = "2", Title = "26-35" },
+                                 new { Id = "3", Title = "36-45" },
+                                 new { Id = "4", Title = "46-50" },
+                                 new { Id = "5", Title = "50+" }
                              };
 
             return Json(dropdownData);
@@ -75,11 +75,11 @@ namespace MaidLinker.Controllers
 
             var dropdownData = new List<object>
               {
-                  new { Id = "0-1",   Title = isArabic ? "0 - 1 سنة"      : "0 - 1 years" },
-                  new { Id = "2-3",   Title = isArabic ? "2 - 3 سنوات"    : "2 - 3 years" },
-                  new { Id = "4-5",   Title = isArabic ? "4 - 5 سنوات"    : "4 - 5 years" },
-                  new { Id = "6-10",  Title = isArabic ? "6 - 10 سنوات"   : "6 - 10 years" },
-                  new { Id = "10+",   Title = isArabic ? "أكثر من 10 سنوات" : "10+ years" }
+                  new { Id = "0",   Title = isArabic ? "0 - 1 سنة"      : "0 - 1 years" },
+                  new { Id = "1",   Title = isArabic ? "2 - 3 سنوات"    : "2 - 3 years" },
+                  new { Id = "2",   Title = isArabic ? "4 - 5 سنوات"    : "4 - 5 years" },
+                  new { Id = "3",  Title = isArabic ? "6 - 10 سنوات"   : "6 - 10 years" },
+                  new { Id = "4",   Title = isArabic ? "أكثر من 10 سنوات" : "10+ years" }
               };
 
             return Json(dropdownData);

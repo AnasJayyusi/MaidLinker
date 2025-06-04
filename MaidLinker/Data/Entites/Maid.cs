@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Globalization;
 using System.Net.Mail;
 using static MaidLinker.Data.SharedEnum;
 
@@ -51,6 +52,25 @@ namespace MaidLinker.Data.Entites
         public List<Attachment> Attachments { get; set; }
         #endregion
 
+        [NotMapped]
+        public string FullName
+        {
+            get
+            {
+                var isArabic = CultureInfo.CurrentCulture.TwoLetterISOLanguageName == "ar";
+
+                if (isArabic)
+                {
+                    return string.Join(" ", new[] { FirstNameAr, SecondNameAr, ThirdNameAr, LastNameAr }
+                        .Where(s => !string.IsNullOrWhiteSpace(s)));
+                }
+                else
+                {
+                    return string.Join(" ", new[] { FirstNameEn, SecondNameEn, ThirdNameEn, LastNameEn }
+                        .Where(s => !string.IsNullOrWhiteSpace(s)));
+                }
+            }
+        }
 
     }
 }

@@ -58,37 +58,37 @@
 
                         <div class="col-md-4" style="padding-bottom:16px">
                             <select class="form-control" id="sort-ddl" onchange="doSearch()">
-                                <option value="0">@Localizer["SortBy"]</option>
-                                <option value="1">@Localizer["Nationality"]</option>
-                                <option value="2">@Localizer["Language"]</option>
+                                <option value="AsIs">@Localizer["SortBy"]</option>
+                                <option value="Age">@Localizer["Age"]</option>
+                                <option value="Experience">@Localizer["Experience"]</option>
                             </select>
                         </div>
                     </div>
                     <div class="row">
                          <div class="col-md-2 col-12 p-0">
                             <select class="form-control" id="nationalities-ddl" onchange="doSearch()">
-                                <option value="">@Localizer["Nationality"] </option>
+                                <option value="-1">@Localizer["Nationality"] </option>
                             </select>
                         </div>
 
                         <div class="col-md-2 col-12 ">
                             <select class="form-control" id="languages-ddl" onchange="doSearch()">
-                                <option value="">@Localizer["Language"] </option>
+                                <option value="-1">@Localizer["Language"] </option>
                             </select>
                         </div>
                         <div class="col-md-2 col-12">
-                            <select class="form-control" id="age-ddl" onchange="getDistrictsThenFilter()">
-                                <option value="">@Localizer["Age"] </option>
+                            <select class="form-control" id="age-ddl" onchange="doSearch()">
+                                <option value="-1">@Localizer["Age"] </option>
                             </select>
                         </div>
                         <div class="col-md-2 col-12 ">
                             <select class="form-control" id="experience-ddl" onchange="doSearch()">
-                                <option value="">@Localizer["Experience"] </option>
+                                <option value="-1">@Localizer["Experience"] </option>
                             </select>
                         </div>
                         <div class="col-md-4 col-12 ">
                             <select class="form-control" id="maritalStatus-ddl" onchange="doSearch()">
-                                <option value="0">@Localizer["MaritalStatus"]</option>
+                                <option value="-1">@Localizer["MaritalStatus"]</option>
                             </select>
                         </div>
 
@@ -262,19 +262,20 @@
         }
 
         function doSearch() {
-            var doctorsContainer = $('#listContainer');
-            var serviceId = $('#nationalities-ddl').val();
-            var disctrictId = $('#experience-ddl').val();
-
-            var cityId = $('#age-ddl').val();
-            var sortBy = $('#sort-ddl').val();
-            var maritalStatusType = $('#maritalStatus-ddl').val();
             var name = $('#filterInput').val();
+            var nationalityId = $('#nationalities-ddl').val();
+            var langId = $('#languages-ddl').val();
+            var age = $('#age-ddl').val();
+            var experience = $('#experience-ddl').val();
+            var maritalStatus = $('#maritalStatus-ddl').val();
+            var sortBy = $('#sort-ddl').val();
+
+            var container = $('#listContainer');
             $.ajax({
-                url: '/Home/FillDoctorsList?name=' + name + '&serviceId=' + serviceId + '&cityId=' + cityId + '&disctrictId=' + disctrictId + '&sortBy=' + sortBy + '&maritalStatusType=' + maritalStatusType,
+                url: '/Home/FillMaidsListWithFilter?name=' + name + '&nationalityId=' + nationalityId + '&langId=' + langId + '&age=' + age+ '&experience=' + experience + '&maritalStatus=' + maritalStatus+ '&sortBy=' + sortBy,
                 type: 'GET',
                 success: function (response) {
-                    doctorsContainer.html(response);
+                    container.html(response);
                 },
                 error: function (xhr, status, error) {
                     console.error('Error:', error);
