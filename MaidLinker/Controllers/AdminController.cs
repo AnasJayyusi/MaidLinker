@@ -174,16 +174,6 @@ namespace MaidLinker.Controllers
             return Json(new { success = true });
         }
 
-
-        
-        
-
-        [Route("Statistics")]
-        public IActionResult Statistics()
-        {
-            return View();
-
-        }
         #endregion
 
         #region Nationalities
@@ -431,7 +421,7 @@ namespace MaidLinker.Controllers
 
         #endregion
 
-        #region Maids
+        #region Maids Data
         [Route("MaidsManagement/Maids")]
         public IActionResult Maids()
         {
@@ -757,9 +747,6 @@ namespace MaidLinker.Controllers
         #endregion
 
         #region MaidRequests
-
-
-        #region Maids 
         [Route("MaidsManagement/MaidRequests")]
         public IActionResult MaidRequests()
         {
@@ -898,128 +885,127 @@ namespace MaidLinker.Controllers
             };
         }
 
-
-
-
-        #endregion
         #endregion
 
-        #region PractitionerTypes
-        [Route("MasterList/PractitionerTypes")]
-        public IActionResult PractitionerTypes()
+        #region UserManagment
+      
+
+        [Route("UserManagement/ManageUsers")]
+        public async Task<IActionResult> ManageUsers()
         {
-            // Retrieve the value from TempData
-            bool? isFromDeleteRequest = TempData["isFromDeleteRequest"] as bool?;
-            bool? isSuccessDelete = TempData["isSuccessDelete"] as bool?;
+            var users = _userManager.Users.ToList();
+            var userRoles = new Dictionary<string, IList<string>>();
+            var userPermissions = new Dictionary<string, List<string>>();
 
-            if (isFromDeleteRequest != null && isSuccessDelete != null)
+            foreach (var user in users)
             {
-                // Clear the TempData value to avoid persisting it across subsequent requests
-                TempData.Remove("isFromDeleteRequest");
-                TempData.Remove("isSuccessDelete");
+                userRoles[user.Id] = await _userManager.GetRolesAsync(user);
 
-                // Use the value as needed
-                ViewBag.SuccessMessage = isSuccessDelete;
+                // Simulate getting permissions from DB or claims
+                var claims = await _userManager.GetClaimsAsync(user);
+                userPermissions[user.Id] = claims
+                    .Where(c => c.Type == "PageAccess")
+                    .Select(c => c.Value)
+                    .ToList();
             }
 
-            return View(_dbContext.PractitionerTypes.ToList());
-        }
+            ViewBag.UserRoles = userRoles;
+            ViewBag.UserPermissions = userPermissions;
+            ViewBag.AvailablePermissions = AvailablePermissions;
 
-        [Route("GetPractitionerTypes")]
-        public IActionResult PractitionerTypesList()
-        {
-            var practitionerTypes = _dbContext.PractitionerTypes.ToList();
-            return PartialView("PractitionerTypesList", practitionerTypes);
+            return View(users);
         }
 
         [HttpPost]
-        [Route("AddPractitionerType")]
-        public IActionResult AddPractitionerType([FromBody] PractitionerType practitionerType)
+        [Route("UserManagement/ToggleUserStatus")]
+        public async Task<IActionResult> ToggleUserStatus(string userId)
         {
-            if (practitionerType == null || string.IsNullOrEmpty(practitionerType.TitleEn) || string.IsNullOrEmpty(practitionerType.TitleAr))
-            {
-                return BadRequest("Please fill all fields.");
-            }
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null) return NotFound();
 
-            bool isDuplicate = _dbContext.PractitionerTypes.Any(w => w.TitleEn == practitionerType.TitleEn && w.TitleAr == practitionerType.TitleAr);
-            if (isDuplicate)
-            {
-                return BadRequest("The details for the Practitioner Type have already been added.");
-            }
+            user.LockoutEnabled = !user.LockoutEnabled;
+            user.LockoutEnd = user.LockoutEnabled ? DateTimeOffset.MaxValue : (DateTimeOffset?)null;
 
-            else
-            {
-                if (!string.IsNullOrEmpty(practitionerType.TitleAr) || !string.IsNullOrEmpty(practitionerType.TitleEn))
-                {
-                    _dbContext.PractitionerTypes.Add(practitionerType);
-                    _dbContext.SaveChanges();
-                }
-            }
-
-            return Ok();
+            await _userManager.UpdateAsync(user);
+            return RedirectToAction("ManageUsers");
         }
 
         [HttpPost]
-        [Route("UpdatePractitionerType")]
-        public IActionResult UpdatePractitionerType([FromBody] PractitionerType practitionerType)
+        [Route("UserManagement/UpdateMobile")]
+        public async Task<IActionResult> UpdateMobile(string userId, string newPhone)
         {
-            if (practitionerType == null || string.IsNullOrEmpty(practitionerType.TitleEn) || string.IsNullOrEmpty(practitionerType.TitleAr))
-            {
-                return BadRequest("Please fill all fields.");
-            }
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null) return NotFound();
 
-            bool isDuplicate = _dbContext.PractitionerTypes.Any(w => w.TitleEn == practitionerType.TitleEn && w.TitleAr == practitionerType.TitleAr);
-            if (isDuplicate)
-            {
-                return BadRequest("The details for the Practitioner Type have already been added.");
-            }
-
-            else
-            {
-                if (!string.IsNullOrEmpty(practitionerType.TitleAr) || !string.IsNullOrEmpty(practitionerType.TitleEn))
-                {
-                    _dbContext.PractitionerTypes.Update(practitionerType);
-                    _dbContext.SaveChanges();
-                }
-            }
-
-            return Ok();
+            user.PhoneNumber = newPhone;
+            await _userManager.UpdateAsync(user);
+            return RedirectToAction("ManageUsers");
         }
 
-        [HttpGet]
-        [Route("UpdatePractitionerTypeStatus/{id}/{isActive}")]
-        public IActionResult UpdatePractitionerTypeStatus(int id, bool isActive)
+        [HttpPost]
+        [Route("UserManagement/UpdateUsername")]
+        public async Task<IActionResult> UpdateUsername(string userId, string newUsername)
         {
-            // Logic to update the status of the practitioner type with the given ID
-            try
-            {
-                var practitionerType = _dbContext.PractitionerTypes.SingleOrDefault(p => p.Id == id);
-                if (practitionerType == null)
-                {
-                    return NotFound();
-                }
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null) return NotFound();
 
-                practitionerType.IsActive = isActive;
-                _dbContext.SaveChanges();
-
-                return Ok();
-            }
-            catch (Exception ex)
+            // Check if the new username already exists
+            var existingUser = await _userManager.FindByNameAsync(newUsername);
+            if (existingUser != null && existingUser.Id != userId)
             {
-                return StatusCode(500, "An error occurred while updating the status.");
+                ModelState.AddModelError("", "Username already taken.");
+                // You might want to return a better error view or just redirect with a message
+                return RedirectToAction("ManageUsers");
             }
+
+            user.UserName = newUsername;
+            user.NormalizedUserName = _userManager.NormalizeName(newUsername); // Ensure it's normalized
+
+            var result = await _userManager.UpdateAsync(user);
+
+            if (!result.Succeeded)
+            {
+                // Log or show errors if needed
+                return BadRequest(result.Errors);
+            }
+
+            return RedirectToAction("ManageUsers");
         }
 
 
-
-
-        [HttpGet]
-        [Route("GetPractitionerType/{id}")]
-        public PractitionerType GetPractitionerType(int id)
+        [HttpPost]
+        [Route("UserManagement/UpdateUserPermissions")]
+        public async Task<IActionResult> UpdateUserPermissions(string userId, List<string> permissions)
         {
-            var practitionerTypes = _dbContext.PractitionerTypes.Single(w => w.Id == id);
-            return practitionerTypes;
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null) return NotFound();
+
+            var existingClaims = await _userManager.GetClaimsAsync(user);
+            var currentClaims = existingClaims.Where(c => c.Type == "PageAccess").ToList();
+
+            // Remove old claims
+            foreach (var claim in currentClaims)
+                await _userManager.RemoveClaimAsync(user, claim);
+
+            // Add selected permissions as claims
+            foreach (var permission in permissions)
+                await _userManager.AddClaimAsync(user, new System.Security.Claims.Claim("PageAccess", permission));
+
+            return RedirectToAction("ManageUsers");
         }
+        private static readonly List<string> AvailablePermissions = new List<string>
+                                                                    {
+                                                                        "Dashboard",
+                                                                        "InternalRequest",
+                                                                        "Maids",
+                                                                        "Nationalities",
+                                                                        "Countries",
+                                                                        "ManageUsers",
+                                                                        "FinancialReport",
+                                                                        "GeneralSettings",
+                                                                        "Feedbacks"
+                                                                    };
+
         #endregion
 
         #region GeneralSettings
@@ -1128,12 +1114,6 @@ namespace MaidLinker.Controllers
             }
         }
         #endregion
-
-
-
-
-
-
 
         #region CustomChangePassword
         [Route("CustomChangePassword")]

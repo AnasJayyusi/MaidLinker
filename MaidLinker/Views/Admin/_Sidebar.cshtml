@@ -1,6 +1,4 @@
-﻿
-
-@using Microsoft.AspNetCore.Mvc.Localization
+﻿@using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer Localizer
 @{
     string currentPath = Context.Request.Path.ToString().ToLower();
@@ -37,48 +35,63 @@
 
             <div class="sidebar-brand-text mx-4"><img src="/images/logo.png" class="navbar-logo" alt="logo" style="height:50px"> </div>
         </a>
-
+          @if (User.HasClaim("PageAccess", "Dashboard")){
         <!-- Divider -->
         <hr class="sidebar-divider my-0">
 
+      
         <!-- Nav Item - Dashboard -->
-          <li class="nav-item active">
-        <a class="nav-link" asp-controller="Admin" asp-action="Dashboard">
-            <i class="fas fa-fw fa-tachometer-alt"></i>
-            <span>Dashboard</span>
-        </a>
-    </li>
+        <li class="nav-item active">
+            <a class="nav-link" asp-controller="Admin" asp-action="Dashboard">
+                <i class="fas fa-fw fa-tachometer-alt"></i>
+                <span>@Localizer["Dashboard"]</span>
+                
+            </a>
+        </li>
 
         <!-- Divider -->
         <hr class="sidebar-divider">
+        }
 
         <!-- Heading -->
-         <div class="sidebar-heading">
-        Interface
-    </div> 
+         @if (User.HasClaim("PageAccess", "InternalRequest") || User.HasClaim("PageAccess", "Maids")){
+        <div class="sidebar-heading">
+           @Localizer["Interface"] 
+        </div>
 
         <!-- Nav Item - Pages Collapse Menu -->
-      
-  
-
- 
 
 
-    <li class="nav-item @(currentPath.Contains("MaidsManagement".ToString().ToLower()) == true ? "active" : "")">
+        <!-- MaidsManagement -->
+       
+        <li class="nav-item @(currentPath.Contains("MaidsManagement".ToString().ToLower()) == true ? "active" : "")">
             <a class="nav-link  @(currentPath.Contains("MaidsManagement".ToString().ToLower()) == true ? "" : "collapsed")" href="#" data-toggle="collapse" data-target="#collapseReferrals"
-           aria-expanded="true" aria-controls="collapseTwo">
+               aria-expanded="true" aria-controls="collapseTwo">
                 <i class="fas fa-person"></i>
                 <span>@Localizer["MaidsManagement"]</span>
-        </a>
+            </a>
             <div id="collapseReferrals" class="collapse @(currentPath.Contains("MaidsManagement".ToString().ToLower()) == true ? "show" : "")" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item @(currentPath.Contains("MaidsManagement/Maids".ToString().ToLower()) == true? "active" : "")" asp-area="" asp-controller="Admin" asp-action="Maids">@Localizer["Maids"]</a>
-                    <a class="collapse-item @(currentPath.Contains("MaidsManagement/MaidRequests".ToString().ToLower()) == true ? "active" : "")" asp-area="" asp-controller="Admin" asp-action="MaidRequests">@Localizer["InternalRequest"]</a>
+                <div class="bg-white py-2 collapse-inner rounded">
+                     @if (User.HasClaim("PageAccess", "Maids")){
+                         <a class="collapse-item @(currentPath.Contains("MaidsManagement/Maids".ToString().ToLower()) == true ? "active" : "")" asp-area="" asp-controller="Admin" asp-action="Maids">
+                             @Localizer["Maids"]
+                             </a>
+                     }
+                    
+                       @if (User.HasClaim("PageAccess", "InternalRequest")){
+                    <a class="collapse-item @(currentPath.Contains("MaidsManagement/MaidRequests".ToString().ToLower()) == true ? "active" : "")" asp-area="" asp-controller="Admin" asp-action="MaidRequests">
+                        @Localizer["InternalRequest"]
+                        </a>
+                       }
 
+                </div>
             </div>
-        </div>
-    </li>
+        </li>
+        }
 
+
+         <!-- MasterList -->
+          @if (User.HasClaim("PageAccess", "Nationalities") || User.HasClaim("PageAccess", "Countries")){
         <li class="nav-item  @(currentPath.Contains("MasterList".ToString().ToLower()) == true ? "active" : "")">
             <a class="nav-link  @(currentPath.Contains("MasterList".ToString().ToLower()) == true ? "" : "collapsed")" href="#" data-toggle="collapse" data-target="#collapseTwo"
                aria-expanded="true" aria-controls="collapseTwo">
@@ -87,25 +100,23 @@
             </a>
             <div id="collapseTwo" class="collapse @(currentPath.Contains("MasterList".ToString().ToLower()) == true ? "show" : "")" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item @(currentPath.Contains("Nationalities".ToString().ToLower()) == true ? "active" : "")" asp-area="" asp-controller="Admin" asp-action="Nationalities">@Localizer["Nationalities"]</a>
-                    <a class="collapse-item @(currentPath.Contains("Countries".ToString().ToLower()) == true ? "active" : "")" asp-area="" asp-controller="Admin" asp-action="Countries">@Localizer["Countries"]</a>
-                    @*     <a class="collapse-item @(currentPath.Contains("PractitionerTypes".ToString().ToLower()) == true ? "active" : "")" asp-area="" asp-controller="Admin" asp-action="PractitionerTypes">Practitioner Types</a>
-                <a class="collapse-item @(currentPath.Contains("Degrees".ToString().ToLower()) == true ? "active" : "")" asp-area="" asp-controller="Admin" asp-action="Degrees">Degrees</a>
-                <a class="collapse-item @(currentPath.Contains("InsuranceCompanies".ToString().ToLower()) == true ? "active" : "")" asp-area="" asp-controller="Admin" asp-action="InsuranceCompanies">Insurance Companies</a>
-                <a class="collapse-item @(currentPath.Contains("ProfessionalRanks".ToString().ToLower()) == true ? "active" : "")" asp-area="" asp-controller="Admin" asp-action="ProfessionalRanks">Professional Ranks</a>
-                <a class="collapse-item @(currentPath.Contains("MasterList/Specialties".ToString().ToLower()) == true ? "active" : "")" asp-area="" asp-controller="Admin" asp-action="Specialties">Specialties</a>
-                <a class="collapse-item @(currentPath.Contains("Subspecialties".ToString().ToLower()) == true ? "active" : "")" asp-area="" asp-controller="Admin" asp-action="Subspecialties">Subspecialties</a>
-                <a class="collapse-item @(currentPath.Contains("ClinicalSpecialities".ToString().ToLower()) == true ? "active" : "")" asp-area="" asp-controller="Admin" asp-action="ClinicalSpecialities">Clinical Specialities</a>
-                <a class="collapse-item @(currentPath.Contains("MasterList/Services".ToString().ToLower()) == true ? "active" : "")" asp-area="" asp-controller="Admin" asp-action="Services">Services</a>
-                <a class="collapse-item @(currentPath.Contains("MasterList/ServiceLevels".ToString().ToLower()) == true ? "active" : "")" asp-area="" asp-controller="Admin" asp-action="ServiceLevels">Service Level</a>
-                <a class="collapse-item @(currentPath.Contains("States".ToString().ToLower()) == true ? "active" : "")" asp-area="" asp-controller="Admin" asp-action="States">States</a> *@
-                    @* <a class="collapse-item @(currentPath.Contains("Cities".ToString().ToLower()) == true ? "active" : "")" asp-area="" asp-controller="Admin" asp-action="Cities">Cities</a> *@
-                    @* <a class="collapse-item @(currentPath.Contains("Districts".ToString().ToLower()) == true ? "active" : "")" asp-area="" asp-controller="Admin" asp-action="Districts">Districts</a> *@
+                     @if (User.HasClaim("PageAccess", "Nationalities") ){
+                    <a class="collapse-item @(currentPath.Contains("Nationalities".ToString().ToLower()) == true ? "active" : "")" asp-area="" asp-controller="Admin" asp-action="Nationalities">
+                        @Localizer["Nationalities"]
+                        </a>
+                     }
+                      @if (User.HasClaim("PageAccess", "Countries") ){
+                    <a class="collapse-item @(currentPath.Contains("Countries".ToString().ToLower()) == true ? "active" : "")" asp-area="" asp-controller="Admin" asp-action="Countries">
+                        @Localizer["Countries"]
+                        </a>
+                      }
                 </div>
             </div>
         </li>
+           }
 
-
+             @if (User.HasClaim("PageAccess", "ManageUsers")){
+              <!-- Users -->
         <li class="nav-item @(currentPath.Contains("Users".ToString().ToLower()) == true ? "active" : "")">
             <a class="nav-link  @(currentPath.Contains("Users".ToString().ToLower()) == true ? "" : "collapsed")" href="#" data-toggle="collapse" data-target="#collapseUsers"
                aria-expanded="true" aria-controls="collapseTwo">
@@ -114,68 +125,85 @@
             </a>
             <div id="collapseUsers" class="collapse @(currentPath.Contains("Users".ToString().ToLower()) == true ? "show" : "")" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item @(currentPath.Contains("ServiceReviewRequests".ToString().ToLower()) == true ? "active" : "")" asp-area="" asp-controller="Admin" asp-action="ServiceReviewRequests">Service Review Requests</a>
-                    <a class="collapse-item @(currentPath.Contains("UsersProfilesReviews".ToString().ToLower()) == true ? "active" : "")" asp-area="" asp-controller="Admin" asp-action="UsersProfilesReviews"> Users Profiles Reviews</a>
+                    <a class="collapse-item @(currentPath.Contains("ManageUsers".ToString().ToLower()) == true ? "active" : "")" asp-area="" asp-controller="Admin" asp-action="ManageUsers">@Localizer["ManageUsers"]</a>
                 </div>
             </div>
         </li>
-      
+     
+        }
 
-    <li class="nav-item @(currentPath.Contains("Reports".ToString().ToLower()) == true ? "active" : "")">
-        <a class="nav-link  @(currentPath.Contains("Reports".ToString().ToLower()) == true ? "" : "collapsed")" href="#" data-toggle="collapse" data-target="#collapseReports"
-           aria-expanded="true" aria-controls="collapseReports">
-           <i class="fas fa-file-invoice"></i>
-            <span>Reports</span>
-        </a>
-        <div id="collapseReports" class="collapse @(currentPath.Contains("Reports".ToString().ToLower()) == true ? "show" : "")" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item @(currentPath.Contains("ServicesReport".ToString().ToLower()) == true ? "active" : "")" asp-area="" asp-controller="Admin" asp-action="ServicesReport">Service Report</a>
+        @if (User.HasClaim("PageAccess", "FinancialReport") )
+        {
+
+            <!-- Financial -->
+            <li class="nav-item @(currentPath.Contains("Financial".ToString().ToLower()) == true ? "active" : "")">
+                <a class="nav-link  @(currentPath.Contains("Financial".ToString().ToLower()) == true ? "" : "collapsed")" href="#" data-toggle="collapse" data-target="#collapseReports"
+               aria-expanded="true" aria-controls="collapseReports">
+               <i class="fas fa-money-bill"></i>
+                <span>@Localizer["Financial"] </span>
+            </a>
+            <div id="collapseReports" class="collapse @(currentPath.Contains("Reports".ToString().ToLower()) == true ? "show" : "")" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="collapse-item @(currentPath.Contains("ServicesReport".ToString().ToLower()) == true ? "active" : "")" asp-area="" asp-controller="Admin" asp-action="ServicesReport">@Localizer["FinancialReport"] </a>
+                </div>
             </div>
+        </li>
+        }
+            @if (User.HasClaim("PageAccess", "GeneralSettings") || User.HasClaim("PageAccess", "Feedbacks") )
+        {
+        <!-- Divider -->
+        <hr class="sidebar-divider">
+
+        <!-- Heading -->
+     
+        <div class="sidebar-heading">
+          
+            @Localizer["WebSiteSettings"]
         </div>
-    </li>
+        <li class="nav-item @(currentPath.Contains("Settings".ToString().ToLower()) == true ? "active" : "")">
+            <a class="nav-link  @(currentPath.Contains("Settings".ToString().ToLower()) == true ? "" : "collapsed")" href="#" data-toggle="collapse" data-target="#collapseSettings"
+               aria-expanded="true" aria-controls="collapseSettings">
+                <i class="fa fa-cog"></i>
+                <span> @Localizer["Settings"]</span>
+            </a>
+            <div id="collapseSettings" class="collapse @(currentPath.Contains("Settings".ToString().ToLower()) == true ? "show" : "")" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                     @if (User.HasClaim("PageAccess", "GeneralSettings")){
 
-    <!-- Divider -->
-    <hr class="sidebar-divider">
-
-    <!-- Heading -->
-    <div class="sidebar-heading">
-        Web Site Settings
-    </div>
-    <li class="nav-item @(currentPath.Contains("Settings".ToString().ToLower()) == true ? "active" : "")">
-        <a class="nav-link  @(currentPath.Contains("Settings".ToString().ToLower()) == true ? "" : "collapsed")" href="#" data-toggle="collapse" data-target="#collapseSettings"
-           aria-expanded="true" aria-controls="collapseSettings">
-            <i class="fa fa-cog"></i>
-            <span>Settings</span>
-        </a>
-        <div id="collapseSettings" class="collapse @(currentPath.Contains("Settings".ToString().ToLower()) == true ? "show" : "")" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item @(currentPath.Contains("GeneralSettings".ToString().ToLower()) == true ? "active" : "")" asp-area="" asp-controller="Admin" asp-action="GeneralSettings">General Settings</a>
-                <a class="collapse-item @(currentPath.Contains("Feedbacks".ToString().ToLower()) == true ? "active" : "")" asp-area="" asp-controller="Admin" asp-action="Feedbacks">Feedbacks</a>
+                    <a class="collapse-item @(currentPath.Contains("GeneralSettings".ToString().ToLower()) == true ? "active" : "")" asp-area="" asp-controller="Admin" asp-action="GeneralSettings">
+                        @Localizer["GeneralSettings"]
+                        </a>
+                    }
+                        @if (User.HasClaim("Feedbacks", "GeneralSettings")){
+                    <a class="collapse-item @(currentPath.Contains("Feedbacks".ToString().ToLower()) == true ? "active" : "")" asp-area="" asp-controller="Admin" asp-action="Feedbacks"> @Localizer["Feedbacks"] </a>
+                        }
+                </div>
             </div>
+        </li>
+     
+
+        <!-- Divider -->
+        <hr class="sidebar-divider">
+           }
+
+        <!-- Heading -->
+
+
+        <div class="sidebar-heading">
+            @Localizer["Account"] 
         </div>
-    </li>
-
-
-    <!-- Divider -->
-    <hr class="sidebar-divider">
-
-    <!-- Heading -->
-    <div class="sidebar-heading">
-      Admin Profile
-    </div>
-    <li class="nav-item @(currentPath.Contains("MyProfile".ToString().ToLower()) == true ? "active" : "")">
-        <a class="nav-link  @(currentPath.Contains("MyProfile".ToString().ToLower()) == true ? "" : "collapsed")" href="#" data-toggle="collapse" data-target="#collapseAdminProfile"
-           aria-expanded="true" aria-controls="collapseAdminProfile">
-            <i class="fa-solid fa-user"></i>
-            <span>My Profile</span>
-        </a>
-        <div id="collapseAdminProfile" class="collapse @(currentPath.Contains("MyProfile".ToString().ToLower()) == true ? "show" : "")" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item @(currentPath.Contains("Notifications".ToString().ToLower()) == true ? "active" : "")" asp-area="" asp-controller="Admin" asp-action="Notifications">Notifications</a>
-                <a class="collapse-item @(currentPath.Contains("ChangePassword".ToString().ToLower()) == true ? "active" : "")" asp-area="" asp-controller="Admin" asp-action="CustomChangePassword">Change Password</a>
-
+        <li class="nav-item @(currentPath.Contains("MyProfile".ToString().ToLower()) == true ? "active" : "")">
+            <a class="nav-link  @(currentPath.Contains("MyProfile".ToString().ToLower()) == true ? "" : "collapsed")" href="#" data-toggle="collapse" data-target="#collapseAdminProfile"
+               aria-expanded="true" aria-controls="collapseAdminProfile">
+                <i class="fa-solid fa-user"></i>
+                <span>@Localizer["ManageAccount"] </span>
+            </a>
+            <div id="collapseAdminProfile" class="collapse @(currentPath.Contains("MyProfile".ToString().ToLower()) == true ? "show" : "")" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="collapse-item @(currentPath.Contains("Notifications".ToString().ToLower()) == true ? "active" : "")" asp-area="" asp-controller="Admin" asp-action="Notifications">@Localizer["Notifications"] </a>
+                    <a class="collapse-item @(currentPath.Contains("ChangePassword".ToString().ToLower()) == true ? "active" : "")" asp-area="" asp-controller="Admin" asp-action="CustomChangePassword">@Localizer["ChangePassword"]</a>
+                </div>
             </div>
-        </div>
-    </li>
-</ul>
+        </li>
+    </ul>
 </div>
