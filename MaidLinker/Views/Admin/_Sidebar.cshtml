@@ -174,7 +174,7 @@
                         @Localizer["GeneralSettings"]
                         </a>
                     }
-                        @if (User.HasClaim("Feedbacks", "GeneralSettings")){
+                        @if (User.HasClaim("PageAccess", "Feedbacks")){
                     <a class="collapse-item @(currentPath.Contains("Feedbacks".ToString().ToLower()) == true ? "active" : "")" asp-area="" asp-controller="Admin" asp-action="Feedbacks"> @Localizer["Feedbacks"] </a>
                         }
                 </div>

@@ -79,52 +79,7 @@
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h6 style="font-weight:bold;color:#5F7AE7 " class="h6 mb-0 ">  Settings  &#8658; Feedbacks</h6>
-
-
-                        <!--ToDo:Move To Partial View -->
-                        <div class="dropdown" style="margin-right: 5%;" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-                            <a href="#">
-                                <label style="font-weight:bold;color:#5F7AE7 ">Administrator</label>
-                                <img src="~/users/images/Default-User-Profile.jpg" width="40" height="40" alt="user-profile">
-                            </a>
-
-                            <div class="dropdown-content">
-                       @*          @*<a class="nav-link text-dark  linkButton" asp-area="" asp-controller="Home" asp-action="Index">My Profile </a>*@
-                                @*<a class="nav-link text-dark linkButton" asp-area="" asp-controller="Doctor" asp-action="Index">My Order </a>*@
-
-                                <a type="submit" style="text-transform: none;" class="my-profile-button" asp-area="Identity" asp-page="/Account/Logout">
-                                    Logout
-                                    <span>
-                                        @*  <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                                        <button style="text-transform: none;" class="my-profile-button" type="submit"></button>
-                                        </form>
-                                        *@
-                                        <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
-                                            <button style="text-transform: none;" class="my-profile-button" type="submit"></button>
-                                        </form>
-                                    </span>
-
-
-                                </a>
-
-
-                            </div>
-                        </div>
-
-                        @*    <a asp-area="Identity" asp-page="/Account/Logout" class="drop-name">
-                        <span>
-
-                        <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                        <i style="color:white" class='fas fa-sign-out-alt'></i>
-                        <button type="submit" style="background-color:#0D6EFD" class="badge badge-primary">LOGOUT</button>
-                        </form>
-
-                        </span>
-
-                        </a>*@
-
-
-
+                        @Html.Partial("_Userbar")
                     </div>
                     <!-- Content Row -->
                     <div class="row">
