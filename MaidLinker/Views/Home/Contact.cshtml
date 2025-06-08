@@ -141,8 +141,8 @@
                             </h2>
                         </div>
 
-                        <p style="direction: ltr;">
-                            +966 50 411 6436
+                        <p id="phoneNumber" style="direction: ltr;">
+                            0775734887
                         </p>
                     </a>
 
@@ -155,8 +155,8 @@
                             </h2>
                         </div>
 
-                        <p>
-                            Riyadh
+                        <p id="Address">
+                            @Localizer["Address"]
                         </p>
                     </a>
 
@@ -171,7 +171,7 @@
 
                     <ul class="socail-media">
                         <li>
-                            <a href="https://www.facebook.com/MaidLinker_info">
+                            <a id="facebookLink" href="#" target="_blank">
                                 <img src="~/icon/facebook-icon.png" alt="">
                             </a>
                         </li>
@@ -183,16 +183,16 @@
                         </li> *@
 
                         <li>
-                            <a href="https://www.instagram.com/MaidLinker_info">
+                            <a id="instagramLink" href="#" target="_blank">
                                 <img src="~/icon/instagram-icon.png" alt="">
                             </a>
                         </li>
 
-                        <li>
+                       @*  <li>
                             <a href="https://twitter.com/MaidLinker_info">
                                 <img src="~/icon/twitter-icon.png" alt="">
                             </a>
-                        </li>
+                        </li> *@
                     </ul>
                 </div>
             </div>
@@ -286,6 +286,32 @@
                         console.error(error);
                     }
                 });
+            });
+        });
+    </script>
+
+    <script>
+               $(function () {
+            $.ajax({
+              
+                url: '/Common/GetContactInfo',
+                method: 'GET',
+                success: function (data) {
+                    $('#phoneNumber').text(data.phoneNumber);
+                    $('#whatsAppNumber').text(data.whatsAppNumber);
+                    $('#Address').text(data.address);
+                    $('#facebookLink').attr('href', data.facebookUrl);
+                    $('#instagramLink').attr('href', data.instagramUrl);
+
+                    // Format WhatsApp URL
+                    if (data.WhatsAppNumber) {
+                        var whatsappUrl = 'https://wa.me/' + data.WhatsAppNumber.replace(/\D/g, '');
+                        $('#whatsAppLinkAnchor').attr('href', whatsappUrl);
+                    }
+                },
+                error: function () {
+                    console.error('Failed to load contact info.');
+                }
             });
         });
     </script>

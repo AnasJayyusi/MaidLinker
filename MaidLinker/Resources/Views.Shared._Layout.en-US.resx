@@ -150,4 +150,10 @@
   <data name="PleaseWait" xml:space="preserve">
     <value>Please wait...</value>
   </data>
+  <data name="ScreenTooSmallTitle" xml:space="preserve">
+    <value>Please use a larger screen to access the dashboard</value>
+  </data>
+  <data name="ScreenTooSmallMessage" xml:space="preserve">
+    <value>Screen Too Small</value>
+  </data>
 </root>

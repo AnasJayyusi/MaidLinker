@@ -5,6 +5,7 @@
         public int Id { get; set; }
         public string SettingKey { get; set; }
         public string SettingGroup { get; set; }
+        public string SettingValue { get; set; }
         public DateTime? CreatedDate { get; set; }
     }
 }

@@ -36,6 +36,42 @@
 
 
     <style>
+        #screenSizeWarning {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: lavender; /* soft red overlay */
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .screen-warning-content {
+            background: lavender;
+            padding: 30px 40px;
+            border-radius: 16px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            border: 2px solid lavender;
+            max-width: 400px;
+            width: 90%;
+        }
+
+            .screen-warning-content h2 {
+                color: lavender;
+                font-size: 24px;
+                margin-bottom: 10px;
+            }
+
+            .screen-warning-content p {
+                color: black;
+                font-size: 16px;
+            }
+
         .custom-notification {
             position: fixed;
             top: 20px;
@@ -156,6 +192,12 @@
 @await RenderSectionAsync("Scripts", required: false)
 
 <body style="overflow-x: hidden">
+    <div id="screenSizeWarning">
+        <div class="screen-warning-content">
+            <h2>@Localizer["ScreenTooSmallTitle"]</h2>
+            <p>@Localizer["ScreenTooSmallMessage"]</p>
+        </div>
+    </div>
     <nav class="navabr">
         <div class="top-nav">
             <div class="container">
@@ -173,7 +215,7 @@
                         </li>
 
                         <li>
-                            <a href="https://www.facebook.com/MaidLinker_info">
+                            <a id="facebookLinkLayout" href="#" target="_blank">
                                 <img src="~/images/navbar/face.svg" alt="">
                             </a>
                         </li>
@@ -185,13 +227,13 @@
                         </li> *@
 
                         <li>
-                            <a href="https://www.instagram.com/MaidLinker_info">
+                            <a id="instagramLinkLayout" href="#" target="_blank">
                                 <img src="~/images/navbar/insta.svg" alt="">
                             </a>
                         </li>
 
-                        <li>
-                            <a href="https://wa.me/+966504116436">
+                        <li id="whatsAppLink">
+                            <a id="whatsAppLinkAnchor" href="#" target="_blank">
                                 <img  src="~/images/navbar/whatsapp.svg" alt="">
                             </a>
                         </li>
@@ -200,7 +242,7 @@
                     @{
                         if (User.Identity.IsAuthenticated)
                         {
-
+                            
                             <text>
 
 
@@ -227,6 +269,7 @@
                     @{
                         if (!User.Identity.IsAuthenticated)
                         {
+                          
                             <text>
                                 <div class="drop-list-shape data">
                                     <a href="#" class="drop-name">
@@ -274,6 +317,7 @@
 
                                 @if (User.Identity.IsAuthenticated)
                                 {
+                                
                                     <div id="mobiledropDown" class="dropdown" style="direction:@direction;text-align:@textAlign">
                                         <a href="#">
                                             <img style="border-radius:30%" id="user-image-layout" src="" width="40" height="40" alt="user-image-profile" onerror="this.src='/users/images/Default-User-Profile.jpg'">
@@ -376,7 +420,9 @@
 
     <div>
         <main role="main" style="direction:@direction">
+            <div id="layoutContent">
             @RenderBody()
+            </div>
         </main>
         <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="NotificationModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
@@ -546,3 +592,44 @@
 
 <script src="~/js/signalr/dist/browser/signalr.js"></script>
 <script src="~/js/notification.js"></script>
+
+<script>
+           $(function () {
+        $.ajax({
+            url: '/Common/GetContactInfo',
+            method: 'GET',
+            success: function (data) {
+                $('#whatsAppNumber').text(data.whatsAppNumber);
+                $('#facebookLinkLayout').attr('href', data.facebookUrl);
+                $('#instagramLinkLayout').attr('href', data.instagramUrl);
+
+                // Format WhatsApp URL
+                if (data.whatsAppNumber) {
+                    var whatsappUrl = 'https://wa.me/' + data.whatsAppNumber.replace(/\D/g, '');
+                    $('#whatsAppLinkAnchor').attr('href', whatsappUrl);
+                }
+            },
+            error: function () {
+                console.error('Failed to load contact info.');
+            }
+        });
+    });
+</script>
+<script>
+    function checkScreenSize() {
+        const isDashboard = window.location.pathname.toLowerCase().includes("admin");
+        const warning = document.getElementById("screenSizeWarning");
+        const content = document.getElementById("layoutContent");
+
+        if (isDashboard && window.innerWidth < 768) {
+            warning.style.display = "flex";
+            if (content) content.style.display = "none";
+        } else {
+            warning.style.display = "none";
+            if (content) content.style.display = "block";
+        }
+    }
+
+    window.addEventListener("load", checkScreenSize);
+    window.addEventListener("resize", checkScreenSize);
+</script>

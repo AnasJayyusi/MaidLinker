@@ -1,4 +1,5 @@
-﻿@model MaidLinker.Data.Entites.GeneralSettings
+﻿@model GeneralSettingsViewModel
+
 <head>
     <!-- Custom styles for this template-->
     <link href="~/css/sb-admin-2.css" rel="stylesheet">
@@ -72,23 +73,7 @@
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h6 style="font-weight:bold;color:#5F7AE7 " class="h6 mb-0 ">  Settings  &#8658; General Settings</h6>
                         <!--ToDo:Move To Partial View -->
-                        <div class="dropdown" style="margin-right: 5%;" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-                            <a href="#">
-                                <label style="font-weight:bold;color:#5F7AE7 ">Administrator</label>
-                                <img src="~/users/images/Default-User-Profile.jpg" width="40" height="40" alt="user-profile">
-                            </a>
-
-                            <div class="dropdown-content">
-                                <a type="submit" style="text-transform: none;" class="my-profile-button" asp-area="Identity" asp-page="/Account/Logout">
-                                    Logout
-                                    <span>
-                                        <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
-                                            <button style="text-transform: none;" class="my-profile-button" type="submit"></button>
-                                        </form>
-                                    </span>
-                                </a>
-                            </div>
-                        </div>
+                        @Html.Partial("_Userbar")
                     </div>
                     <!-- Content Row -->
                     <div class="row">
@@ -108,17 +93,40 @@
                                         @*@Html.Partial("ServicesReportList", Model)*@
                                         <form method="post" action="UpdateGeneralSetting">
                                             @Html.AntiForgeryToken()
-                                     
-                                          
-                                         
 
-                                         
+                                            <div class="form-group">
+                                                <label for="PhoneNumber">Phone Number</label>
+                                                <input type="text" id="PhoneNumber" name="PhoneNumber" class="form-control" value="@Model.PhoneNumber" />
+                                            </div>
 
-                                          
+                                            <div class="form-group">
+                                                <label for="WhatsAppNumber">WhatsApp Number</label>
+                                                <input type="text" id="WhatsAppNumber" name="WhatsAppNumber" class="form-control" value="@Model.WhatsAppNumber" />
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="AddressAr">Address in Arabic</label>
+                                                <input type="text" id="AddressAr" name="AddressAr" class="form-control" value="@Model.AddressAr" />
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="AddressEn">Address in English</label>
+                                                <input type="text" id="AddressEn" name="AddressEn" class="form-control" value="@Model.AddressEn" />
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="FacebookUrl">Facebook URL</label>
+                                                <input type="url" id="FacebookUrl" name="FacebookUrl" class="form-control" value="@Model.FacebookUrl" />
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="InstagramUrl">Instagram URL</label>
+                                                <input type="url" id="InstagramUrl" name="InstagramUrl" class="form-control" value="@Model.InstagramUrl" />
+                                            </div>
+
                                             <button type="submit" class="btn btn-primary">Save</button>
-                                            <span style="color:gray;font-style:italic">(Note: VatValue & Site Percentage Only Affected For Future Orders)</span>
-                                            <br />
                                         </form>
+
                                     </div>
                                 </div>
                             </div>

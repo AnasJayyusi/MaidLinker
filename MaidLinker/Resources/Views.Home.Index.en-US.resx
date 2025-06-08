@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ChooseMaid" xml:space="preserve">
-    <value>Choose a maid</value>
+    <value>Browse Maids Now</value>
   </data>
   <data name="CityDefaultSelection" xml:space="preserve">
     <value>Choose City</value>
@@ -127,20 +127,27 @@
     <value>Choose District</value>
   </data>
   <data name="EasyAccessBenefit" xml:space="preserve">
-    <value>Easy access to a large number of dentists, specialists and consultants, and easy identification of the academic qualifications and certificates of each doctor. Also, knowing the medical privileges and treatment services provided by each doctor and the
-                            prices of the services provided.</value>
+    <value>Unlike traditional hiring methods, MaidLinker puts control and clarity in your hands, helping you:
+
+✅ Make informed decisions with full transparency.
+
+💬 Communicate easily with referral sources and reception staff.
+
+🧾 Track requests and statuses in real-time.
+
+🚪 Reduce the hassle of walk-in .</value>
   </data>
   <data name="ElHAL" xml:space="preserve">
-    <value>ElHAL</value>
+    <value>MaidLinker</value>
   </data>
   <data name="FewStepsToJoin" xml:space="preserve">
-    <value>Few simple steps to register withMaidLinker platform, and join the MaidLinker team and refer and receive medical referrals in all dental specialties.</value>
+    <value>Few simple steps to register with MaidLinker platform, and join the MaidLinker team and refer and receive medical referrals in all dental specialties.</value>
   </data>
   <data name="HowJoinMaidLinker" xml:space="preserve">
-    <value>How To Join MaidLinker?</value>
+    <value>How to Request a Maid through MaidLinker?</value>
   </data>
   <data name="HowJoinMaidLinkerDesc" xml:space="preserve">
-    <value>MaidLinker is an enjoyable professional experience and an additional source of income through referring and receivingpatients with other dentists. Also, it helps to exposed and share experiences with other expert professional dentists in all dental specialties.</value>
+    <value>Requesting a maid with MaidLinker is quick, simple, and hassle-free. All you need to do is submit your name and mobile number, and one of our reception team members will personally contact you to help you choose the right maid based on your preferences. No complex forms or long procedures—just fill in your basic details and let us handle the rest!</value>
   </data>
   <data name="JoinNow" xml:space="preserve">
     <value>JOIN NOW</value>
@@ -149,7 +156,8 @@
     <value>Registration to MaidLinker few information about your personal data, contact numbers and academic qualifications. Also, you will need to attach the professional classification and registration card of the Commission for Health Specialties.</value>
   </data>
   <data name="MultipleOptionsBenefit" xml:space="preserve">
-    <value>Provides patients with multiple and appropriate options of qualified and certified dentists in all specialties at a variety of treatment prices suitable for each patient.</value>
+    <value>Start Now: Choose a Maid
+Click below to browse available maids, compare options, and submit your request—it's quick, reliable, and made for your peace of mind.</value>
   </data>
   <data name="OurVision" xml:space="preserve">
     <value>Our Vision</value>
@@ -182,6 +190,8 @@
     <value>Why Use A Referral Platform?</value>
   </data>
   <data name="WhyMaidLinkerPlatformDesc" xml:space="preserve">
-    <value>The only platform that connects all dentists in different specialties, and facilitates their communications to do referrals of medical cases among them, and facilitate the accessibility to the appropriate specialist doctor through the following:</value>
+    <value>MaidLinker is the trusted digital platform that simplifies the process of connecting families with qualified domestic workers. Whether you're searching for a maid or offering referral services, MaidLinker brings convenience, transparency, and trust into one place.
+
+</value>
   </data>
 </root>

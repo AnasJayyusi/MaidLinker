@@ -160,23 +160,39 @@ namespace MaidLinker.Controllers
         }
         #endregion
 
-        #region Helper For Razor Page
+        #region Other Methods
 
-        //[AllowAnonymous]
-        //[HttpGet]
-        //[Route("CheckPhoneNumber")]
-        //public bool CheckPhoneNumber(string phoneNumber)
-        //{
-        //    bool isUsed = false;
+        [HttpGet]
+        [Route("GetContactInfo")]
+        public JsonResult GetContactInfo()
+        {
 
-        //    var userProfile = _dbContext.UserProfiles.FirstOrDefault(x => x.PhoneNumber.Equals(phoneNumber));
-        //    if (userProfile != null)
-        //    {
-        //        isUsed = true;
-        //    }
+            // Assuming you have a DbContext named _context and SettingValue column exists
+            var keys = new[] { "PhoneNumber", "WhatsAppNumber", "AddressAr", "AddressEn", "FacebookUrl", "InstagramUrl" };
 
-        //    return isUsed;
-        //}
+            var settings = _dbContext.GeneralSettings
+                            .Where(s => keys.Contains(s.SettingKey))
+                            .ToDictionary(s => s.SettingKey, s => s.SettingValue);
+
+
+            var culture = Thread.CurrentThread.CurrentCulture.Name;
+            bool isArabic = culture.StartsWith("ar", StringComparison.OrdinalIgnoreCase);
+
+
+            var data = new
+            {
+                PhoneNumber = settings.ContainsKey("PhoneNumber") ? settings["PhoneNumber"] : "",
+                WhatsAppNumber = settings.ContainsKey("WhatsAppNumber") ? settings["WhatsAppNumber"] : "",
+                Address = isArabic
+                  ? (settings.ContainsKey("AddressAr") ? settings["AddressAr"] : "")
+                : (settings.ContainsKey("AddressEn") ? settings["AddressEn"] : ""),
+
+            FacebookUrl = settings.ContainsKey("FacebookUrl") ? settings["FacebookUrl"] : "",
+                InstagramUrl = settings.ContainsKey("InstagramUrl") ? settings["InstagramUrl"] : ""
+            };
+
+            return Json(data);
+        }
         #endregion
 
     }

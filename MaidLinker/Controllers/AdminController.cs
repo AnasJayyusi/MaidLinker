@@ -1012,35 +1012,81 @@ namespace MaidLinker.Controllers
         [Route("Settings/GeneralSettings")]
         public IActionResult GeneralSettings()
         {
-            // Retrieve the value from TempData
-            bool? isFromDeleteRequest = TempData["isFromDeleteRequest"] as bool?;
-            bool? isSuccessDelete = TempData["isSuccessDelete"] as bool?;
+            var keys = new[] { "PhoneNumber", "WhatsAppNumber", "Address", "FacebookUrl", "InstagramUrl" };
+            var settingsDict = _dbContext.GeneralSettings
+                                       .Where(s => keys.Contains(s.SettingKey))
+                                       .ToDictionary(s => s.SettingKey, s => s.SettingValue);
 
-            if (isFromDeleteRequest != null && isSuccessDelete != null)
+            var model = new GeneralSettingsViewModel
             {
-                // Clear the TempData value to avoid persisting it across subsequent requests
-                TempData.Remove("isFromDeleteRequest");
-                TempData.Remove("isSuccessDelete");
+                PhoneNumber = settingsDict.GetValueOrDefault("PhoneNumber", ""),
+                WhatsAppNumber = settingsDict.GetValueOrDefault("WhatsAppNumber", ""),
+                AddressAr = settingsDict.GetValueOrDefault("AddressAr", ""),
+                AddressEn = settingsDict.GetValueOrDefault("AddressAr", ""),
+                FacebookUrl = settingsDict.GetValueOrDefault("FacebookUrl", ""),
+                InstagramUrl = settingsDict.GetValueOrDefault("InstagramUrl", "")
+            };
 
-                // Use the value as needed
-                ViewBag.SuccessMessage = isSuccessDelete;
-            }
-
-            return View(_dbContext.GeneralSettings.FirstOrDefault());
+            return View(model);
         }
+
 
         [HttpPost]
         [Route("Settings/UpdateGeneralSetting")]
-
-        public IActionResult UpdateGeneralSetting(GeneralSettings updatedSetting)
+        public IActionResult UpdateGeneralSetting(GeneralSettingsViewModel model)
         {
-            var generalSettings = _dbContext.GeneralSettings.FirstOrDefault();
-            if (generalSettings == null)
-                generalSettings = new GeneralSettings();
-            _dbContext.GeneralSettings.Add(generalSettings);
-            _dbContext.SaveChanges();
-            return RedirectToAction("GeneralSettings");
+            if (ModelState.IsValid)
+            {
+                var keys = new[] { "PhoneNumber", "WhatsAppNumber", "AddressAr", "AddressEn", "FacebookUrl", "InstagramUrl" };
+                var settings = _dbContext.GeneralSettings.Where(s => keys.Contains(s.SettingKey)).ToList();
+
+                foreach (var key in keys)
+                {
+                    var setting = settings.FirstOrDefault(s => s.SettingKey == key);
+                    if (setting != null)
+                    {
+                        setting.SettingValue = key switch
+                        {
+                            "PhoneNumber" => model.PhoneNumber,
+                            "WhatsAppNumber" => model.WhatsAppNumber,
+                            "AddressAr" => model.AddressAr,
+                            "AddressEn" => model.AddressEn,
+                            "FacebookUrl" => model.FacebookUrl,
+                            "InstagramUrl" => model.InstagramUrl,
+                            _ => setting.SettingValue
+                        };
+                    }
+                    else
+                    {
+                        _dbContext.GeneralSettings.Add(new GeneralSettings
+                        {
+                            SettingKey = key,
+                            SettingGroup = "Contact", // or "Social" accordingly
+                            SettingValue = key switch
+                            {
+                                "PhoneNumber" => model.PhoneNumber,
+                                "WhatsAppNumber" => model.WhatsAppNumber,
+                                "AddressAr" => model.AddressAr,
+                                "AddressEn" => model.AddressEn,
+                                "FacebookUrl" => model.FacebookUrl,
+                                "InstagramUrl" => model.InstagramUrl,
+                                _ => ""
+                            },
+                            CreatedDate = DateTime.Now
+                        });
+                    }
+                }
+
+                _dbContext.SaveChanges();
+
+                ViewBag.SuccessMessage = true;
+                return View("GeneralSettings", model);
+            }
+
+            ViewBag.SuccessMessage = false;
+            return View("GeneralSettings", model);
         }
+
         #endregion
 
         #region ServicesReport

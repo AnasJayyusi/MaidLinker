@@ -150,4 +150,10 @@
   <data name="PleaseWait" xml:space="preserve">
     <value>الرجاء الإنتظار ..</value>
   </data>
+  <data name="ScreenTooSmallTitle" xml:space="preserve">
+    <value>يرجى استخدام شاشة أكبر للوصول إلى لوحة التحكم</value>
+  </data>
+  <data name="ScreenTooSmallMessage" xml:space="preserve">
+    <value>الشاشة صغيرة جدًا</value>
+  </data>
 </root>
