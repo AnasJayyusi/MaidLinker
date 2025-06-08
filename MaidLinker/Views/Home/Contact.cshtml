@@ -277,8 +277,7 @@
                         // Display the response in the result-message div
                         //$("#result-message").html(response);
                         
-                        alert("@Localizer["AlertMessage"]");
-                        // toastr.success('Feedback sent successfully', 'Success !!');
+                       toastr.success('Feedback sent successfully', 'Success !!');
 
                     },
                     error: function (error) {
@@ -290,6 +289,7 @@
         });
     </script>
 
+    
     <script>
                $(function () {
             $.ajax({
