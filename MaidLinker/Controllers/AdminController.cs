@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 using NPOI.SS.Formula.Functions;
 using System.Globalization;
+using System.Security.Claims;
 using static MaidLinker.Data.SharedEnum;
 
 
@@ -19,7 +20,7 @@ namespace MaidLinker.Controllers
 {
 
     [Route("Admin")]
-    [Authorize(Roles = "Administrator")]
+    [Authorize(Roles = "Administrator,Reception,Accountant")]
     public class AdminController : BaseController
     {
         private readonly IWebHostEnvironment _webHostEnvironment;
@@ -29,7 +30,7 @@ namespace MaidLinker.Controllers
             IWebHostEnvironment webHostEnvironment,
             INotificationService notificationService,
             UserManager<IdentityUser> userManager
-            ) : base(dbContext, notificationService)
+            ) : base(dbContext, notificationService, userManager)
         {
             _webHostEnvironment = webHostEnvironment;
             _userManager = userManager;
@@ -39,11 +40,143 @@ namespace MaidLinker.Controllers
 
         #region Dashboard
         [Route("Dashboard")]
-        public IActionResult Dashboard()
+        public async Task<IActionResult> Dashboard()
         {
-            return View();
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var isAdmin = User.IsInRole("Administrator");
+            var isAccountant = User.IsInRole("Accountant");
+            var isReception = User.IsInRole("Reception");
 
+            // New requests for everyone
+            var newRequests = await _dbContext.Requests
+                .Include(r => r.Maid)
+                .Where(r => r.Status == RequestStatus.New && r.Status != RequestStatus.Cancelled)
+                .OrderBy(o => o.Id)
+                .ToListAsync();
+
+            // Filter InProgress requests based on role
+            List<Request> inProgressRequests = new();
+            if ( isAccountant)
+            {
+                inProgressRequests = await _dbContext.Requests
+                    .Include(r => r.Maid)
+                    .Where(r => r.Status == RequestStatus.InProgress || r.Status == RequestStatus.Prepared)
+                    .ToListAsync();
+            }
+
+            if (isAdmin)
+            {
+                inProgressRequests = await _dbContext.Requests
+                    .Include(r => r.Maid)
+                    .ToListAsync();
+            }
+            else if (isReception)
+            {
+                inProgressRequests = await _dbContext.Requests
+                    .Include(r => r.Maid)
+                    .Where(r => r.Status == RequestStatus.InProgress || r.Status == RequestStatus.Prepared  && r.ServedByUserId == userId)
+                    .ToListAsync();
+            }
+
+            // Status Summary
+            var statusCounts = new StatusCountsViewModel
+            {
+                New = await _dbContext.Requests.CountAsync(r => r.Status == RequestStatus.New),
+                InProgress = await _dbContext.Requests.CountAsync(r => r.Status == RequestStatus.InProgress),
+                Completed = await _dbContext.Requests.CountAsync(r => r.Status == RequestStatus.Completed)
+            };
+
+            var viewModel = new DashboardViewModel
+            {
+                NewRequests = newRequests,
+                InProgressRequests = inProgressRequests,
+                StatusCounts = statusCounts
+            };
+
+            return View(viewModel);
         }
+
+
+        [HttpPost]
+        [Route("TakeOverRequest")]
+        public async Task<IActionResult> TakeOverRequest(int id)
+        {
+            var request = await _dbContext.Requests
+                .Include(r => r.Maid)
+                .FirstOrDefaultAsync(r => r.Id == id);
+
+            if (request == null || request.ServedByUserId != null)
+            {
+                return Json(new { success = false, message = "Invalid or already taken request." });
+            }
+
+            var userId = _userManager.GetUserId(User);
+            request.ServedByUserId = userId;
+            request.Status = RequestStatus.InProgress;
+
+            // Mark the maid as unavailable
+            if (request.Maid != null)
+            {
+                request.Maid.IsAvailable = false;
+            }
+
+            await _dbContext.SaveChangesAsync();
+
+            PushNewNotification(NotificationTypeEnum.TakeOverRequest, AccountTypeEnum.Accountant, request.Id.ToString());
+            return Json(new { success = true });
+        }
+
+
+        [HttpPost]
+        [Route("CancelRequest")]
+        public async Task<IActionResult> CancelRequest(int id)
+        {
+            var request = await _dbContext.Requests
+                .Include(r => r.Maid)
+                .FirstOrDefaultAsync(r => r.Id == id);
+
+            request.Status = RequestStatus.Cancelled;
+
+            await _dbContext.SaveChangesAsync();
+
+            PushNewNotification(NotificationTypeEnum.Cancel, AccountTypeEnum.All, request.Id.ToString());
+            return Json(new { success = true });
+        }
+
+        [HttpPost]
+        [Route("ConfirmRequest")]
+        public async Task<IActionResult> ConfirmRequest(int id)
+        {
+            var request = await _dbContext.Requests
+                .Include(r => r.Maid)
+                .FirstOrDefaultAsync(r => r.Id == id);
+
+            request.Status = RequestStatus.Completed;
+
+            await _dbContext.SaveChangesAsync();
+            PushNewNotification(NotificationTypeEnum.Cancel, AccountTypeEnum.All, request.Id.ToString());
+
+            return Json(new { success = true });
+        }
+
+        [HttpPost]
+        [Route("CompleteRequest")]
+        public async Task<IActionResult> CompleteRequest(int id)
+        {
+            var request = await _dbContext.Requests
+                .Include(r => r.Maid)
+                .FirstOrDefaultAsync(r => r.Id == id);
+
+            request.Status = RequestStatus.Completed;
+
+            await _dbContext.SaveChangesAsync();
+
+            return Json(new { success = true });
+        }
+
+
+        
+        
 
         [Route("Statistics")]
         public IActionResult Statistics()
@@ -298,7 +431,6 @@ namespace MaidLinker.Controllers
 
         #endregion
 
-
         #region Maids
         [Route("MaidsManagement/Maids")]
         public IActionResult Maids()
@@ -323,7 +455,7 @@ namespace MaidLinker.Controllers
         [Route("GetMaids")]
         public IActionResult MaidsList()
         {
-            var result = _dbContext.Maids.Include(i=>i.Nationality).ToList();
+            var result = _dbContext.Maids.Include(i => i.Nationality).ToList();
             return PartialView("MaidsList", result);
         }
 
@@ -375,6 +507,20 @@ namespace MaidLinker.Controllers
             await _dbContext.SaveChangesAsync();
 
             return Ok(new { message = "Maid created successfully." });
+        }
+
+        [HttpPost]
+        [Route("ToggleAvailability/{id}/{isAvailable}")]
+        public async Task<IActionResult> ToggleAvailability(int id, bool isAvailable)
+        {
+            var maid = await _dbContext.Maids.FindAsync(id);
+            if (maid == null)
+                return NotFound();
+
+            maid.IsAvailable = isAvailable;
+            await _dbContext.SaveChangesAsync();
+
+            return Ok();
         }
 
         [HttpGet]
@@ -544,7 +690,7 @@ namespace MaidLinker.Controllers
             // Helper function to save file and update database attachment
             async Task SaveFileAndUpdateAttachment(IFormFile file, AttachmentType type)
             {
-                
+
 
                 // Remove existing attachment of this type
                 var existing = maid.Attachments.FirstOrDefault(a => a.AttachmentType == type);
@@ -608,6 +754,154 @@ namespace MaidLinker.Controllers
             return Json(attachments);
         }
 
+        #endregion
+
+        #region MaidRequests
+
+
+        #region Maids 
+        [Route("MaidsManagement/MaidRequests")]
+        public IActionResult MaidRequests()
+        {
+            var maids = _dbContext.Maids.Where(w => w.IsAvailable == true).Include(i => i.Nationality).Include(i => i.Langauges).ToList();
+            return View(maids);
+        }
+
+        public ActionResult FillMaidsList()
+        {
+            var maids = _dbContext.Maids.Where(w => w.IsAvailable == true).Include(i => i.Nationality).Include(i => i.Langauges).ToList();
+            return PartialView("MaidList", maids);
+        }
+
+        public IActionResult FillMaidsListWithFilter(string name, int nationalityId, int langId, Age age, Experience experience, MaritalStatus maritalStatus, string sortBy)
+        {
+            IQueryable<Maid> query = _dbContext.Maids
+                               .Where(w => w.IsAvailable == true)
+                               .Include(m => m.Nationality)
+                               .Include(m => m.Langauges)
+                               .Include(m => m.ServedCountries);
+
+       
+
+            if (!string.IsNullOrWhiteSpace(name) )
+            {
+                var loweredName = name.ToLower();
+
+                query = query.Where(m =>
+                 (m.FirstNameEn != null && EF.Functions.Like(m.FirstNameEn, $"%{name}%")) ||
+          (m.FirstNameEn != null && EF.Functions.Like(m.FirstNameEn, $"%{name}%")) ||
+          (m.SecondNameEn != null && EF.Functions.Like(m.SecondNameEn, $"%{name}%")) ||
+          (m.ThirdNameEn != null && EF.Functions.Like(m.ThirdNameEn, $"%{name}%")) ||
+          (m.LastNameEn != null && EF.Functions.Like(m.LastNameEn, $"%{name}%")) ||
+          (m.FirstNameAr != null && EF.Functions.Like(m.FirstNameAr, $"%{name}%")) ||
+          (m.SecondNameAr != null && EF.Functions.Like(m.SecondNameAr, $"%{name}%")) ||
+          (m.ThirdNameAr != null && EF.Functions.Like(m.ThirdNameAr, $"%{name}%")) ||
+          (m.LastNameAr != null && EF.Functions.Like(m.LastNameAr, $"%{name}%")));
+            }
+
+            if (nationalityId > 0)
+            {
+                query = query.Where(m => m.NationalityId == nationalityId);
+            }
+
+            if (langId > 0)
+            {
+                query = query.Where(m => m.Langauges.Any(l => l.Id == langId));
+            }
+
+            if (age > 0)
+            {
+                var ageRange = GetDateRangeFromAgeEnum(age);
+                if (ageRange.From.HasValue && ageRange.To.HasValue)
+                {
+                    query = query.Where(m => m.DateOfBirth >= ageRange.From.Value && m.DateOfBirth <= ageRange.To.Value);
+                }
+                else if (ageRange.To.HasValue) // Age.Old case
+                {
+                    query = query.Where(m => m.DateOfBirth <= ageRange.To.Value);
+                }
+            }
+
+            if (experience > 0)
+            {
+                var experienceRange = GetExperienceRange(experience);
+                if (experienceRange.Value.Min is not null)
+                {
+                    query = query.Where(m => m.TotalExperience >= experienceRange.Value.Min.Value);
+                }
+
+                if (experienceRange.Value.Max is not null)
+                {
+                    query = query.Where(m => m.TotalExperience <= experienceRange.Value.Max.Value);
+                }
+            }
+
+            if (maritalStatus > 0)
+            {
+                query = query.Where(m => m.MaritalStatus == maritalStatus);
+            }
+
+            if (!string.IsNullOrEmpty(sortBy))
+            {
+                if (sortBy == "Experience")
+                {
+                    query = query.OrderByDescending(m => m.TotalExperience);
+                }
+                if (sortBy == "Age")
+                {
+                    query = query.OrderByDescending(m => m.DateOfBirth);
+                }
+            }
+
+            return PartialView("MaidList", query.ToList());
+        }
+
+        public IActionResult GetDetails(int id)
+        {
+            var maid = _dbContext.Maids
+                               .Include(m => m.Nationality)
+                               .Include(m => m.Langauges)
+                               .Include(m => m.ServedCountries)
+                               .FirstOrDefault(m => m.Id == id);
+
+            if (maid == null)
+                return NotFound();
+
+            return PartialView("_MaidDetailsPartial", maid);
+        }
+
+        private (DateTime? From, DateTime? To) GetDateRangeFromAgeEnum(Age age)
+        {
+            var today = DateTime.Today;
+
+            return age switch
+            {
+                Age.Child => (today.AddYears(-25), today.AddYears(-18)),
+                Age.Teenager => (today.AddYears(-35), today.AddYears(-26)),
+                Age.Young => (today.AddYears(-45), today.AddYears(-36)),
+                Age.Aged => (today.AddYears(-50), today.AddYears(-46)),
+                Age.Old => (null, today.AddYears(-51)), // Only before this
+                _ => (null, null)
+            };
+        }
+
+        private (double? Min, double? Max)? GetExperienceRange(Experience experience)
+        {
+            return experience switch
+            {
+                Experience.NoExperience => (0, 1),
+                Experience.LowExperience => (2, 3),
+                Experience.MediumExperience => (4, 5),
+                Experience.HighExperience => (6, 10),
+                Experience.Expert => (10.01, null), // أكبر من 10
+                _ => null
+            };
+        }
+
+
+
+
+        #endregion
         #endregion
 
         #region PractitionerTypes
@@ -868,7 +1162,7 @@ namespace MaidLinker.Controllers
         [Route("MyProfile/Notifications")]
         public IActionResult Notifications()
         {
-            var currentUserId = GetUserProfileId();
+            var currentUserId = GetAspNetUserId();
             var model = _dbContext.Notifications.Where(a => a.AssignedToUserId == currentUserId)
                                                 .OrderByDescending(a => a.CreationDate)
                                                 .Take(100)

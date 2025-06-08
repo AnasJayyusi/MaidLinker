@@ -117,22 +117,73 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Countries" xml:space="preserve">
-    <value>Countries</value>
+  <data name="InsuranceAccept" xml:space="preserve">
+    <value>Insurance Accept:</value>
   </data>
-  <data name="InternalRequest" xml:space="preserve">
-    <value>Internal Request</value>
+  <data name="No" xml:space="preserve">
+    <value>No</value>
   </data>
-  <data name="Maids" xml:space="preserve">
-    <value>Maids Data</value>
+  <data name="NoMaidsFound" xml:space="preserve">
+    <value>No result found</value>
   </data>
-  <data name="MaidsManagement" xml:space="preserve">
-    <value>Maids Management</value>
+  <data name="ReadMore" xml:space="preserve">
+    <value>Read More</value>
   </data>
-  <data name="MasterList" xml:space="preserve">
-    <value>Master List</value>
+  <data name="Reviews" xml:space="preserve">
+    <value>Reviews</value>
   </data>
-  <data name="Nationalities" xml:space="preserve">
-    <value>Nationalities</value>
+  <data name="Yes" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="Age" xml:space="preserve">
+    <value>Age</value>
+  </data>
+  <data name="Years" xml:space="preserve">
+    <value>Years</value>
+  </data>
+  <data name="Experience" xml:space="preserve">
+    <value>Experience</value>
+  </data>
+  <data name="Children" xml:space="preserve">
+    <value>Children</value>
+  </data>
+  <data name="Back to list" xml:space="preserve">
+    <value>Skip and continue browsing others.</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="Nationality" xml:space="preserve">
+    <value>Nationality</value>
+  </data>
+  <data name="MaritalStatus" xml:space="preserve">
+    <value>Marital Status</value>
+  </data>
+  <data name="Languages" xml:space="preserve">
+    <value>Languages</value>
+  </data>
+  <data name="ServedCountries" xml:space="preserve">
+    <value>Served Countries</value>
+  </data>
+  <data name="Notes" xml:space="preserve">
+    <value>Notes</value>
+  </data>
+  <data name="RequestThisMaid" xml:space="preserve">
+    <value>Request this maid</value>
+  </data>
+  <data name="RequestSentForMaid" xml:space="preserve">
+    <value>Request has been sent</value>
+  </data>
+  <data name="MaritalStatus_Divorced" xml:space="preserve">
+    <value>Divorced</value>
+  </data>
+  <data name="MaritalStatus_Married" xml:space="preserve">
+    <value>Married</value>
+  </data>
+  <data name="MaritalStatus_Single" xml:space="preserve">
+    <value>Single</value>
+  </data>
+  <data name="MaritalStatus_Widowed" xml:space="preserve">
+    <value>Widowed</value>
   </data>
 </root>

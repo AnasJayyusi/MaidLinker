@@ -1,0 +1,148 @@
+﻿@model List<MaidLinker.Data.Entites.Request>
+@using MaidLinker.Data
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@{
+    string cultureCode = System.Threading.Thread.CurrentThread.CurrentCulture.Name;
+    string direction = cultureCode.StartsWith("ar", StringComparison.OrdinalIgnoreCase) ? "rtl" : "ltr";
+    string textAlign = direction == "rtl" ? "right" : "left";
+    bool isEng = cultureCode.StartsWith("en", StringComparison.OrdinalIgnoreCase) ? true : false;
+    string closeButtonValue = isEng ? "0" : "1%";
+}
+@if (Model != null && Model.Any())
+{
+    <div class="card shadow mb-4">
+        <div class="card-body" style="max-height:768px; overflow-y:auto;">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover scrollable-table">
+                    <thead class="table-light">
+                        <tr>
+                            <th>@Localizer["RequestNumber"]</th>
+                            <th>@Localizer["VisitorName"]</th>
+                            <th>@Localizer["VisitorNumber"]</th>
+                            <th>@Localizer["MaidName"]</th>
+                            <th>@Localizer["MaidNumber"]</th>
+                            <th>@Localizer["Status"]</th>
+                            <th>@Localizer["Action"]</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var request in Model)
+                        {
+                            <tr>
+                                <td style="font-weight:bold">#@request.Id</td>
+                                <td>@request.Name</td>
+                                <td>@request.Phone</td>
+                                <td>@request.Maid?.FullName</td>
+                                <td style="font-weight:bold">@request.Maid?.Id</td>
+                                <td>
+                                    @switch (request.Status)
+                                    {
+                                        case SharedEnum.RequestStatus.InProgress:
+                                            <span class="badge bg-warning text-dark">@Localizer["InProgress"]</span>
+                                            ; break;
+                                        case SharedEnum.RequestStatus.Prepared:
+                                            <span class="badge bg-info text-dark">@Localizer["Prepared"]</span>
+                                            ; break;
+                                        default:
+                                            <span class="badge bg-secondary">@Localizer[request.Status.ToString()]</span>
+                                            ; break;
+                                    }
+                                </td>
+                                <td>
+                                    @if ((User.IsInRole("Reception")) && request.Status == SharedEnum.RequestStatus.InProgress )
+                                    {
+                                        <i class="fas fa-hourglass-half text-warning"></i> 
+                                        @Localizer["WaitingForPrepare"]
+                                    }
+                                    @if ((User.IsInRole("Reception")) && request.Status == SharedEnum.RequestStatus.Prepared)
+                                    {
+                                        <button class="btn btn-sm btn-success complete-request-btn" data-id="@request.Id">
+                                            <i class="fas fa-check-circle"></i> @Localizer["Completed"]
+                                        </button>
+                                        <button class="btn btn-sm btn-danger cancel-request-btn" data-id="@request.Id">
+                                            <i class="fas fa-times-circle"></i> @Localizer["Cancel"]
+                                        </button>
+                                    }
+                                    else if ((User.IsInRole("Accountant") || User.IsInRole("Administrator")) && request.Status == SharedEnum.RequestStatus.InProgress)
+                                    {
+                                        <button class="btn btn-sm btn-primary confirm-request"
+                                                data-id="@request.Id">
+                                            <i class="fa fa-check-circle"></i>
+                                            @Localizer["Confirm"]
+                                        </button>
+                                    }
+
+
+                                    else if ((User.IsInRole("Accountant") || User.IsInRole("Administrator")) && request.Status == SharedEnum.RequestStatus.Prepared)
+                                    {
+                                        <i class="far fa-check-circle"></i>
+
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="text-center text-muted my-5">
+        <i class="fas fa-inbox fa-2x text-primary"></i>
+        <h5 class="mt-3">@Localizer["NoInProgressRequestsFound"]</h5>
+    </div>
+}
+
+
+<script>
+    $(document).ready(function () {
+        $(".confirm-request").click(function () {
+            const btn = $(this);
+            const requestId = btn.data("id");
+
+            $.post("/Admin/ConfirmRequest", { id: requestId }, function (res) {
+                if (res.success) {
+                    toastr.success("@Localizer["RequestTakenSuccessfully"]");
+                    setTimeout(() => location.reload(), 1000);
+                } else {
+                    toastr.error("@Localizer["RequestTakeFailed"]");
+                }
+            });
+        });
+
+          $(".complete-request-btn").click(function () {
+            const btn = $(this);
+            const requestId = btn.data("id");
+
+            $.post("/Admin/CompleteRequest", { id: requestId }, function (res) {
+                if (res.success) {
+                    toastr.success("@Localizer["RequestTakenSuccessfully"]");
+                    setTimeout(() => location.reload(), 1000);
+                } else {
+                    toastr.error("@Localizer["RequestTakeFailed"]");
+                }
+            });
+        });
+             
+    
+
+
+          $(".cancel-request-btn").click(function () {
+            const btn = $(this);
+            const requestId = btn.data("id");
+
+            $.post("/Admin/CancelRequest", { id: requestId }, function (res) {
+                if (res.success) {
+                    toastr.success("@Localizer["RequestTakenSuccessfully"]");
+                    setTimeout(() => location.reload(), 1000);
+                } else {
+                    toastr.error("@Localizer["RequestTakeFailed"]");
+                }
+            });
+        });
+      
+    });
+</script>

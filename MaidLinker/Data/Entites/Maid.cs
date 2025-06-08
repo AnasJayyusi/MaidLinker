@@ -42,7 +42,7 @@ namespace MaidLinker.Data.Entites
         public DateTime DateOfBirth { get; set; }
         public string Note { get; set; }
 
-
+        public bool IsAvailable { get; set; } = true;
 
         #region Navagations
         public int NationalityId { get; set; }

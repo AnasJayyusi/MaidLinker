@@ -1,6 +1,8 @@
 ﻿using MaidLinker.Data;
+using MaidLinker.Data.Entites;
 using MaidLinker.Hubs;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
@@ -11,7 +13,8 @@ namespace MaidLinker.Controllers
     [Route("Common")]
     public class CommonController : BaseController
     {
-        public CommonController(ApplicationDbContext dbContext, INotificationService notificationService) : base(dbContext, notificationService)
+        private readonly UserManager<IdentityUser> _userManager;
+        public CommonController(ApplicationDbContext dbContext, INotificationService notificationService, UserManager<IdentityUser> userManager) : base(dbContext, notificationService, userManager)
         {
         }
 
@@ -123,32 +126,57 @@ namespace MaidLinker.Controllers
             return Json(dropdownData);
         }
 
-        [HttpGet]
+        [HttpPost]
+        [Route("SendRequest/{maidId}/{name}/{phone}")]
+        public async Task<IActionResult> SendRequest(int maidId, string name, string phone)
+        {
+            if (string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(phone))
+            {
+                return BadRequest("Name and phone are required.");
+            }
+
+            var maid = await _dbContext.Maids.FindAsync(maidId);
+            if (maid == null)
+            {
+                return NotFound("Maid not found.");
+            }
+
+            var request = new Request
+            {
+                MaidId = maidId,
+                Name = name,
+                Phone = phone,
+                RequestDate = DateTime.Now,
+                Status = RequestStatus.New
+            };
+
+            _dbContext.Requests.Add(request);
+            await _dbContext.SaveChangesAsync();
+            var newRequestId = request.Id;  // <-- here you get the new request ID
+            PushNewNotification(NotificationTypeEnum.NewRequest,AccountTypeEnum.Reception , $"#{newRequestId.ToString()}");
 
 
-
-
-
-
+            return Ok();
+        }
         #endregion
 
         #region Helper For Razor Page
 
-        [AllowAnonymous]
-        [HttpGet]
-        [Route("CheckPhoneNumber")]
-        public bool CheckPhoneNumber(string phoneNumber)
-        {
-            bool isUsed = false;
+        //[AllowAnonymous]
+        //[HttpGet]
+        //[Route("CheckPhoneNumber")]
+        //public bool CheckPhoneNumber(string phoneNumber)
+        //{
+        //    bool isUsed = false;
 
-            var userProfile = _dbContext.UserProfiles.FirstOrDefault(x => x.PhoneNumber.Equals(phoneNumber));
-            if (userProfile != null)
-            {
-                isUsed = true;
-            }
+        //    var userProfile = _dbContext.UserProfiles.FirstOrDefault(x => x.PhoneNumber.Equals(phoneNumber));
+        //    if (userProfile != null)
+        //    {
+        //        isUsed = true;
+        //    }
 
-            return isUsed;
-        }
+        //    return isUsed;
+        //}
         #endregion
 
     }

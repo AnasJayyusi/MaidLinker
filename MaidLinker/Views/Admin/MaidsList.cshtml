@@ -61,9 +61,10 @@
 <table class="table table-striped" dir="@direction">
     <thead>
         <tr>
-            <th>#</th>
+            <th>MaidNumber</th>
             <th>@Localizer["FirstNameEn"]</th>
             <th>@Localizer["FirstNameAr"]</th>
+            <th>@Localizer["Status"]</th>
             <th>@Localizer["Nationality"]</th>
             <th>@Localizer["Attachments"]</th>
             <th>@Localizer["Actions"]</th>
@@ -74,9 +75,18 @@
         {
             var maid = visibleItems[i];
             <tr>
-                <td>@(startIndex + i + 1)</td>
+                <td style="font-weight:bold">@maid.Id</td>
                 <td>@maid.FirstNameEn</td>
                 <td>@maid.FirstNameAr</td>
+                <td>
+                    <button class="btn btn-sm rounded-pill toggle-availability-btn"
+                            data-id="@maid.Id"
+                            data-available="@maid.IsAvailable"
+                            style="min-width: 100px;">
+                        <i class="fa @(maid.IsAvailable ? "fa-toggle-on text-success" : "fa-toggle-off text-danger")"></i>
+                        @Localizer[maid.IsAvailable ? "Available" : "Unavailable"]
+                    </button>
+                </td>
                 <td>
                     @if (isEng)
                     {
@@ -701,4 +711,37 @@
             });
         }
 
+</script>
+
+
+<script>
+    $(document).on('click', '.toggle-availability-btn', function () {
+        const button = $(this);
+        const maidId = button.data('id');
+        const isCurrentlyAvailable = button.data('available');
+
+        $.ajax({
+            url: `/Admin/ToggleAvailability/${maidId}/${!isCurrentlyAvailable}`,
+            type: 'POST',
+            success: function () {
+                // Toggle data
+                button.data('available', !isCurrentlyAvailable);
+
+                // Update icon + text
+                const icon = button.find('i');
+                if (!isCurrentlyAvailable) {
+                    icon.removeClass('fa-toggle-off text-danger')
+                        .addClass('fa-toggle-on text-success');
+                    button.html('<i class="fa fa-toggle-on text-success"></i> متاحة'); // or "Available"
+                } else {
+                    icon.removeClass('fa-toggle-on text-success')
+                        .addClass('fa-toggle-off text-danger');
+                    button.html('<i class="fa fa-toggle-off text-danger"></i> غير متاحة'); // or "Unavailable"
+                }
+            },
+            error: function () {
+                alert("خطأ أثناء التحديث.");
+            }
+        });
+    });
 </script>

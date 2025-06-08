@@ -161,7 +161,7 @@ namespace MaidLinker.Areas.Identity.Pages.Account
                     #endregion
 
                     debug = "callbackUrl";
-                    CreateUserProfileData(user.Id);
+                    //CreateUserProfileData(user.Id);
                     await SendEmailConfirmation(callbackUrl);
                     debug = "send";
 
@@ -236,41 +236,41 @@ namespace MaidLinker.Areas.Identity.Pages.Account
         }
 
 
-        private void CreateUserProfileData(string userId)
-        {
-            var applicationUser = _dbContext.ApplicationUsers.Single(x => x.Id == userId);
-            var userProfile = new UserProfile();
+        //private void CreateUserProfileData(string userId)
+        //{
+        //    var applicationUser = _dbContext.ApplicationUsers.Single(x => x.Id == userId);
+        //    var userProfile = new UserProfile();
 
-            var generalsettings = _dbContext.GeneralSettings.First();
+        //    var generalsettings = _dbContext.GeneralSettings.First();
 
 
 
-            if (applicationUser.AccountTypeId == (int)AccountTypeEnum.Accountant)
-            {
-                userProfile = new UserProfile()
-                {
-                    UserId = userId,
-                    FullName = applicationUser.FullName,
-                    AccountTypeId = applicationUser.AccountTypeId,
-                    PhoneNumber = applicationUser.PhoneNumber,
-                    Email = applicationUser.Email,
-                    ProfileStatus = ProfileStatus.Active // Based On Request From Client
-                };
-            }
-            else
-            {
-                userProfile = new UserProfile()
-                {
-                    UserId = userId,
-                    FullName = applicationUser.FullName,
-                    AccountTypeId = applicationUser.AccountTypeId,
-                    PhoneNumber = applicationUser.PhoneNumber,
-                    Email = applicationUser.Email,
-                    ProfileStatus = ProfileStatus.Active,
-                };
-            }
-            _dbContext.UserProfiles.Add(userProfile);
-            _dbContext.SaveChanges();
-        }
+        //    if (applicationUser.AccountTypeId == (int)AccountTypeEnum.Accountant)
+        //    {
+        //        userProfile = new UserProfile()
+        //        {
+        //            UserId = userId,
+        //            FullName = applicationUser.FullName,
+        //            AccountTypeId = applicationUser.AccountTypeId,
+        //            PhoneNumber = applicationUser.PhoneNumber,
+        //            Email = applicationUser.Email,
+        //            ProfileStatus = ProfileStatus.Active // Based On Request From Client
+        //        };
+        //    }
+        //    else
+        //    {
+        //        userProfile = new UserProfile()
+        //        {
+        //            UserId = userId,
+        //            FullName = applicationUser.FullName,
+        //            AccountTypeId = applicationUser.AccountTypeId,
+        //            PhoneNumber = applicationUser.PhoneNumber,
+        //            Email = applicationUser.Email,
+        //            ProfileStatus = ProfileStatus.Active,
+        //        };
+        //    }
+        //    _dbContext.UserProfiles.Add(userProfile);
+        //    _dbContext.SaveChanges();
+        //}
     }
 }

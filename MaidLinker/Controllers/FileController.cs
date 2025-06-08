@@ -222,11 +222,11 @@ namespace MaidLinker.Controllers
         //    }
         //}
 
-        private int GetUserId()
-        {
-            string currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            return _dbContext.UserProfiles.Where(w => w.UserId == currentUserId).Select(x => x.Id).Single();
-        }
+        //private int GetUserId()
+        //{
+        //    string currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        //    return _dbContext.UserProfiles.Where(w => w.UserId == currentUserId).Select(x => x.Id).Single();
+        //}
 
     }
 }

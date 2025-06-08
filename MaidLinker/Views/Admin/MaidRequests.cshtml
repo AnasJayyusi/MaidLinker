@@ -1,0 +1,344 @@
+﻿@model List<MaidLinker.Data.Entites.Maid>
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@{
+    string cultureCode = System.Threading.Thread.CurrentThread.CurrentCulture.Name;
+    string direction = cultureCode.StartsWith("ar", StringComparison.OrdinalIgnoreCase) ? "rtl" : "ltr";
+    string textAlign = direction == "rtl" ? "right" : "left";
+    bool isEng = cultureCode.StartsWith("en", StringComparison.OrdinalIgnoreCase) ? true : false;
+    string closeButtonValue = isEng ? "0" : "1%";
+}
+
+<!-- #region Styles -->
+<head>
+    <link href="~/css/sb-admin-2.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <style>
+        .hidden {
+            display: none;
+        }
+
+        .toast-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .toast-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+    </style>
+</head>
+<!-- #endregion -->
+<div id="page-top" class="mt-5">
+    <div id="wrapper">
+        @await Html.PartialAsync("_Sidebar")
+
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content" style="background-color:lavender">
+                <div class="container-fluid mt-5">
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <h6 class="h6 mb-0" style="font-weight:bold;color:#5F7AE7 "></h6>
+                        @await Html.PartialAsync("_Userbar")
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12">
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0" style="font-weight:bold;color:#5F7AE7 ">@Localizer["MaidPageTitle"]</h6>
+                                
+                                </div>
+
+                                <div class="card-body" style="max-height:768px; overflow-y:auto;">
+                                    <div class="table-responsive" id="dataTableContainer">
+                                        <form class="form-contain" method="POST" id="validation">
+
+                                            <input type="hidden" name="_token" value="P9gMRWSZXiKVb1HY0oTRjpAhSnhUQU6JAmVkQpN8">
+                                            <div class="row">
+                                                <div class="form-group search-container col-md-8 p-0">
+                                                    <input type="text" class="form-control margin-15-position-obselete" id="filterInput" onkeypress="searchUsingEnterButton(event)" name="search" style=" background-color: #f2f2f2;"
+                                                           placeholder="@Localizer["Search"]" value="">
+                                                    <i class="fas fa-search" style=" margin-right: 0.5%; color: #5F7AE7;cursor:pointer" onclick="doSearch()"></i>
+                                                </div>
+
+                                                <div class="col-md-4" style="padding-bottom:16px">
+                                                    <select class="form-control" id="sort-ddl" onchange="doSearch()">
+                                                        <option value="AsIs">@Localizer["SortBy"]</option>
+                                                        <option value="Age">@Localizer["Age"]</option>
+                                                        <option value="Experience">@Localizer["Experience"]</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-2 col-12 p-0">
+                                                    <select class="form-control" id="nationalities-ddl" onchange="doSearch()">
+                                                        <option value="-1">@Localizer["Nationality"] </option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-md-2 col-12 ">
+                                                    <select class="form-control" id="languages-ddl" onchange="doSearch()">
+                                                        <option value="-1">@Localizer["Language"] </option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-2 col-12">
+                                                    <select class="form-control" id="age-ddl" onchange="doSearch()">
+                                                        <option value="-1">@Localizer["Age"] </option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-2 col-12 ">
+                                                    <select class="form-control" id="experience-ddl" onchange="doSearch()">
+                                                        <option value="-1">@Localizer["Experience"] </option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-4 col-12 ">
+                                                    <select class="form-control" id="maritalStatus-ddl" onchange="doSearch()">
+                                                        <option value="-1">@Localizer["MaritalStatus"]</option>
+                                                    </select>
+                                                </div>
+
+                                            </div>
+                                            <div id="listContainer">
+                                                @Html.Partial("MaidRequestsList", Model)
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <a class="scroll-to-top rounded" href="#page-top"><i class="fas fa-angle-up"></i></a>
+</div>
+
+
+
+
+@section Scripts {
+
+    <!--region DropDownLists  -->
+    <script>
+        $(document).ready(function () {
+
+            // Nationalities
+            $.ajax({
+                url: '@Url.Action("GetNationalitiesDDL", "Common")',
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    // Clear existing options
+                    $('#nationalities-ddl').empty();
+                    var defaultSelect = "@Localizer["Nationality"]"
+                    var isEng = isEnglishCulture();
+                    // Populate the dropdown list
+                    var dropdown = $('#nationalities-ddl');
+                    dropdown.append($('<option></option>').val(0).text(defaultSelect));
+
+                    $.each(data, function (index, item) {
+                        dropdown.append($('<option></option>').val(item.id).text(isEng ? item.titleEn : item.titleAr));
+                    });
+                }
+            });
+
+            // Languages
+            $.ajax({
+                url: '@Url.Action("GetLanguagesDDL", "Common")',
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    // Clear existing options
+                    $('#languages-ddl').empty();
+                    var defaultSelect = "@Localizer["Language"]"
+                    var isEng = isEnglishCulture();
+                    // Populate the dropdown list
+                    var dropdown = $('#languages-ddl');
+                    dropdown.append($('<option></option>').val(0).text(defaultSelect));
+
+                    $.each(data, function (index, item) {
+                        dropdown.append($('<option></option>').val(item.id).text(isEng ? item.nameEn : item.nameAr));
+                    });
+                }
+            });
+
+
+              // Years Experiences
+            $.ajax({
+                url: '@Url.Action("GetYearsExperiencesDDL", "Common")',
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    // Clear existing options
+                    $('#experience-ddl').empty();
+                    // Populate the dropdown list
+                    var defaultSelect = "@Localizer["Experience"]"
+                    var isEng = isEnglishCulture();
+
+                    var dropdown = $('#experience-ddl');
+                    dropdown.append($('<option></option>').val(0).text(defaultSelect));
+
+                    $.each(data, function (index, item) {
+                        dropdown.append($('<option></option>').val(item.id).text(item.title));
+                    });
+                }
+            });
+
+          // Age
+            $.ajax({
+                url: '@Url.Action("GetAgeDDL", "Common")',
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    // Clear existing options
+                    $('#age-ddl').empty();
+                    // Populate the dropdown list
+                    var defaultSelect = "@Localizer["Age"]"
+                    var isEng = isEnglishCulture();
+
+                    var dropdown = $('#age-ddl');
+                    dropdown.append($('<option></option>').val(0).text(defaultSelect));
+
+                    $.each(data, function (index, item) {
+                        dropdown.append($('<option></option>').val(item.id).text(item.title));
+                    });
+                }
+            });
+
+            // MaritalStatus
+            $.ajax({
+                url: '@Url.Action("GetMaritalStatusDDL", "Common")',
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    // Clear existing options
+                    $('#maritalStatus-ddl').empty();
+                    // Populate the dropdown list
+                    var defaultSelect = "@Localizer["MaritalStatus"]"
+                    var isEng = isEnglishCulture();
+
+                    var dropdown = $('#maritalStatus-ddl');
+                    dropdown.append($('<option></option>').val(0).text(defaultSelect));
+
+                    $.each(data, function (index, item) {
+                        dropdown.append($('<option></option>').val(item.id).text(item.title));
+                    });
+                }
+            });
+
+
+
+            setTimeout(function () {
+                setSelectedOptions();
+            }, 1000);
+
+        });
+
+        // Helper search functions
+        function searchUsingEnterButton(event) {
+            if (event.keyCode === 13) {
+                event.preventDefault();
+                doSearch();
+                ;
+            }
+        }
+
+        function doSearch() {
+            var name = $('#filterInput').val();
+            var nationalityId = $('#nationalities-ddl').val();
+            var langId = $('#languages-ddl').val();
+            var age = $('#age-ddl').val();
+            var experience = $('#experience-ddl').val();
+            var maritalStatus = $('#maritalStatus-ddl').val();
+            var sortBy = $('#sort-ddl').val();
+
+            var container = $('#listContainer');
+            $.ajax({
+                url: '/Home/FillMaidsListWithFilter?name=' + name + '&nationalityId=' + nationalityId + '&langId=' + langId + '&age=' + age+ '&experience=' + experience + '&maritalStatus=' + maritalStatus+ '&sortBy=' + sortBy,
+                type: 'GET',
+                success: function (response) {
+                    container.html(response);
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
+        }
+
+        function fillDetails(userId) {
+            var doctorDetailsContainer = $('#doctorDetailsContainer');
+
+            $.ajax({
+                url: '/Home/GetDoctorDetails?userId=' + userId,
+                type: 'GET',
+                success: function (response) {
+                    doctorDetailsContainer.html(response);
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
+        }
+
+        function getQueryParamsFromCurrentURL() {
+            const params = {};
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.toString() === "") {
+                return null;
+            }
+
+            for (const [key, value] of urlParams) {
+                params[key] = value;
+            }
+            return params;
+        }
+
+        function setSelectedOptions() {
+            const queryParams = getQueryParamsFromCurrentURL();
+            if (queryParams == null)
+                return;
+            const nationalitiesDropdown = document.getElementById('nationalities-ddl');
+            const ageDropdown = document.getElementById('age-ddl');
+
+
+            const nameField = document.getElementById('filterInput');
+
+            //var name = $('#filterInput').val();
+
+            // Set selected option for Service dropdown
+            if (queryParams.serviceId) {
+                nationalitiesDropdown.value = queryParams.serviceId;
+            } else {
+                nationalitiesDropdown.value = ''; // Default value if serviceId is not present in the query string
+            }
+
+            // Set selected option for City dropdown
+            if (queryParams.cityId) {
+                ageDropdown.value = queryParams.cityId;
+                getDistricts(queryParams.disctrictId);
+
+
+            } else {
+                ageDropdown.value = ''; // Default value if cityId is not present in the query string
+            }
+
+
+            if (queryParams.name) {
+                nameField.value = queryParams.name;
+            } else {
+                nameField.value = ''; // Default value if serviceId is not present in the query string
+            }
+        }
+    </script>
+}

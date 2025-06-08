@@ -11,12 +11,10 @@ namespace MaidLinker.Data.Entites
         public string MessageEn { get; set; }
         public bool IsRead { get; set; }
         public DateTime CreationDate { get; set; }
-        [ForeignKey(nameof(CreatedByUser))]
-        public int? CreatedByUserId { get; set; }
-        [ForeignKey(nameof(AssignedToUser))]
-        public int AssignedToUserId { get; set; }
-        public UserProfile CreatedByUser { get; set; } 
-        public UserProfile AssignedToUser { get; set; }
+       
+        public string? CreatedByUserId { get; set; }
+        public string AssignedToUserId { get; set; }
+       
         [NotMapped]
         public string CreationDateFormatted { get; set; }
     }

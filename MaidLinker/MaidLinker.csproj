@@ -61,5 +61,16 @@
 	  <Folder Include="wwwroot\uploads\maids\" />
 	  <Folder Include="wwwroot\uploads\maids\4\" />
 	</ItemGroup>
+	<ItemGroup>
+	  <EmbeddedResource Update="Resources\Views.Admin.MaidRequestsList.en-US.resx">
+	    <SubType>Designer</SubType>
+	  </EmbeddedResource>
+	  <EmbeddedResource Update="Resources\Views.Admin.MaidRequests.ar-SA.resx">
+	    <SubType>Designer</SubType>
+	  </EmbeddedResource>
+	  <EmbeddedResource Update="Resources\Views.Admin.MaidRequests.en-US.resx">
+	    <SubType>Designer</SubType>
+	  </EmbeddedResource>
+	</ItemGroup>
 
 </Project>

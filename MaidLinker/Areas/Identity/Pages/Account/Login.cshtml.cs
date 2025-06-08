@@ -114,7 +114,7 @@ namespace MaidLinker.Areas.Identity.Pages.Account
                     var userRole = await _userManager.GetRolesAsync(user);
                     if (userRole.Contains(UserRolesEnum.Accountant.ToString()) || userRole.Contains(UserRolesEnum.Reception.ToString()))
                     {
-                        return RedirectToAction("Profile", "ServiceProvider");
+                        return RedirectToAction("Dashboard", "Admin");
                     }
 
                     if (userRole.Contains(UserRolesEnum.Administrator.ToString()))

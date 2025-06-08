@@ -117,22 +117,40 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Countries" xml:space="preserve">
-    <value>Countries</value>
+  <data name="Age" xml:space="preserve">
+    <value>Age</value>
   </data>
-  <data name="InternalRequest" xml:space="preserve">
-    <value>Internal Request</value>
+  <data name="Experience" xml:space="preserve">
+    <value>Experience</value>
+  </data>
+  <data name="MaritalStatus" xml:space="preserve">
+    <value>Marital Status</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>Close</value>
   </data>
   <data name="Maids" xml:space="preserve">
-    <value>Maids Data</value>
+    <value>Maids</value>
   </data>
-  <data name="MaidsManagement" xml:space="preserve">
-    <value>Maids Management</value>
+  <data name="Home" xml:space="preserve">
+    <value>Home</value>
   </data>
-  <data name="MasterList" xml:space="preserve">
-    <value>Master List</value>
+  <data name="Nationality" xml:space="preserve">
+    <value>Nationality</value>
   </data>
-  <data name="Nationalities" xml:space="preserve">
-    <value>Nationalities</value>
+  <data name="Search" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="SortBy" xml:space="preserve">
+    <value>Sort By</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="MaidPageTitle" xml:space="preserve">
+    <value>Internal Request</value>
   </data>
 </root>

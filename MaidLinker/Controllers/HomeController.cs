@@ -2,6 +2,7 @@
 using MaidLinker.Data.Entites;
 using MaidLinker.Hubs;
 using MaidLinker.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
@@ -15,7 +16,7 @@ namespace MaidLinker.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ApplicationDbContext dbContext, ILogger<HomeController> logger, INotificationService notificationService) : base(dbContext, notificationService)
+        public HomeController(ApplicationDbContext dbContext, ILogger<HomeController> logger, INotificationService notificationService, UserManager<IdentityUser> userManager) : base(dbContext, notificationService, userManager)
         {
             _logger = logger;
         }
@@ -31,7 +32,7 @@ namespace MaidLinker.Controllers
         {
             if (User.IsInRole(UserRolesEnum.Accountant.ToString()) || User.IsInRole(UserRolesEnum.Reception.ToString()))
             {
-                return RedirectToAction("Profile", "ServiceProvider");
+                return RedirectToAction("Dashboard", "Admin");
             }
             if (User.IsInRole(UserRolesEnum.Administrator.ToString()))
             {
@@ -70,19 +71,19 @@ namespace MaidLinker.Controllers
         #region Maids 
         public IActionResult Maids()
         {
-            var maids = _dbContext.Maids.Include(i => i.Nationality).Include(i => i.Langauges).ToList();
+            var maids = _dbContext.Maids.Where(w => w.IsAvailable == true).Include(i => i.Nationality).Include(i => i.Langauges).ToList();
             return View(maids);
         }
         public ActionResult FillMaidsList()
         {
-            var maids = _dbContext.Maids.Include(i => i.Nationality).Include(i => i.Langauges).ToList();
+            var maids = _dbContext.Maids.Where(w => w.IsAvailable == true).Include(i => i.Nationality).Include(i => i.Langauges).ToList();
             return PartialView("MaidList", maids);
         }
-
 
         public IActionResult FillMaidsListWithFilter(string name, int nationalityId, int langId, Age age, Experience experience, MaritalStatus maritalStatus, string sortBy)
         {
             IQueryable<Maid> query = _dbContext.Maids
+                                .Where(w => w.IsAvailable == true)
                                .Include(m => m.Nationality)
                                .Include(m => m.Langauges)
                                .Include(m => m.ServedCountries);
@@ -186,7 +187,6 @@ namespace MaidLinker.Controllers
                 _ => null
             };
         }
-
 
         public IActionResult GetDetails(int id)
         {

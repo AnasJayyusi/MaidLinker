@@ -61,7 +61,7 @@
 
 }
 
-@if (this.User.IsInRole("Administrator"))
+@if (this.User.IsInRole("Administrator") || this.User.IsInRole("Accountant") || this.User.IsInRole("Reception"))
 {
     @if (Model.Count > 15)
     {

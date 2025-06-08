@@ -6,22 +6,25 @@
         {
             Administrator = 0,
             Reception = 1,
-            Accountant = 2
+            Accountant = 2,
+            All= 3 // For all users
         }
 
         public enum NotificationTypeEnum
         {
-            NewOrder = 1,
-            ApprovedOrder = 2,
-            RejectOrder = 3,
-            SendProfileToReview = 4,
-            RejectProfile = 5,
-            SendNewService = 6,
-            ApprovedNewService = 7,
-            RejectNewService = 8,
-            ActivateUserProfile = 9,
-            DeactivateUserProfile = 10,
+            NewRequest = 1,
+            TakeOverRequest = 2,
+            Confirm = 3,
+            Cancel=4
+        }
 
+        public enum RequestStatus
+        {
+            New = 0,      // الطلب قيد الانتظار
+            InProgress = 1,   // الطلب قيد المعالجة
+            Prepared = 2,    // تم تجهيز الطلب 
+            Cancelled = 3,    // الطلب ملغى
+            Completed = 4      // الطلب مكتمل
         }
 
         public enum Gender

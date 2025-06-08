@@ -29,18 +29,18 @@ namespace MaidLinker.Controllers
             IWebHostEnvironment webHostEnvironment,
             ApplicationDbContext dbContext,
             INotificationService notificationService,
-            UserManager<IdentityUser> userManager) : base(dbContext, notificationService)
+            UserManager<IdentityUser> userManager) : base(dbContext, notificationService, userManager)
         {
             _webHostEnvironment = webHostEnvironment;
             _userManager = userManager;
         }
 
-        [Route("Profile")]
-        public IActionResult Profile()
-        {
-            SetImagePathInCookies();
-            return View();
-        }
+        //[Route("Profile")]
+        //public IActionResult Profile()
+        //{
+        //    SetImagePathInCookies();
+        //    return View();
+        //}
         #region Referrals
         [Route("Referrals")]
         public IActionResult Referrals()
@@ -52,7 +52,7 @@ namespace MaidLinker.Controllers
         [Route("Notifications")]
         public IActionResult Notifications()
         {
-            var currentUserId = GetUserProfileId();
+            var currentUserId = GetAspNetUserId();
             var model = _dbContext.Notifications.Where(a => a.AssignedToUserId == currentUserId)
                                                 .OrderByDescending(a => a.CreationDate)
                                                 .Take(100)

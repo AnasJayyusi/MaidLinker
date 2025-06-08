@@ -126,9 +126,88 @@
         </button>
     </div>
 </div>
+<div class="modal fade" id="requestMaidModal" tabindex="-1" aria-labelledby="requestMaidModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="color:#5F7AE7;">
+            <div class="modal-header">
+                <h5 class="modal-title" id="requestMaidModalLabel">طلب هذه العاملة</h5>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="maidIdInput" value="@Model.Id" />
+
+                <div class="mb-3">
+                    <label for="userName" class="form-label">الاسم</label>
+                    <input type="text" class="form-control" id="userName" />
+                    <span class="text-danger small" id="nameError" style="display:none;"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label for="userPhone" class="form-label">رقم الهاتف</label>
+                    <input maxlength="10" type="text" class="form-control" id="userPhone" />
+                    <span class="text-danger small" id="phoneError" style="display:none;"></span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger me-2" style="margin:3px" data-dismiss="modal">إلغاء الطلب</button>
+                <button type="button" class="btn btn-success" onclick="submitMaidRequest()">إرسال الطلب</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
 
 <script>
     function requestMaid(maidId) {
-        alert('@Localizer["RequestSentForMaid"]' + ": " + maidId);
+      // احفظ الـ id في حقل مخفي
+      document.getElementById("maidIdInput").value = maidId;
+      // افتح المودال
+      var modal = new bootstrap.Modal(document.getElementById("requestMaidModal"));
+      modal.show();
     }
+    function submitMaidRequest() {
+       const maidId = document.getElementById("maidIdInput").value;
+       const name = document.getElementById("userName").value.trim();
+       const phone = document.getElementById("userPhone").value.trim();
+
+       // إخفاء الأخطاء القديمة
+       document.getElementById("nameError").style.display = "none";
+       document.getElementById("phoneError").style.display = "none";
+
+       let hasError = false;
+
+       // التحقق من الاسم
+       if (!name) {
+         document.getElementById("nameError").textContent = "الرجاء إدخال الاسم.";
+         document.getElementById("nameError").style.display = "block";
+         hasError = true;
+       }
+
+       // التحقق من رقم الهاتف
+       const phoneRegex = /^07\d{8}$/;
+       if (!phoneRegex.test(phone)) {
+         document.getElementById("phoneError").textContent = "رقم الهاتف غير صالح. يجب أن يبدأ بـ 07 ويتكون من 10 أرقام.";
+         document.getElementById("phoneError").style.display = "block";
+         hasError = true;
+       }
+
+       if (hasError) return;
+
+        $.ajax({
+      url: `/Common/SendRequest/${maidId}/${encodeURIComponent(name)}/${encodeURIComponent(phone)}`,
+      type: 'POST',
+      success: function () {
+        alert("تم إرسال الطلب بنجاح!");
+        
+      },
+      error: function () {
+        alert("حدث خطأ أثناء إرسال الطلب.");
+      }
+    });
+
+    }
+
+
 </script>
