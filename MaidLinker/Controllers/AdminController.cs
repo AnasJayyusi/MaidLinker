@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 using NPOI.SS.Formula.Functions;
 using System.Globalization;
 using System.Security.Claims;
-using static MaidLinker.Data.SharedEnum;
+using static MaidLinker.Enums.SharedEnum;
 
 
 
@@ -68,6 +68,7 @@ namespace MaidLinker.Controllers
             {
                 inProgressRequests = await _dbContext.Requests
                     .Include(r => r.Maid)
+                    .Where(r => r.Status == RequestStatus.InProgress || r.Status == RequestStatus.Prepared)
                     .ToListAsync();
             }
             else if (isReception)
@@ -151,7 +152,7 @@ namespace MaidLinker.Controllers
                 .Include(r => r.Maid)
                 .FirstOrDefaultAsync(r => r.Id == id);
 
-            request.Status = RequestStatus.Completed;
+            request.Status = RequestStatus.Prepared;
 
             await _dbContext.SaveChangesAsync();
             PushNewNotification(NotificationTypeEnum.Confirm, AccountTypeEnum.All, request.Id.ToString());
@@ -170,7 +171,7 @@ namespace MaidLinker.Controllers
             request.Status = RequestStatus.Completed;
 
             await _dbContext.SaveChangesAsync();
-
+            PushNewNotification(NotificationTypeEnum.Completed, AccountTypeEnum.All, request.Id.ToString());
             return Json(new { success = true });
         }
 
@@ -1012,7 +1013,7 @@ namespace MaidLinker.Controllers
         [Route("Settings/GeneralSettings")]
         public IActionResult GeneralSettings()
         {
-            var keys = new[] { "PhoneNumber", "WhatsAppNumber", "Address", "FacebookUrl", "InstagramUrl" };
+            var keys = new[] { "PhoneNumber", "WhatsAppNumber", "AddressAr", "AddressEn", "FacebookUrl", "InstagramUrl" };
             var settingsDict = _dbContext.GeneralSettings
                                        .Where(s => keys.Contains(s.SettingKey))
                                        .ToDictionary(s => s.SettingKey, s => s.SettingValue);
@@ -1022,7 +1023,7 @@ namespace MaidLinker.Controllers
                 PhoneNumber = settingsDict.GetValueOrDefault("PhoneNumber", ""),
                 WhatsAppNumber = settingsDict.GetValueOrDefault("WhatsAppNumber", ""),
                 AddressAr = settingsDict.GetValueOrDefault("AddressAr", ""),
-                AddressEn = settingsDict.GetValueOrDefault("AddressAr", ""),
+                AddressEn = settingsDict.GetValueOrDefault("AddressEn", ""),
                 FacebookUrl = settingsDict.GetValueOrDefault("FacebookUrl", ""),
                 InstagramUrl = settingsDict.GetValueOrDefault("InstagramUrl", "")
             };
@@ -1079,11 +1080,14 @@ namespace MaidLinker.Controllers
 
                 _dbContext.SaveChanges();
 
-                ViewBag.SuccessMessage = true;
+                ViewBag.SuccessMessage = "Settings saved successfully.";
+
+                // Return the view with updated model and ViewBag (no redirect)
                 return View("GeneralSettings", model);
             }
 
-            ViewBag.SuccessMessage = false;
+            // If model state invalid
+            ViewBag.ErrorMessage = "Please correct the errors.";
             return View("GeneralSettings", model);
         }
 

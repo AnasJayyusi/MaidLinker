@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AlertMessage" xml:space="preserve">
-    <value>شكرًا لك، تم إرسال ملاحظاتك بنجاح</value>
+    <value>من فضلك ادخل نص</value>
   </data>
   <data name="AnyQuestions" xml:space="preserve">
     <value>لديك سؤال؟ دعنا نتحدث</value>
@@ -128,6 +128,9 @@
   </data>
   <data name="Contacts" xml:space="preserve">
     <value>تواصل معنا</value>
+  </data>
+  <data name="Done" xml:space="preserve">
+    <value />
   </data>
   <data name="Email" xml:space="preserve">
     <value>البريد الإلكتروني</value>

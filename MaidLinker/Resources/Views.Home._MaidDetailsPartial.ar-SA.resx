@@ -171,4 +171,19 @@
   <data name="MaidDetails" xml:space="preserve">
     <value>التفاصيل</value>
   </data>
+  <data name="PhoneNumber" xml:space="preserve">
+    <value>رقم الهاتف</value>
+  </data>
+  <data name="CancelRequest" xml:space="preserve">
+    <value>إرسال  الطلب</value>
+  </data>
+  <data name="InsertName" xml:space="preserve">
+    <value> الرجاء إدخال الاسم.</value>
+  </data>
+  <data name="InvalidNumber" xml:space="preserve">
+    <value>رقم الهاتف غير صالح. يجب أن يبدأ بـ 07 ويتكون من 10 أرقام. </value>
+  </data>
+  <data name="SendRequest" xml:space="preserve">
+    <value>إرسال طلب</value>
+  </data>
 </root>

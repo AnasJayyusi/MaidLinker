@@ -130,26 +130,26 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content" style="color:#5F7AE7;">
             <div class="modal-header">
-                <h5 class="modal-title" id="requestMaidModalLabel">طلب هذه العاملة</h5>
+                <h5 class="modal-title" id="requestMaidModalLabel">@Localizer["RequestThisMaid"]</h5>
             </div>
             <div class="modal-body">
                 <input type="hidden" id="maidIdInput" value="@Model.Id" />
 
                 <div class="mb-3">
-                    <label for="userName" class="form-label">الاسم</label>
+                    <label style="font-weight:bold" for="userName" class="form-label">@Localizer["Name"]</label>
                     <input type="text" class="form-control" id="userName" />
                     <span class="text-danger small" id="nameError" style="display:none;"></span>
                 </div>
 
                 <div class="mb-3">
-                    <label for="userPhone" class="form-label">رقم الهاتف</label>
+                    <label style="font-weight:bold" for="userPhone" class="form-label">@Localizer["PhoneNumber"]</label>
                     <input maxlength="10" type="text" class="form-control" id="userPhone" />
                     <span class="text-danger small" id="phoneError" style="display:none;"></span>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger me-2" style="margin:3px" data-dismiss="modal">إلغاء الطلب</button>
-                <button type="button" class="btn btn-success" onclick="submitMaidRequest()">إرسال الطلب</button>
+                <button id="closeRequestPopup" type="button" class="btn btn-danger me-2" style="margin:3px" data-dismiss="modal">@Localizer["CancelRequest"]</button>
+                <button type="button" class="btn btn-success" onclick="submitMaidRequest()">@Localizer["SendRequest"]</button>
             </div>
         </div>
     </div>
@@ -180,7 +180,7 @@
 
        // التحقق من الاسم
        if (!name) {
-         document.getElementById("nameError").textContent = "الرجاء إدخال الاسم.";
+         document.getElementById("nameError").textContent ='@Localizer["InsertName"]' ;
          document.getElementById("nameError").style.display = "block";
          hasError = true;
        }
@@ -188,7 +188,7 @@
        // التحقق من رقم الهاتف
        const phoneRegex = /^07\d{8}$/;
        if (!phoneRegex.test(phone)) {
-         document.getElementById("phoneError").textContent = "رقم الهاتف غير صالح. يجب أن يبدأ بـ 07 ويتكون من 10 أرقام.";
+         document.getElementById("phoneError").textContent ='@Localizer["InvalidNumber"]' ;
          document.getElementById("phoneError").style.display = "block";
          hasError = true;
        }
@@ -199,11 +199,13 @@
       url: `/Common/SendRequest/${maidId}/${encodeURIComponent(name)}/${encodeURIComponent(phone)}`,
       type: 'POST',
       success: function () {
-        alert("تم إرسال الطلب بنجاح!");
+           showSuccessMessage();
+           $("#closeRequestPopup").trigger("click");
         
       },
       error: function () {
-        alert("حدث خطأ أثناء إرسال الطلب.");
+        showErrorMessage();
+        console.error(error);
       }
     });
 

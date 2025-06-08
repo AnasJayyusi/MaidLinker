@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using System.Globalization;
 using static MaidLinker.Areas.Identity.Pages.Account.LoginModel;
-using static MaidLinker.Data.SharedEnum;
+using static MaidLinker.Enums.SharedEnum;
 
 namespace MaidLinker.Controllers
 {
@@ -24,7 +24,7 @@ namespace MaidLinker.Controllers
         #region Handling Routing 
         public IActionResult Index()
         {
-            if (User.IsInRole("Administrator"))
+            if (User.IsInRole("Administrator") || User.IsInRole("Accountant") || User.IsInRole("Reception"))
                 return RedirectToAction("Dashboard", "Admin");
             return View();
         }

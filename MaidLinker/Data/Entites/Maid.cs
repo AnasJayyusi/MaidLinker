@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Globalization;
 using System.Net.Mail;
-using static MaidLinker.Data.SharedEnum;
+using static MaidLinker.Enums.SharedEnum;
 
 namespace MaidLinker.Data.Entites
 {

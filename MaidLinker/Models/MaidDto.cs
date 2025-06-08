@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using static MaidLinker.Data.SharedEnum;
+using static MaidLinker.Enums.SharedEnum;
 
 namespace MaidLinker.Models
 {

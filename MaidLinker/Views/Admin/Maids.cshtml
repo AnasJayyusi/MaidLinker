@@ -13,22 +13,7 @@
 	<link href="~/css/sb-admin-2.css" rel="stylesheet">
 </head>
 <!-- #endregion -->
-<!-- #region Toast -->
-<div id="toast-container" class="toast-container toast-center">
-	<div class="alert alert-success hidden" role="alert">@Localizer["SavedSuccessfully"]</div>
-	@if (ViewBag.SuccessMessage != null)
-	{
-		if (ViewBag.SuccessMessage.ToString().ToLower() == "true")
-		{
-			<div class="alert alert-success" role="alert">@Localizer["DeletedSuccessfully"]</div>
-		}
-		else
-		{
-			<div class="alert alert-danger" role="alert">@Localizer["CannotDelete"]</div>
-		}
-	}
-</div>
-<!-- #endregion -->
+
 
 <div id="page-top" class="mt-5">
 	<div id="wrapper">
@@ -313,10 +298,12 @@
 					   // Optionally close modal
 					   $('#close-add-Maid').trigger('click');
 					   // Refresh list
-					   loadMaids(); 
+					   loadMaids();
+						  showSuccessMessage();
 					},
 					error: function (xhr) {
 					   $('#error-msg-add').removeClass('hidden').text(@Localizer["FillAllRequiredFeildsPlease"]);
+					   showErrorMessage();
 					}
 				 });
 			  });
@@ -343,7 +330,7 @@
 				 });
 			  },
 			  error: function () {
-				 alert("Failed to load languages.");
+			   showErrorMessage();
 			  }
 		   });
 		}
@@ -363,7 +350,7 @@
 					});
 				},
 				error: function () {
-					alert("Failed to load countries.");
+					   showErrorMessage();
 				}
 			});
 		}
@@ -381,7 +368,7 @@
 				 });
 			  },
 			  error: function () {
-				 alert("Failed to load marital statuses.");
+			   showErrorMessage();
 			  }
 		   });
 		}
@@ -399,7 +386,7 @@
 				 });
 			  },
 			  error: function () {
-				 alert("Failed to load nationalities.");
+				   showErrorMessage();
 			  }
 		   });
 		}

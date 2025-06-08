@@ -1,4 +1,4 @@
-﻿using static MaidLinker.Data.SharedEnum;
+﻿using static MaidLinker.Enums.SharedEnum;
 
 namespace MaidLinker.Data.Entites
 {

@@ -1,5 +1,6 @@
 ﻿@model List<MaidLinker.Data.Entites.Request>
 @using MaidLinker.Data
+@using MaidLinker.Enums
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer Localizer
 @{
@@ -45,7 +46,7 @@
                                             <span class="badge bg-info text-dark">@Localizer["Prepared"]</span>
                                             ; break;
                                         default:
-                                            <span class="badge bg-secondary">@Localizer[request.Status.ToString()]</span>
+                                            <span class="badge bg-success">@Localizer[request.Status.ToString()]</span>
                                             ; break;
                                     }
                                 </td>
@@ -79,6 +80,12 @@
                                         <i class="far fa-check-circle"></i>
 
                                     }
+
+                                      else if ( User.IsInRole("Administrator") && request.Status == SharedEnum.RequestStatus.Completed)
+                                    {
+                                <i class="fas fa-check-circle" style="color: green; font-size: 2rem;"></i>
+
+                                    }
                                 </td>
                             </tr>
                         }
@@ -105,10 +112,10 @@ else
 
             $.post("/Admin/ConfirmRequest", { id: requestId }, function (res) {
                 if (res.success) {
-                    toastr.success("@Localizer["RequestTakenSuccessfully"]");
+                   showSuccessMessage();
                     setTimeout(() => location.reload(), 1000);
                 } else {
-                    toastr.error("@Localizer["RequestTakeFailed"]");
+                     showErrorMessage();
                 }
             });
         });
@@ -119,10 +126,10 @@ else
 
             $.post("/Admin/CompleteRequest", { id: requestId }, function (res) {
                 if (res.success) {
-                    toastr.success("@Localizer["RequestTakenSuccessfully"]");
+                       showSuccessMessage();
                     setTimeout(() => location.reload(), 1000);
                 } else {
-                    toastr.error("@Localizer["RequestTakeFailed"]");
+                     showErrorMessage();
                 }
             });
         });
@@ -136,10 +143,10 @@ else
 
             $.post("/Admin/CancelRequest", { id: requestId }, function (res) {
                 if (res.success) {
-                    toastr.success("@Localizer["RequestTakenSuccessfully"]");
+                      showSuccessMessage();
                     setTimeout(() => location.reload(), 1000);
                 } else {
-                    toastr.error("@Localizer["RequestTakeFailed"]");
+                   showErrorMessage();
                 }
             });
         });

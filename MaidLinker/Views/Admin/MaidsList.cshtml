@@ -96,43 +96,43 @@
                     {
                         @maid.Nationality.TitleAr
                     }
-                    </td>
-                    <td>
-                        <div>
-                            <button onclick="getAttachments(@maid.Id)" class="btn btn-warning btn-sm rounded-pill" data-toggle="modal" data-target="#EditAttachments" title="@Localizer["Attachments"]">
-                                <i class="fa fa-file"></i>
-                            </button>
-                        </div>
-                    </td>
-                    <td>
-                        <div>
-                            <button onclick="getMaid(@maid.Id)" class="btn btn-success btn-sm rounded-pill" data-toggle="modal" data-target="#EditMaid" title="@Localizer["Edit"]">
-                                <i class="fa fa-edit"></i>
-                            </button>
-                            <a href="#" class="btn btn-danger btn-sm rounded-pill ml-1" data-toggle="modal" data-target="#confirmDeleteModal_@maid.Id">
-                                <i class="fa fa-trash"></i>
-                            </a>
-                        </div>
+                </td>
+                <td>
+                    <div>
+                        <button onclick="getAttachments(@maid.Id)" class="btn btn-warning btn-sm rounded-pill" data-toggle="modal" data-target="#EditAttachments" title="@Localizer["Attachments"]">
+                            <i class="fa fa-file"></i>
+                        </button>
+                    </div>
+                </td>
+                <td>
+                    <div>
+                        <button onclick="getMaid(@maid.Id)" class="btn btn-success btn-sm rounded-pill" data-toggle="modal" data-target="#EditMaid" title="@Localizer["Edit"]">
+                            <i class="fa fa-edit"></i>
+                        </button>
+                        <a href="#" class="btn btn-danger btn-sm rounded-pill ml-1" data-toggle="modal" data-target="#confirmDeleteModal_@maid.Id">
+                            <i class="fa fa-trash"></i>
+                        </a>
+                    </div>
 
-                        <!-- Delete Modal -->
-                        <div class="modal fade" id="confirmDeleteModal_@maid.Id" tabindex="-1" role="dialog">
-                            <div class="modal-dialog modal-dialog-centered">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title">@Localizer["Confirmation"]</h5>
-                                        <button type="button" class="btn-close" data-dismiss="modal">&times;</button>
-                                    </div>
-                                    <div class="modal-body">@Localizer["DeleteConfirmation"]</div>
-                                    <div class="modal-footer">
-                                        <button class="btn btn-secondary" data-dismiss="modal">@Localizer["Cancel"]</button>
-                                        <a href="/Admin/DeleteMaid/@maid.Id" class="btn btn-danger">@Localizer["Delete"]</a>
-                                    </div>
+                    <!-- Delete Modal -->
+                    <div class="modal fade" id="confirmDeleteModal_@maid.Id" tabindex="-1" role="dialog">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">@Localizer["Confirmation"]</h5>
+                                    <button type="button" class="btn-close" data-dismiss="modal">&times;</button>
+                                </div>
+                                <div class="modal-body">@Localizer["DeleteConfirmation"]</div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-secondary" data-dismiss="modal">@Localizer["Cancel"]</button>
+                                    <a href="/Admin/DeleteMaid/@maid.Id" class="btn btn-danger">@Localizer["Delete"]</a>
                                 </div>
                             </div>
                         </div>
-                    </td>
-                </tr>
-                }
+                    </div>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
 <!-- #endregion -->
@@ -536,7 +536,7 @@
 
         // Add LanguageIds - multiple select
         $('#maidsListlanguages option:selected').each(function() {
-         
+
             formData.append('LanguageIds', $(this).val());
         });
 
@@ -717,30 +717,37 @@
 <script>
     $(document).on('click', '.toggle-availability-btn', function () {
         const button = $(this);
+        debugger;
         const maidId = button.data('id');
-        const isCurrentlyAvailable = button.data('available');
+        var isCurrentlyAvailable = button.data('available');
+            if (isCurrentlyAvailable == 'False' || isCurrentlyAvailable == false)
+            isCurrentlyAvailable = true; 
+            else
+            isCurrentlyAvailable = false; 
+
 
         $.ajax({
-            url: `/Admin/ToggleAvailability/${maidId}/${!isCurrentlyAvailable}`,
+            url: `/Admin/ToggleAvailability/${maidId}/${isCurrentlyAvailable}`,
             type: 'POST',
             success: function () {
                 // Toggle data
-                button.data('available', !isCurrentlyAvailable);
+                button.data('available', isCurrentlyAvailable);
 
                 // Update icon + text
                 const icon = button.find('i');
-                if (!isCurrentlyAvailable) {
+                if (isCurrentlyAvailable) {
                     icon.removeClass('fa-toggle-off text-danger')
                         .addClass('fa-toggle-on text-success');
-                    button.html('<i class="fa fa-toggle-on text-success"></i> متاحة'); // or "Available"
+                     button.html('<i class="fa fa-toggle-on text-success"></i> @Localizer["Available"]'); // or "Available"
                 } else {
                     icon.removeClass('fa-toggle-on text-success')
                         .addClass('fa-toggle-off text-danger');
-                    button.html('<i class="fa fa-toggle-off text-danger"></i> غير متاحة'); // or "Unavailable"
+                     button.html('<i class="fa fa-toggle-off text-danger"></i> @Localizer["Unavailable"]'); // or "Unavailable"
                 }
+                   showSuccessMessage();
             },
             error: function () {
-                alert("خطأ أثناء التحديث.");
+                 showErrorMessage();
             }
         });
     });

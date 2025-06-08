@@ -171,4 +171,26 @@
 	<data name="MaidDetails" xml:space="preserve">
   <value>Details</value>
 </data>
+	<data name="PhoneNumber" xml:space="preserve">
+    <value>Phone Number</value>
+  </data>
+
+	<data name="CancelRequest" xml:space="preserve">
+    <value>Cancel Request</value>
+  </data>
+
+	<data name="SendRequest" xml:space="preserve">
+    <value>Send Request</value>
+  </data>
+
+
+
+	<data name="InsertName" xml:space="preserve">
+    <value>Type Your Name</value>
+  </data>
+
+
+	<data name="InvalidNumber" xml:space="preserve">
+    <value>Invalid phone number. Must start with 07 and consist of 10 digits. </value>
+  </data>
 </root>

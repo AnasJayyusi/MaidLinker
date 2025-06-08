@@ -1,6 +1,7 @@
-﻿@model List<MaidLinker.Data.Entites.Nationality>
+﻿
+@model List<MaidLinker.Data.Entites.Nationality>
 
-<!-- #region For Localization -->
+
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer Localizer
 @{
@@ -9,69 +10,30 @@
     string textAlign = direction == "rtl" ? "right" : "left";
     bool isEng = cultureCode.StartsWith("en", StringComparison.OrdinalIgnoreCase) ? true : false;
 }
-<!-- #endregion For Localization -->
+<head>
+    <link href="~/css/sb-admin-2.css" rel="stylesheet">
+</head>
 
-<!-- #region For Toaster -->
-<div id="toast-container" class="toast-container toast-center">
-    <div class="alert alert-success hidden" role="alert">
-        @Localizer["SavedSuccessfully"]
-      
-    </div>
-
-    @if (@ViewBag.SuccessMessage != null)
-    {
-        if (@ViewBag.SuccessMessage == true)
-        {
-            <text>
-                <div class="alert alert-success" role="alert">
-                    @Localizer["DeletedSuccessfully"]
-                </div>
-            </text>
-        }
-        if (@ViewBag.SuccessMessage == false)
-        {
-            <text>
-                <div class="alert alert-danger" role="alert">
-                    @Localizer["CannotDelete"]
-                </div>
-            </text>
-        }
-    }
-</div>
-<!-- #endregion For Toaster -->
-
+<!-- #endregion -->
 <div id="page-top" class="mt-5">
-
     <div id="wrapper">
-
-        <!-- Sidebar -->
         @await Html.PartialAsync("_Sidebar")
-
         <div id="content-wrapper" class="d-flex flex-column">
-
-            <!-- Main Content -->
             <div id="content" style="background-color:lavender">
-
-                <!-- Begin Page Content -->
                 <div class="container-fluid mt-5">
-
-                    <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h6 style="font-weight:bold;color:#5F7AE7 " class="h6 mb-0 "></h6>
+                        <h6 class="h6 mb-0" style="font-weight:bold;color:#5F7AE7 "></h6>
                         @await Html.PartialAsync("_Userbar")
                     </div>
-                    <!-- Content Row -->
                     <div class="row">
-                        <!-- Area Chart -->
                         <div class="col-xl-12 col-lg-12">
                             <div class="card shadow mb-4">
-                                <!-- Card Header - Dropdown -->
                                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                                     <h6 class="m-0 " style="font-weight:bold;color:#5F7AE7 ">@Localizer["PageTitle"]</h6>
                                     <div style="text-align: end; cursor:pointer">
-                                        <button id="popup_btn" type="button" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" data-toggle="modal" data-target="#ViewPopup">
-                                            <i class="fa fa-plus text-white-50"></i>  
-                                    </button>
+                                        <button id="popup_btn" type="button" class="btn btn-sm btn-primary shadow-sm" data-toggle="modal" data-target="#ViewPopup">
+                                            <i class="fa fa-plus text-white-50"></i>
+                                        </button>
                                     </div>
                                 </div>
                                 <!-- Card Body -->
@@ -139,8 +101,6 @@
 
 <!-- #region Scripts & Ajax Calls -->
 @section Scripts {
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script>
         $(document).ready(function () {
             // Hide the success message after 2 seconds
@@ -202,10 +162,3 @@
 <!-- #endregion  -->
 
 
-<!-- #region Css Style-->
-<head>
-    <!-- Custom styles for this template-->
-    <link href="~/css/sb-admin-2.css" rel="stylesheet">
-  
-</head>
-<!-- #endregion Css Style-->

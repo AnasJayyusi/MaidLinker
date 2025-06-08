@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
-using static MaidLinker.Data.SharedEnum;
+using static MaidLinker.Enums.SharedEnum;
 namespace MaidLinker.Controllers
 {
 
@@ -153,7 +153,7 @@ namespace MaidLinker.Controllers
             _dbContext.Requests.Add(request);
             await _dbContext.SaveChangesAsync();
             var newRequestId = request.Id;  // <-- here you get the new request ID
-            PushNewNotification(NotificationTypeEnum.NewRequest,AccountTypeEnum.Reception , $"#{newRequestId.ToString()}");
+            PushNewNotification(NotificationTypeEnum.NewRequest,AccountTypeEnum.All , $"#{newRequestId.ToString()}");
 
 
             return Ok();

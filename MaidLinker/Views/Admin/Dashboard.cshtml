@@ -14,18 +14,6 @@
 <!-- #region Styles -->
 <head>
     <link href="~/css/sb-admin-2.css" rel="stylesheet">
-    <style>
-        .badge-info {
-            background-color: #17a2b8;
-            color: white;
-            font-size: 0.75rem;
-            vertical-align: middle;
-            margin-left: 5px;
-        }
-
-        .hidden {
-            display: none;
-        }
 
         .scrollable-table tbody {
             display: block;
@@ -107,15 +95,15 @@
                                 bool isTaken = !string.IsNullOrEmpty(request.ServedByUserId);
                                 <tr>
                                     <td>
-                                        @if (request.Status == SharedEnum.RequestStatus.New)
+                                        @if (request.Status == MaidLinker.Enums.SharedEnum.RequestStatus.New)
                                         {
                                             <span class="badge bg-secondary text-dark">@Localizer["Pending"]</span>
                                         }
-                                        else if (request.Status == SharedEnum.RequestStatus.InProgress)
+                                        else if (request.Status ==  MaidLinker.Enums.SharedEnum.RequestStatus.InProgress)
                                         {
                                             <span class="badge bg-warning text-dark">@Localizer["InProgress"]</span>
                                         }
-                                        else if (request.Status == SharedEnum.RequestStatus.Completed)
+                                        else if (request.Status == MaidLinker.Enums.SharedEnum.RequestStatus.Completed)
                                         {
                                             <span class="badge bg-success">@Localizer["Completed"]</span>
                                         }
@@ -140,15 +128,15 @@
                             bool isTaken = !string.IsNullOrEmpty(request.ServedByUserId);
                             <tr>
                                 <td>
-                                    @if (request.Status == SharedEnum.RequestStatus.New)
+                                    @if (request.Status == MaidLinker.Enums.SharedEnum.RequestStatus.New)
                                     {
                                         <span class="badge bg-secondary text-dark">@Localizer["Pending"]</span>
                                     }
-                                    else if (request.Status == SharedEnum.RequestStatus.InProgress)
+                                    else if (request.Status == MaidLinker.Enums.SharedEnum.RequestStatus.InProgress)
                                     {
                                         <span class="badge bg-warning text-dark">@Localizer["InProgress"]</span>
                                     }
-                                    else if (request.Status == SharedEnum.RequestStatus.Completed)
+                                    else if (request.Status == MaidLinker.Enums.SharedEnum.RequestStatus.Completed)
                                     {
                                         <span class="badge bg-success">@Localizer["Completed"]</span>
                                     }
@@ -229,9 +217,10 @@
                         headers: { 'Content-Type': 'application/json' }
                     }).then(response => {
                         if (response.ok) {
+                            showSuccessMessage();
                             location.reload();
                         } else {
-                            alert('@Localizer["CancelFailed"]');
+                            showErrorMessage();
                         }
                     });
                 }
@@ -267,7 +256,6 @@
 </div>
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script>
     $(document).ready(function () {
         $(".take-over-btn").click(function () {
@@ -276,10 +264,10 @@
 
             $.post("/Admin/TakeOverRequest", { id: requestId }, function (res) {
                 if (res.success) {
-                    toastr.success("@Localizer["RequestTakenSuccessfully"]");
+                   showSuccessMessage();
                     setTimeout(() => location.reload(), 1000);
                 } else {
-                    toastr.error("@Localizer["RequestTakeFailed"]");
+                 showErrorMessage();
                 }
             });
         });
@@ -290,10 +278,10 @@
 
             $.post("/Admin/CancelRequest", { id: requestId }, function (res) {
                 if (res.success) {
-                    toastr.success("@Localizer["RequestTakenSuccessfully"]");
+                   showSuccessMessage();
                     setTimeout(() => location.reload(), 1000);
                 } else {
-                    toastr.error("@Localizer["RequestTakeFailed"]");
+                      showErrorMessage();
                 }
             });
         });

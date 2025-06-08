@@ -274,14 +274,12 @@
                     data: formData,
                     success: function (response) {
                         $("#validation")[0].reset();
-                        // Display the response in the result-message div
-                        //$("#result-message").html(response);
-                        
-                       toastr.success('Feedback sent successfully', 'Success !!');
+                      showSuccessMessage();
 
                     },
                     error: function (error) {
                         // Handle errors here
+                        showErrorMessage();
                         console.error(error);
                     }
                 });

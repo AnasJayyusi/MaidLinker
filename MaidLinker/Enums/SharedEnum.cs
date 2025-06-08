@@ -1,4 +1,4 @@
-﻿namespace MaidLinker.Data
+﻿namespace MaidLinker.Enums
 {
     public class SharedEnum
     {
@@ -15,7 +15,8 @@
             NewRequest = 1,
             TakeOverRequest = 2,
             Confirm = 3,
-            Cancel=4
+            Cancel=4,
+            Completed = 5
         }
 
         public enum RequestStatus

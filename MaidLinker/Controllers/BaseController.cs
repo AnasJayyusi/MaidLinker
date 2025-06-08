@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
-using static MaidLinker.Data.SharedEnum;
+using static MaidLinker.Enums.SharedEnum;
 
 namespace MaidLinker.Controllers
 {
@@ -133,7 +133,6 @@ namespace MaidLinker.Controllers
                 }
             }
 
-
             if (sendto == AccountTypeEnum.Accountant)
             {
                 var accountantUserIds = GetAccountantUserIds();
@@ -172,17 +171,29 @@ namespace MaidLinker.Controllers
                     notification.CreationDate = DateTime.Now;
                     switch (type)
                     {
+                        case NotificationTypeEnum.NewRequest:
+                            notification.TitleAr = "طلب جديد";
+                            notification.TitleEn = "New Order";
+                            notification.MessageEn = $"You Have New Order With ID {additionalData}";
+                            notification.MessageAr = $"لديكم طلب جديد رقم الطلب {additionalData}";
+                            break;
                         case NotificationTypeEnum.Confirm:
                             notification.TitleAr = "طلب موافق عليه";
                             notification.TitleEn = "New Order";
                             notification.MessageEn = $"You Have New Order have been confirmed With ID {additionalData}";
-                            notification.MessageAr = $"لديك طلب تم الموافقه عليه رقم الطلب {additionalData}";
+                            notification.MessageAr = $"لديكم طلب تم الموافقه عليه رقم الطلب {additionalData}";
                             break;
                         case NotificationTypeEnum.Cancel:
                             notification.TitleAr = "طلب ملغي";
                             notification.TitleEn = "Order Cancelled";
                             notification.MessageEn = $"Order With ID {additionalData} has been cancelled.";
                             notification.MessageAr = $"تم إلغاء الطلب برقم {additionalData}.";
+                            break;
+                        case NotificationTypeEnum.Completed:
+                            notification.TitleAr = "تم اكمال الطلب";
+                            notification.TitleEn = "Order Completed";
+                            notification.MessageEn = $"Order With ID {additionalData} has been Completed.";
+                            notification.MessageAr = $"تم اكمال الطلب برقم {additionalData}.";
                             break;
                     }
                     _dbContext.Notifications.Add(notification);

@@ -9,27 +9,11 @@
     string textAlign = direction == "rtl" ? "right" : "left";
     bool isEng = cultureCode.StartsWith("en", StringComparison.OrdinalIgnoreCase);
 }
-
-
-
-<!-- #region Toast -->
-<div id="toast-container" class="toast-container toast-center">
-    <div class="alert alert-success hidden" role="alert">@Localizer["SavedSuccessfully"]</div>
-
-    @if (ViewBag.SuccessMessage != null)
-    {
-        if (ViewBag.SuccessMessage == true)
-        {
-            <div class="alert alert-success" role="alert">@Localizer["DeletedSuccessfully"]</div>
-        }
-        else
-        {
-            <div class="alert alert-danger" role="alert">@Localizer["CannotDelete"]</div>
-        }
-    }
-</div>
+<!-- #region Styles -->
+<head>
+    <link href="~/css/sb-admin-2.css" rel="stylesheet">
+</head>
 <!-- #endregion -->
-
 <div id="page-top" class="mt-5">
     <div id="wrapper">
         @await Html.PartialAsync("_Sidebar")

@@ -33,30 +33,63 @@
 
     <!-- Toastr JS + Css-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
-      <style>
-            .hidden {
-                display: none;
-            }
 
-            .toast-container {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <style>
+        .toast-center-screen {
+            top: 50% !important;
+            left: 50% !important;
+            transform: translate(-50%, -50%) !important;
+            position: fixed !important;
+        }
 
-            .toast-center {
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-            }
-        </style>
+        /* Optional: Customize success background color */
+        .toast-success {
+            background-color: #5F7AE7 !important;
+            color: white !important;
+            font-weight: bold;
+        }
+
+        .toast-error {
+            background-color: #d9534f !important; /* bootstrap danger red */
+            color: white !important;
+            font-weight: bold;
+        }
+
+        /* Center the toast box on the screen */
+        #toast-container.toast-center-center {
+            top: 40%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            position: fixed;
+            z-index: 9999;
+            text-align: center;
+        }
+
+        /* Control text alignment inside the toast based on language */
+        .toast.align-right {
+            text-align: right !important;
+        }
+
+        .toast.align-left {
+            text-align: left !important;
+        }
+    </style>
+
+    <script>
+        toastr.options = {
+            "closeButton": true,
+            "progressBar": false,
+            "positionClass": "toast-center-screen", // <== custom center class
+            "timeOut": "4000",
+            "showDuration": "300",
+            "hideDuration": "300",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear"
+        };
+    </script>
+    <!-- End of Toastr JS + Css-->
 
 
     <style>
@@ -610,6 +643,43 @@
         }
         return isEn;
     }
+
+     function setToastrDirection() {
+        const isEn = isEnglishCulture();
+        toastr.options.rtl = !isEn;
+        toastr.options.positionClass = "toast-center-center";
+    }
+    function showSuccessMessage() {
+        setToastrDirection();
+        const isEn = isEnglishCulture();
+        const title = isEn ? "Success" : "نجاح";
+        const message = isEn ? "Operation completed successfully." : "تمت العملية بنجاح.";
+        const alignmentClass = isEn ? "align-left" : "align-right";
+
+        toastr.success(message, title);
+        setTimeout(() => {
+            document.querySelectorAll(".toast").forEach(t => {
+                t.classList.add(alignmentClass);
+            });
+        }, 10); // wait for DOM injection
+    }
+
+     function showErrorMessage() {
+        setToastrDirection();
+        const isEn = isEnglishCulture();
+        const title = isEn ? "Failed" : "فشلت";
+        const message = isEn
+            ? "The operation could not be completed. Please check and try again."
+            : "فشلت إكمال العملية، الرجاء التأكد والمحاولة مرة أخرى.";
+        const alignmentClass = isEn ? "align-left" : "align-right";
+
+        toastr.error(message, title);
+        setTimeout(() => {
+            document.querySelectorAll(".toast").forEach(t => {
+                t.classList.add(alignmentClass);
+            });
+        }, 10);
+        }
 </script>
 
 
