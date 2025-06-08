@@ -1,166 +1,155 @@
-﻿@using Microsoft.AspNetCore.Mvc.Localization
+﻿@model List<MaidLinker.Data.Entites.Notification>
+@using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer Localizer
+
 @{
     string cultureCode = System.Threading.Thread.CurrentThread.CurrentCulture.Name;
     string direction = cultureCode.StartsWith("ar", StringComparison.OrdinalIgnoreCase) ? "rtl" : "ltr";
     string textAlign = direction == "rtl" ? "right" : "left";
-    bool isEng = direction == "ltr" ? true : false;
+    bool isEng = direction == "ltr";
 }
 
-<div id="page-top" style="margin-top:50px">
+<head>
+    <!-- Custom styles for this template -->
+    <link href="~/css/sb-admin-2.css" rel="stylesheet" />
+    <style>
+        .custom-notification-item {
+            display: flex;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
 
+            .custom-notification-item:not(.read) {
+                background-color: lightblue;
+            }
+
+        .custom-notification-icon {
+            margin-right: 10px;
+            font-size: 24px;
+            color: #FFD43B;
+        }
+
+        .custom-notification-content h6 {
+            margin: 0;
+            font-weight: 600;
+        }
+
+        .custom-notification-time {
+            font-size: 12px;
+            color: gray;
+        }
+
+        .no-notification-container {
+            text-align: center;
+            padding: 40px 0;
+            color: #5F7AE7;
+        }
+
+            .no-notification-container img {
+                margin-bottom: 15px;
+            }
+    </style>
+</head>
+
+<div id="page-top" class="mt-5">
     <div id="wrapper">
-
-
         <!-- Sidebar -->
         @Html.Partial("_Sidebar")
 
         <div id="content-wrapper" class="d-flex flex-column">
-
             <!-- Main Content -->
-            <div id="content">
-
+            <div id="content" style="background-color: lavender;">
                 <!-- Begin Page Content -->
-                <div class="container-fluid" style="margin-top:50px">
-
+                <div class="container-fluid mt-5">
 
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h6 style="font-weight:bold;color:#5F7AE7 " class="h6 mb-0 ">  My Profile  &#8658; Notifications</h6>
+                        <h6 style="font-weight:bold;color:#5F7AE7" class="h6 mb-0">
+                            @Localizer["Notifications"]
+                        </h6>
 
-
-                        <!--ToDo:Move To Partial View -->
-                        <div class="dropdown" style="margin-right: 5%;" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-                            <a href="#">
-                                <label style="font-weight:bold;color:#5F7AE7 ">Administrator</label>
-                                <img src="~/users/images/Default-User-Profile.jpg" width="40" height="40" alt="user-profile">
+                        <!-- Userbar (replace with your partial or your markup) -->
+                        <div class="dropdown" style="margin-right: 5%;">
+                            <a href="#" class="d-flex align-items-center text-decoration-none">
+                                <label style="font-weight:bold;color:#5F7AE7; margin-right: 10px;">Administrator</label>
+                                <img src="~/users/images/Default-User-Profile.jpg" width="40" height="40" alt="user-profile" />
                             </a>
-
                             <div class="dropdown-content">
-                                <a type="submit" style="text-transform: none;" class="my-profile-button" asp-area="Identity" asp-page="/Account/Logout">
-                                    Logout
-                                    <span>
-                                        @*  <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                                        <button style="text-transform: none;" class="my-profile-button" type="submit"></button>
-                                        </form>
-                                        *@
-                                        <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
-                                            <button style="text-transform: none;" class="my-profile-button" type="submit"></button>
-                                        </form>
-                                    </span>
-
-
-                                </a>
-
-
+                                <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
+                                    <button class="my-profile-button" type="submit" style="text-transform:none;">Logout</button>
+                                </form>
                             </div>
                         </div>
-
                     </div>
-                    <!-- Content Row -->
+
+                    <!-- Notifications Card -->
                     <div class="row">
-                        <!-- Area Chart -->
                         <div class="col-xl-12 col-lg-12">
                             <div class="card shadow mb-4">
-                                <!-- Card Header - Dropdown -->
                                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-primary"> @Localizer["Notifications"]</h6>
-
+                                    <h6 class="m-0 font-weight-bold text-primary">@Localizer["Notifications"]</h6>
                                 </div>
-                                <!-- Card Body -->
                                 <div class="card-body" style="max-height: 768px; overflow-y: auto;">
-
-                                    <br />
-
-                                    <div class="table-responsive" id="dataTableContainer">
-                                        @*@Html.Partial("ServicesReportList", Model)*@
-                                        <div>
-                                            <div id="tab1" class="tab-content">
-
-                                                @foreach (var notification in Model)
-                                                {
-                                                    <div class="custom-notification-item" style='@(notification.IsRead ? "":"background-color:lightblue")'>
-                                                        <div class="custom-notification-icon">
-                                                           <i class="fa-light fa-bell" style="color: #FFD43B;"></i>
-                                                        </div>
-                                                        <div class="custom-notification-content">
-                                                            @if (isEng)
+                                    @if (Model != null && Model.Count > 0)
+                                    {
+                                        foreach (var notification in Model)
+                                        {
+                                            var isReadClass = notification.IsRead ? "read" : "unread";
+                                            <div class="custom-notification-item @(isReadClass)">
+                                                <div class="custom-notification-icon">
+                                                    <i class="fas fa-bell"></i>
+                                                </div>
+                                                <div class="custom-notification-content" style="text-align:@textAlign">
+                                                    <h6 class="custom-notification-message">
+                                                        @(isEng? notification.MessageEn: notification.MessageAr)
+                                                    </h6>
+                                                    <span class="custom-notification-time">
+                                                        @{
+                                                            var isLessThan5Minutes = DateTime.Now.Subtract(notification.CreationDate).Duration() < TimeSpan.FromMinutes(5);
+                                                            if (isLessThan5Minutes)
                                                             {
-                                                                <h6 class="custom-notification-message">@notification.MessageEn</h6>
+                                                                <text>Now</text>
                                                             }
                                                             else
                                                             {
-                                                                <h6 class="custom-notification-message">@notification.MessageAr</h6>
+                                                                <text>@notification.CreationDateFormatted</text>
                                                             }
-                                                            <span class="custom-notification-time">
-                                                                @{
-
-                                                                    //if((DateTime.Now -   notification.CreationDate) < 5
-                                                                    bool isLessThan5Minutes = DateTime.Now.Subtract(notification.CreationDate).Duration() < TimeSpan.FromMinutes(5);
-                                                                    if (isLessThan5Minutes)
-                                                                    {
-                                                                        <text>Now</text>
-                                                                    }
-                                                                    else
-                                                                    {
-                                                                        <text>@notification.CreationDateFormatted</text>
-                                                                    }
-                                                                }
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                    <div style="border-bottom: 1px solid #cdcaca;">
-                                                        <!-- Your content goes here -->
-                                                    </div>
-                                                }
-                                                @if (Model.Count == 0)
-                                                {
-                                                    <div class="no-notification-container">
-                                                        <div class="notification-message">
-                                                            <img src="~/images/no-notification.ico" width="100" height="100">
-
-                                                            <br>
-                                                            <lable style="color:#5F7AE7">  @Localizer["NoNotifications"]</lable>
-                                                        </div>
-                                                    </div>
-
-                                                }
-
-                                                <style>
-                                                    .unseen-color {
-                                                        background-color: lightblue
-                                                    }
-                                                </style>
-
-
+                                                        }
+                                                    </span>
+                                                </div>
                                             </div>
+                                            <hr />
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <div class="no-notification-container">
+                                            <img src="~/images/no-notification.ico" width="100" height="100" alt="No Notifications" />
+                                            <br />
+                                            <label style="color:#5F7AE7">@Localizer["NoNotifications"]</label>
                                         </div>
-                                    </div>
+                                    }
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
 
-        </div>
-        <!-- End of Content Wrapper -->
-
-    </div>
-    <!-- End of Page Wrapper -->
+                </div> <!-- /.container-fluid -->
+            </div> <!-- /#content -->
+        </div> <!-- /#content-wrapper -->
+    </div> <!-- /#wrapper -->
     <!-- Scroll to Top Button-->
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
     </a>
 </div>
 
-
 @section Scripts {
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script>
         $(document).ready(function () {
-            var currentUrl = window.location.href;
-            if (currentUrl.includes("Notifications")) {
+            var currentUrl = window.location.href.toLowerCase();
+            if (currentUrl.includes("notifications")) {
                 $("#myServices-li").removeClass("activeLink");
                 $("#myServices-text").removeClass("activeLink");
 
@@ -171,15 +160,10 @@
                 $("#myReferrals-text").removeClass("activeLink");
 
                 $("#changePassword-li").removeClass("activeLink");
-                $("#changePassword-li").removeClass("activeLink");
 
                 $("#notifications-li").addClass("activeLink");
                 $("#notifications-text").addClass("activeLink");
-            } else {
-                console.log("The URL does not contain 'Notifications'.");
             }
-
-        })
+        });
     </script>
-
 }
