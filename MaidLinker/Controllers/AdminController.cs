@@ -154,7 +154,7 @@ namespace MaidLinker.Controllers
             request.Status = RequestStatus.Completed;
 
             await _dbContext.SaveChangesAsync();
-            PushNewNotification(NotificationTypeEnum.Cancel, AccountTypeEnum.All, request.Id.ToString());
+            PushNewNotification(NotificationTypeEnum.Confirm, AccountTypeEnum.All, request.Id.ToString());
 
             return Json(new { success = true });
         }
