@@ -15,12 +15,9 @@
                         <h1>
                             @Localizer["OurVision"]
                         </h1>
-
-
                         <p>
                             @Localizer["OurVisionDesc"]
                         </p>
-
                         <div  class="flex-data">
                             <a style="width: 200px !important;" class="custom-btn" asp-area="" asp-controller="Home" asp-action="About">
                                 <span>
@@ -31,87 +28,8 @@
                     </div>
                 </div>
             </div>
-
-        @*     <form class="form-contain" id="search-doctors" action="Home/Doctors" method="GET">
-                <div class="row">
-
-                    <div class="col-lg-2 col-12 padding-screen">
-                        <div class="form-group round-left">
-                            <div class="form-data select-box">
-                                <select name="specialityId" id="specialities-ddl" class="form-control" onchange="getServices()">
-                                    <option value="">
-                                                        @Localizer["SpecialityDefaultSelection"]
-                                    </option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-2 col-12 padding-screen">
-                        <div class="form-group round-left">
-                            <div class="form-data select-box">
-                                <select name="serviceId" id="services-ddl" class="form-control" onchange="canSearch()">
-                                    <option value="">
-                                       @Localizer["ServiceDefaultSelection"]
-                                    </option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-2 col-12 padding-screen">
-                        <div class="form-group">
-                            <div class="form-data select-box">
-                                <select name="cityId" id="cities-ddl" class="form-control" onchange="getDistricts()">
-                                    <option value="">
-                                                        @Localizer["CityDefaultSelection"]
-                                    </option>
-
-
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-2 col-12 padding-screen">
-                        <div class="form-group">
-                            <div class="form-data select-box">
-                                <select name="disctrictId" id="disctricts-ddl" class="form-control">
-                                    <option value="">
-                                                        @Localizer["DistrictDefaultSelection"]
-                                    </option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-2 col-12 padding-screen">
-                        <div class="form-group round-right">
-                            <div class="form-data">
-                                <input type="text" name="name" id="filterName" class="form-control" placeholder="@Localizer["SearchByName"]" />
-
-                                <a href="#" class="btn-contain">
-
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-2 col-12">
-                        <button id="search-btn" type="submit" class="custom-btn" style="border: none;">
-                            <img src="~/images/search.svg" alt="" />
-
-                            <span>
-                             @Localizer["Search"]
-                            </span>
-                        </button>
-                    </div>
-                </div>
-            </form> *@
         </div>
     </header>
-
-
     <section class="choose general-section" style="direction:@direction">
         <div class="container">
             <div class="row">
@@ -132,12 +50,7 @@
                             <li>
                                 @Localizer["EasyAccessBenefit"]
                                 <div>
-                                    <!-- <h2>
-                                      Modern Equipment
-                                    </h2> -->
-
                                     <p>
-
                                     </p>
                                 </div>
                             </li>
@@ -145,23 +58,14 @@
                             <li>
                                 @Localizer["MultipleOptionsBenefit"]
                                 <div>
-                                    <!-- <h2>
-                                      High-Quality Materials
-                                    </h2> -->
-
                                     <p>
-
                                     </p>
                                 </div>
                             </li>
-
                         </ul>
-                 
-
                         <a class="custom-btn" asp-area="" asp-controller="Home" asp-action="Maids"><span>👉 @Localizer["ChooseMaid"]</span> </a>
                     </div>
                 </div>
-
                 <div class="col-lg-5 col-12 mb-3 order-mobile-1">
                     <div class="image-content">
                         <img src="~/images/about_MaidLinker.png" alt="" />
@@ -169,7 +73,6 @@
                 </div>
             </div>
         </div>
-
         <div class="circles">
             <span></span>
             <span></span>
@@ -209,26 +112,7 @@
                             @Localizer["HowJoinMaidLinkerDesc"]
                         </p>
 
-                        <!-- <h2>
-                          Get Contracted & Credentialed
-                        </h2> -->
-
-                       @*  <p class="desc">
-                            @Localizer["FewStepsToJoin"]
-                        </p> *@
-                        <!--
-                        <h2>
-                          Get Welcomed
-                        </h2> -->
-@* 
-                        <p class="desc">
-                            @Localizer["JustFewInfo"]
-                        </p> *@
-                    @*     <a class="custom-btn" asp-area="Identity" asp-page="/Account/Register">
-                            <span>
-                                @Localizer["JoinNow"]
-                            </span>
-                        </a> *@
+                     
                     </div>
                 </div>
             </div>
@@ -240,122 +124,8 @@
             <span></span>
             <span></span>
         </div>
-
-
-
     </section>
 </div>
-
-
-@section Scripts {
-    <script type="text/javascript">
-        $.ajax({
-            url: '@Url.Action("GetSpecialitiesDDL", "Common")',
-            type: 'GET',
-            dataType: 'json',
-            success: function (data) {
-                // Clear existing options
-                $('#specialities-ddl').empty();
-                // Populate the dropdown list
-                var dropdown = $('#specialities-ddl');
-                var defaultSelect = "@Localizer["SpecialityDefaultSelection"]"
-                dropdown.append($('<option></option>').val(0).text(defaultSelect));
-
-                var isEng = isEnglishCulture();
-                $.each(data, function (index, item) {
-                    dropdown.append($('<option></option>').val(item.id).text(isEng ? item.titleEn : item.titleAr));
-                });
-            }
-        });
-
-        $.ajax({
-            url: '@Url.Action("GetCitiesDDL", "Common")',
-            type: 'GET',
-            dataType: 'json',
-            success: function (data) {
-                // Clear existing options
-                $('#cities-ddl').empty();
-                // Populate the dropdown list
-                var dropdown = $('#cities-ddl');
-                var defaultSelect = "@Localizer["CityDefaultSelection"]"
-                dropdown.append($('<option></option>').val(0).text(defaultSelect));
-                var isEng = isEnglishCulture();
-                $.each(data, function (index, item) {
-                    dropdown.append($('<option></option>').val(item.id).text(isEng ? item.titleEn : item.titleAr));
-                });
-            }
-        });
-
-        function canSearch()
-        {
-            var serviceId = $('#services-ddl').val();
-            if (serviceId != null || serviceId != "") {
-                $("#search-btn").prop('disabled', false).removeClass('disabled-button')
-                $("#services-ddl").removeClass('missing-ddl');
-            }
-
-        }
-
-        function getServices() {
-          
-            var specialityId = $('#specialities-ddl').val();
-            var serviceId = $('#services-ddl').val();
-
-            if (serviceId == null || serviceId == "") {
-                $("#search-btn").prop('disabled', true).addClass('disabled-button')
-                $("#services-ddl").addClass('missing-ddl');
-            }
-            
-            $.ajax({
-                url: '@Url.Action("GetServicesDDLBySpecialityId", "Common")' + "?specialityid=" + specialityId,
-                type: 'GET',
-                dataType: 'json',
-                success: function (data) {
-                    // Clear existing options
-                    $('#services-ddl').empty();
-                    // Populate the dropdown list
-                    var dropdown = $('#services-ddl');
-                    var defaultSelect = "@Localizer["ServiceDefaultSelection"]"
-                    dropdown.append($('<option></option>').val(0).text(defaultSelect));
-
-                    var isEng = isEnglishCulture();
-                    $.each(data, function (index, item) {
-                        dropdown.append($('<option></option>').val(item.id).text(isEng ? item.titleEn : item.titleAr));
-                    });
-                }
-            });
-        }
-
-        function getDistricts() {
-            var cityId = $('#cities-ddl').val();
-            $.ajax({
-                url: '@Url.Action("getDistrictsDDL", "Common")' + "?cityId=" + cityId,
-                type: 'GET',
-                dataType: 'json',
-                success: function (data) {
-                    // Clear existing options
-                    $('#disctricts-ddl').empty();
-                    // Populate the dropdown list
-                    var dropdown = $('#disctricts-ddl');
-                    var defaultSelect = "@Localizer["DistrictDefaultSelection"]"
-                    var isEng = isEnglishCulture();
-                    dropdown.append($('<option></option>').val(0).text(defaultSelect));
-                    $.each(data, function (index, item) {
-                        dropdown.append($('<option></option>').val(item.id).text(isEng ? item.titleEn : item.titleAr));
-                    });
-                }
-            });
-        }
-
-        $('form').submit(function () {
-            var selectedCulture = $('select[name="cultureCode"]').val();
-            console.log(selectedCulture);
-            // ... perform additional logic or AJAX request
-        });
-
-    </script>
-}
-
 
 <style>
     .disabled-button {

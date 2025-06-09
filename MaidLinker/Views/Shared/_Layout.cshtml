@@ -13,7 +13,7 @@
     <!-- Releate To HTMl-->
     <meta charset="utf-8" />
     <title>  مؤسسة حيدر النهار لإستقدام الخادمات </title>
-    <link rel="icon" type="image/x-icon" href="~/MaidLinker.ico" />
+    <link rel="icon" type="image/x-icon" href="~/MaidLinker_11zon.jpg" />
     <link rel="stylesheet" type="text/css" href="~/css/datepicker.css">
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -228,8 +228,6 @@
 
     </style>
 
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <!-- For User Image -->
     <script>
         document.addEventListener("DOMContentLoaded", function () {
@@ -405,28 +403,31 @@
                                 <img src="~/images/logo.png" class="navbar-logo" alt="logo" style="height:50px">
                                 </a>
 
-                                <div class="nav-contain">
-                                    <ul class="navbar-nav">
-                                        <li class="nav-item">
-                                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">@Localizer["Home"]</a>
-                                        </li>
+                                <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                                   
+                                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                                            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                                        <span class="navbar-toggler-icon"></span>
+                                    </button>
 
-                                        <li class="nav-item">
-                                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="About">@Localizer["AboutUs"]</a>
-                                        </li>
+                                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                                        <ul class="navbar-nav ml-auto">
+                                            <li class="nav-item">
+                                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">@Localizer["Home"]</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="About">@Localizer["AboutUs"]</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Maids">@Localizer["Maids"]</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Contact">@Localizer["ContactUs"]</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </nav>
 
-                                        <li class="nav-item">
-                                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Maids">@Localizer["Maids"] </a>
-                                        </li>
-
-                                        <li class="nav-item">
-                                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Contact">@Localizer["ContactUs"] </a>
-                                        </li>
-
-
-                                    </ul>
-
-                                </div>
                                 @if (!User.Identity.IsAuthenticated)
                                 {
 
@@ -476,7 +477,6 @@
 
 
 
-    <div>
         <main role="main" style="direction:@direction">
             <div id="layoutContent">
             @RenderBody()
@@ -504,7 +504,8 @@
                 </div>
             </div>
         </div>
-</body>
+
+        </body>
 </html>
 
 
@@ -543,29 +544,7 @@
             $("#mobiledropDown").hide()
             $("#deskTopdropDown").show()
         }
-        $.ajax({
-            url: '/Notification/GetNotificationsCount',  // Replace 'your-api-url' with the actual API endpoint URL
-            method: 'GET',
-            success: function (response) {
-                // On success, loop through the response data and populate the dropdown options
-                
-                $(".notificationsCount").text(response);
-                
-
-                if ($(".notificationsCount").text() > 0) {
-                    $("#notifications-count").removeClass("badge-light").addClass("badge-danger");
-                }
-
-                //$.each(response, function (index, item) {
-                //    li.textContent = `${item.titleEn} says `;
-                //});
-
-
-            },
-            error: function () {
-                console.log('Error occurred while retrieving degree data.');
-            }
-        });
+      
 
     })
     function showNotifications() {
@@ -658,11 +637,14 @@
 
 
 
-<script src="~/js/signalr/dist/browser/signalr.js"></script>
-<script src="~/js/notification.js"></script>
+@if (User.Identity.IsAuthenticated)
+{
+    <script src="~/js/signalr/dist/browser/signalr.js"></script>
+    <script src="~/js/notification.js"></script>
+}
 
 <script>
-           $(function () {
+       $(window).on('load', function () {
         $.ajax({
             url: '/Common/GetContactInfo',
             method: 'GET',
@@ -701,3 +683,27 @@
     window.addEventListener("load", checkScreenSize);
     window.addEventListener("resize", checkScreenSize);
 </script>
+
+@section Scripts {
+    @if (User.Identity.IsAuthenticated)
+    {
+        <script>
+            $(document).ready(function () {
+                $.ajax({
+                    url: '/Notification/GetNotificationsCount',
+                    method: 'GET',
+                    success: function (response) {
+                        $(".notificationsCount").text(response);
+
+                        if ($(".notificationsCount").text() > 0) {
+                            $("#notifications-count").removeClass("badge-light").addClass("badge-danger");
+                        }
+                    },
+                    error: function () {
+                        console.log('Error occurred while retrieving notifications count.');
+                    }
+                });
+            });
+        </script>
+    }
+}
