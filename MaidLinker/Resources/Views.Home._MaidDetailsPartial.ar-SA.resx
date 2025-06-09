@@ -175,7 +175,7 @@
     <value>رقم الهاتف</value>
   </data>
   <data name="CancelRequest" xml:space="preserve">
-    <value>إرسال  الطلب</value>
+    <value>الغاء الطلب</value>
   </data>
   <data name="InsertName" xml:space="preserve">
     <value> الرجاء إدخال الاسم.</value>

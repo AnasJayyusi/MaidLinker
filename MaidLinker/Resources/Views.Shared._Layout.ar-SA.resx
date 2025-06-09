@@ -144,8 +144,8 @@
   <data name="Notifications" xml:space="preserve">
     <value>إشعارات</value>
   </data>
-  <data name="Ok" xml:space="preserve">
-    <value>موافق</value>
+  <data name="Close" xml:space="preserve">
+    <value>اغلاق</value>
   </data>
   <data name="PleaseWait" xml:space="preserve">
     <value>الرجاء الإنتظار ..</value>

@@ -214,7 +214,7 @@
     <value>العنوان</value>
   </data>
   <data name="PleaseFillAllFields" xml:space="preserve">
-    <value>يرجى ملء جميع الحقول المطلوبة</value>
+    <value>يرجى ملء جميع الحقول </value>
   </data>
   <data name="Cancel" xml:space="preserve">
     <value>إلغاء</value>
@@ -273,12 +273,16 @@
   <data name="Other" xml:space="preserve">
     <value>مرفقات اخرى </value>
   </data>
-
-	<data name="Available" xml:space="preserve">
+  <data name="Available" xml:space="preserve">
     <value>متاحة</value>
   </data>
-
-	<data name="Unavailable" xml:space="preserve">
+  <data name="Unavailable" xml:space="preserve">
     <value>غير متاحة</value>
+  </data>
+  <data name="Status" xml:space="preserve">
+    <value>الحالة</value>
+  </data>
+  <data name="MaidNumber" xml:space="preserve">
+    <value>MaidNumber</value>
   </data>
 </root>

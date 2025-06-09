@@ -196,7 +196,7 @@
 
 				</form>
 
-				<div class="alert alert-danger hidden" role="alert" id="error-msg-add">@Localizer["PleaseFillAllFields"]</div>
+				<div style="text-align:center" class="alert alert-info hidden" role="alert" id="error-msg">@Localizer["PleaseFillAllFields"]</div>
 			</div>
 			<div class="modal-footer">
 				<button id="close-add-Maid" type="button" class="btn btn-danger" data-dismiss="modal">@Localizer["Cancel"]</button>
@@ -269,7 +269,7 @@
 
 				 var languageIds=[]
 				 $('#languages option:selected').each(function () {
-					 debugger;
+					
 					 languageIds.push($(this).val())
 
 				 });

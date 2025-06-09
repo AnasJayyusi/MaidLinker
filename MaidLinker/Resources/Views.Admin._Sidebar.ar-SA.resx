@@ -117,8 +117,32 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Account" xml:space="preserve">
+    <value>الحساب</value>
+  </data>
+  <data name="ChangePassword" xml:space="preserve">
+    <value>تغيير كلمة المرور</value>
+  </data>
   <data name="Countries" xml:space="preserve">
     <value>الدول </value>
+  </data>
+  <data name="Dashboard" xml:space="preserve">
+    <value>لوحة القيادة</value>
+  </data>
+  <data name="Feedbacks" xml:space="preserve">
+    <value>التقييمات</value>
+  </data>
+  <data name="Financial" xml:space="preserve">
+    <value>المالية</value>
+  </data>
+  <data name="FinancialReport" xml:space="preserve">
+    <value>التقرير المالي</value>
+  </data>
+  <data name="GeneralSettings" xml:space="preserve">
+    <value>الإعدادات العامة</value>
+  </data>
+  <data name="Interface" xml:space="preserve">
+    <value>الواجهات</value>
   </data>
   <data name="InternalRequest" xml:space="preserve">
     <value>طلب داخلي</value>
@@ -129,10 +153,28 @@
   <data name="MaidsManagement" xml:space="preserve">
     <value>إدارة العاملات</value>
   </data>
+  <data name="ManageAccount" xml:space="preserve">
+    <value>ادارة الحساب</value>
+  </data>
+  <data name="ManageUsers" xml:space="preserve">
+    <value>صلاحيات المستخدمين</value>
+  </data>
   <data name="MasterList" xml:space="preserve">
     <value>إدارة القوائم المنسدلة</value>
   </data>
   <data name="Nationalities" xml:space="preserve">
     <value>الجنسيات</value>
+  </data>
+  <data name="Notifications" xml:space="preserve">
+    <value>الإشعارات</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>إعدادات</value>
+  </data>
+  <data name="Users" xml:space="preserve">
+    <value>إدارة المستخدمين</value>
+  </data>
+  <data name="WebSiteSettings" xml:space="preserve">
+    <value>إعدادات الموقع </value>
   </data>
 </root>

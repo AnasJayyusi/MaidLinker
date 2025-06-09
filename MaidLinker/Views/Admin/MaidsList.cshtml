@@ -278,7 +278,7 @@
                     </div>
                 </form>
 
-                <div class="alert alert-danger hidden" role="alert" id="error-msg">@Localizer["PleaseFillAllFields"]</div>
+                <div style="text-align:center"  class="alert alert-danger hidden" role="alert" id="error-msg">@Localizer["PleaseFillAllFields"]</div>
             </div>
             <div class="modal-footer">
                 <button id="close-edit-Maid" type="button" class="btn btn-danger" data-dismiss="modal">@Localizer["Cancel"]</button>
@@ -664,7 +664,6 @@
 
 
                 function populateAttachments(attachments) {
-                debugger;
 
 
             // Define mapping from attachment type to UI ids
@@ -717,7 +716,6 @@
 <script>
     $(document).on('click', '.toggle-availability-btn', function () {
         const button = $(this);
-        debugger;
         const maidId = button.data('id');
         var isCurrentlyAvailable = button.data('available');
             if (isCurrentlyAvailable == 'False' || isCurrentlyAvailable == false)

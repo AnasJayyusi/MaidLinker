@@ -107,7 +107,7 @@
             <a class="nav-link  @(currentPath.Contains("Users".ToString().ToLower()) == true ? "" : "collapsed")" href="#" data-toggle="collapse" data-target="#collapseUsers"
                aria-expanded="true" aria-controls="collapseTwo">
                 <i class="fas fa-fw fa-users"></i>
-                <span>Users</span>
+                <span>@Localizer["Users"]</span>
             </a>
             <div id="collapseUsers" class="collapse @(currentPath.Contains("Users".ToString().ToLower()) == true ? "show" : "")" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">

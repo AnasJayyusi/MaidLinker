@@ -214,7 +214,7 @@
     <value>العنوان</value>
   </data>
   <data name="PleaseFillAllFields" xml:space="preserve">
-    <value>يرجى ملء جميع الحقول المطلوبة</value>
+    <value>يرجى ملء جميع الحقول </value>
   </data>
   <data name="Cancel" xml:space="preserve">
     <value>إلغاء</value>
@@ -233,5 +233,14 @@
   </data>
   <data name="Search" xml:space="preserve">
     <value>بحث</value>
+  </data>
+  <data name="Status" xml:space="preserve">
+    <value>الحالة</value>
+  </data>
+  <data name="MaidNumber" xml:space="preserve">
+    <value>رقم العاملة</value>
+  </data>
+  <data name="UseCtrlToMultiSelect" xml:space="preserve">
+    <value>استخدم Ctrl لتحديد متعدد</value>
   </data>
 </root>

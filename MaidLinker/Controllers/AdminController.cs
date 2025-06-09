@@ -123,7 +123,7 @@ namespace MaidLinker.Controllers
 
             await _dbContext.SaveChangesAsync();
 
-            PushNewNotification(NotificationTypeEnum.TakeOverRequest, AccountTypeEnum.Accountant, request.Id.ToString());
+            PushNewNotification(NotificationTypeEnum.TakeOverRequest, AccountTypeEnum.Accountant, $"#{request.Id.ToString()}");
             return Json(new { success = true });
         }
 
@@ -140,7 +140,7 @@ namespace MaidLinker.Controllers
 
             await _dbContext.SaveChangesAsync();
 
-            PushNewNotification(NotificationTypeEnum.Cancel, AccountTypeEnum.All, request.Id.ToString());
+            PushNewNotification(NotificationTypeEnum.Cancel, AccountTypeEnum.All, $"#{request.Id.ToString()}");
             return Json(new { success = true });
         }
 
@@ -155,7 +155,7 @@ namespace MaidLinker.Controllers
             request.Status = RequestStatus.Prepared;
 
             await _dbContext.SaveChangesAsync();
-            PushNewNotification(NotificationTypeEnum.Confirm, AccountTypeEnum.All, request.Id.ToString());
+            PushNewNotification(NotificationTypeEnum.Confirm, AccountTypeEnum.All, $"#{request.Id.ToString()}");
 
             return Json(new { success = true });
         }
@@ -171,7 +171,7 @@ namespace MaidLinker.Controllers
             request.Status = RequestStatus.Completed;
 
             await _dbContext.SaveChangesAsync();
-            PushNewNotification(NotificationTypeEnum.Completed, AccountTypeEnum.All, request.Id.ToString());
+            PushNewNotification(NotificationTypeEnum.Completed, AccountTypeEnum.All, $"#{request.Id.ToString()}");
             return Json(new { success = true });
         }
 
@@ -1198,13 +1198,11 @@ namespace MaidLinker.Controllers
                                                 .Take(100)
                                                 .ToList();
 
-            // Set the culture for date formatting
-            var georgianCulture = new CultureInfo("en-US");
             foreach (var notification in model)
             {
                 // Assuming CreationDate is a DateTime property in your model
                 notification.CreationDate = notification.CreationDate.ToLocalTime(); // Convert to local time if necessary
-                notification.CreationDateFormatted = notification.CreationDate.ToString("G", georgianCulture);
+                notification.CreationDateFormatted = notification.CreationDate.ToString("yyyy-MM-dd hh:mm:ss tt", CultureInfo.InvariantCulture);
             }
 
 

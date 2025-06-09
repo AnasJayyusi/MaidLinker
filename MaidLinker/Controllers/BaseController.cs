@@ -187,13 +187,13 @@ namespace MaidLinker.Controllers
                             notification.TitleAr = "طلب ملغي";
                             notification.TitleEn = "Order Cancelled";
                             notification.MessageEn = $"Order With ID {additionalData} has been cancelled.";
-                            notification.MessageAr = $"تم إلغاء الطلب برقم {additionalData}.";
+                            notification.MessageAr = $"تم إلغاء الطلب رقم {additionalData}.";
                             break;
                         case NotificationTypeEnum.Completed:
                             notification.TitleAr = "تم اكمال الطلب";
                             notification.TitleEn = "Order Completed";
                             notification.MessageEn = $"Order With ID {additionalData} has been Completed.";
-                            notification.MessageAr = $"تم اكمال الطلب برقم {additionalData}.";
+                            notification.MessageAr = $"تم اكمال الطلب رقم {additionalData}.";
                             break;
                     }
                     _dbContext.Notifications.Add(notification);

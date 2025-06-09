@@ -18,7 +18,7 @@
 <!-- #endregion -->
 
 
-<div id="page-top" class="mt-5">
+<div id="page-top" class="mt-5"  style="direction:@direction; text-align:@(direction == "rtl" ? "right" : "left")">
     <div id="wrapper">
         @await Html.PartialAsync("_Sidebar")
 
@@ -37,9 +37,11 @@
                                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                                     <h6 class="m-0" style="font-weight:bold;color:#5F7AE7 ">@Localizer["PageTitle"]</h6>
                                     <div style="text-align: end; cursor:pointer">
-                                        <button id="popup_btn" type="button" class="btn btn-sm btn-primary shadow-sm" data-toggle="modal" data-target="#ViewPopup">
+
+                                        @* In case need to add user internal from system, uncomment the button below and handle the logic 
+                                          <button id="popup_btn" type="button" class="btn btn-sm btn-primary shadow-sm" data-toggle="modal" data-target="#ViewPopup">
                                             <i class="fa fa-plus text-white-50"></i>
-                                        </button>
+                                        </button> *@
                                     </div>
                                 </div>
 
@@ -48,13 +50,13 @@
                                         <table class="table table-bordered table-hover">
                                             <thead class="table-light">
                                                 <tr>
-                                                    <th>Username</th>
-                                                    <th>Email</th>
-                                                    <th>Phone</th>
-                                                    <th>Status</th>
-                                                    <th>Roles</th>
-                                                    <th>Actions</th>
-                                                    <th>PageAccess</th>
+                                                    <th>@Localizer["Username"]</th>
+                                                    <th>@Localizer["Email"]</th>
+                                                    <th>@Localizer["Phone"]</th>
+                                                    <th>@Localizer["Status"]</th>
+                                                    <th>@Localizer["Roles"]</th>
+                                                    <th>@Localizer["Actions"]</th>
+                                                    <th>@Localizer["PageAccess"]</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -72,7 +74,7 @@
                                                             <form asp-action="UpdateUsername" method="post" class="d-inline">
                                                                 <input type="hidden" name="userId" value="@user.Id" />
                                                                 <input type="text" name="newUsername" value="@user.UserName" class="form-control form-control-sm d-inline w-auto" />
-                                                                <button type="submit" class="btn btn-sm btn-primary">Save</button>
+                                                                <button type="submit" class="btn btn-sm btn-primary">@Localizer["Save"]</button>
                                                             </form>
                                                         </td>
                                                         <td>@user.Email</td>
@@ -80,26 +82,31 @@
                                                             <form asp-action="UpdateMobile" method="post" class="d-flex">
                                                                 <input type="hidden" name="userId" value="@user.Id" />
                                                                 <input type="text" name="newPhone" value="@user.PhoneNumber" class="form-control form-control-sm w-75" />
-                                                                <button type="submit" class="btn btn-sm btn-primary ms-2">Save</button>
+                                                                <button type="submit" class="btn btn-sm btn-primary ms-2">@Localizer["Save"]</button>
                                                             </form>
                                                         </td>
                                                        
                                                         <td>
                                                             @if (isDisabled)
                                                             {
-                                                                <span class="badge bg-danger">Disabled</span>
+                                                                <span class="badge bg-danger">@Localizer["Disabled"]</span>
                                                             }
                                                             else
                                                             {
-                                                                <span class="badge bg-success">Active</span>
+                                                                <span class="badge bg-success">@Localizer["Active"]</span>
                                                             }
                                                         </td>
-                                                        <td>@string.Join(", ", userRoles[user.Id])</td>
+                                                        <td>
+                                                            @{
+                                                            var roleName=string.Join(", ", userRoles[user.Id]);
+                                                                @Localizer[roleName]
+                                                            }
+                                                            </td>
                                                         <td>
                                                             <form asp-action="ToggleUserStatus" method="post">
                                                                 <input type="hidden" name="userId" value="@user.Id" />
                                                                 <button type="submit" class="btn btn-sm @(isDisabled ? "btn-success" : "btn-warning")">
-                                                                    @(isDisabled ? "Enable" : "Disable")
+                                                                    @(isDisabled? @Localizer["Enable"] : @Localizer["Disabled"])
                                                                 </button>
                                                             </form>
                                                         </td>
@@ -111,8 +118,8 @@
                                                                 <div class="d-flex flex-column">
                                                                     @foreach (var permission in availablePermissions)
                                                                     {
-                                                                        <div class="form-check mb-1">
-                                                                            <input class="form-check-input" type="checkbox" name="permissions" value="@permission"
+                                                                        <div class="form-check mb-1 d-flex align-items-center" style="@(direction == "rtl" ? "flex-direction: row-reverse;" : "")">
+                                                                            <input class="form-check-input ms-2 me-2" type="checkbox" name="permissions" value="@permission"
                                                                                    @(currentPermissions.Contains(permission) ? "checked" : "") />
                                                                             <label class="form-check-label">@Localizer[permission]</label>
                                                                         </div>

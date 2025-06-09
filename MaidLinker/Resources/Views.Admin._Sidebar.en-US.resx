@@ -117,8 +117,33 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Account" xml:space="preserve">
+    <value>Account</value>
+  </data>
+  <data name="ChangePassword" xml:space="preserve">
+    <value>ChangePassword</value>
+  </data>
   <data name="Countries" xml:space="preserve">
     <value>Countries</value>
+  </data>
+  <data name="Dashboard" xml:space="preserve">
+    <value>Dashboard</value>
+  </data>
+  <data name="Feedbacks" xml:space="preserve">
+    <value>Feedbacks</value>
+  </data>
+  <data name="Financial" xml:space="preserve">
+    <value>Financial</value>
+  </data>
+  <data name="FinancialReport" xml:space="preserve">
+    <value>Financial Report</value>
+  </data>
+  <data name="GeneralSettings" xml:space="preserve">
+    <value>GeneralSettings</value>
+  </data>
+  <data name="Interface" xml:space="preserve">
+    <value>Interface
+</value>
   </data>
   <data name="InternalRequest" xml:space="preserve">
     <value>Internal Request</value>
@@ -129,10 +154,28 @@
   <data name="MaidsManagement" xml:space="preserve">
     <value>Maids Management</value>
   </data>
+  <data name="ManageAccount" xml:space="preserve">
+    <value>Manage Account</value>
+  </data>
+  <data name="ManageUsers" xml:space="preserve">
+    <value>User Permissions</value>
+  </data>
   <data name="MasterList" xml:space="preserve">
     <value>Master List</value>
   </data>
   <data name="Nationalities" xml:space="preserve">
     <value>Nationalities</value>
+  </data>
+  <data name="Notifications" xml:space="preserve">
+    <value>Notifications </value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="Users" xml:space="preserve">
+    <value>User Management</value>
+  </data>
+  <data name="WebSiteSettings" xml:space="preserve">
+    <value>Web Site Settings</value>
   </data>
 </root>

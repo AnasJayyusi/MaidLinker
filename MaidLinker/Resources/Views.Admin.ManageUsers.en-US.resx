@@ -117,40 +117,116 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Closed" xml:space="preserve">
-    <value>Closed</value>
+  <data name="Countries" xml:space="preserve">
+    <value>Countries</value>
   </data>
-  <data name="Friday" xml:space="preserve">
-    <value>Friday</value>
+  <data name="Dashboard" xml:space="preserve">
+    <value>Dashboard</value>
   </data>
-  <data name="InsuranceCompany" xml:space="preserve">
-    <value>Insurance Company</value>
+  <data name="Financial" xml:space="preserve">
+    <value>Financial</value>
   </data>
-  <data name="Monday" xml:space="preserve">
-    <value>Monday</value>
+  <data name="FinancialReport" xml:space="preserve">
+    <value>Financial Report</value>
   </data>
-  <data name="NoInsuranceCompanines" xml:space="preserve">
-    <value>No Insurance Companines</value>
+  <data name="InternalRequest" xml:space="preserve">
+    <value>Internal Request</value>
   </data>
-  <data name="OpeningHours" xml:space="preserve">
-    <value>Opening Hours</value>
+  <data name="Maids" xml:space="preserve">
+    <value>Maids Data</value>
   </data>
-  <data name="Saturday" xml:space="preserve">
-    <value>Saturday</value>
+  <data name="MaidsManagement" xml:space="preserve">
+    <value>Maids Management</value>
   </data>
-  <data name="Sunday" xml:space="preserve">
-    <value>Sunday</value>
+  <data name="ManageUsers" xml:space="preserve">
+    <value>User Permissions</value>
   </data>
-  <data name="Thursday" xml:space="preserve">
-    <value>Thursday</value>
+  <data name="MasterList" xml:space="preserve">
+    <value>Master List</value>
   </data>
-  <data name="To" xml:space="preserve">
-    <value>To</value>
+  <data name="Nationalities" xml:space="preserve">
+    <value>Nationalities</value>
   </data>
-  <data name="Tuesday" xml:space="preserve">
-    <value>Tuesday</value>
+  <data name="Users" xml:space="preserve">
+    <value>User Management</value>
   </data>
-  <data name="Wednesday" xml:space="preserve">
-    <value>Wednesday</value>
+	<data name="PageTitle" xml:space="preserve">
+    <value>Manage Users</value>
+  </data>
+	<data name="Username" xml:space="preserve">
+    <value>Username</value>
+  </data>
+	<data name="Email" xml:space="preserve">
+    <value>Email</value>
+  </data>
+	<data name="Phone" xml:space="preserve">
+    <value>Phone</value>
+  </data>
+	<data name="Status" xml:space="preserve">
+    <value>Status</value>
+  </data>
+	<data name="Roles" xml:space="preserve">
+    <value>Roles</value>
+  </data>
+	<data name="Actions" xml:space="preserve">
+    <value>Actions</value>
+  </data>
+	<data name="PageAccess" xml:space="preserve">
+    <value>Page Access</value>
+  </data>
+	<data name="Active" xml:space="preserve">
+    <value>Active</value>
+  </data>
+	<data name="Disabled" xml:space="preserve">
+    <value>Disabled</value>
+  </data>
+	<data name="Enable" xml:space="preserve">
+    <value>Enable</value>
+  </data>
+	<data name="Disable" xml:space="preserve">
+    <value>Disable</value>
+  </data>
+	<data name="Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+	<data name="Dashboard" xml:space="preserve">
+    <value>Dashboard</value>
+  </data>
+	<data name="InternalRequest" xml:space="preserve">
+    <value>Internal Request</value>
+  </data>
+	<data name="Maids" xml:space="preserve">
+    <value>Maids</value>
+  </data>
+	<data name="Nationalities" xml:space="preserve">
+    <value>Nationalities</value>
+  </data>
+	<data name="Countries" xml:space="preserve">
+    <value>Countries</value>
+  </data>
+	<data name="ManageUsers" xml:space="preserve">
+    <value>Manage Users</value>
+  </data>
+	<data name="FinancialReport" xml:space="preserve">
+    <value>Financial Report</value>
+  </data>
+	<data name="GeneralSettings" xml:space="preserve">
+    <value>General Settings</value>
+  </data>
+	<data name="Feedbacks" xml:space="preserve">
+    <value>Feedbacks</value>
+  </data>
+
+	<data name="Reception" xml:space="preserve">
+    <value>Reception</value>
+  </data>
+
+	<data name="Accountant" xml:space="preserve">
+    <value>Accountant</value>
+  </data>
+
+
+	<data name="Administrator" xml:space="preserve">
+    <value>Administrator</value>
   </data>
 </root>

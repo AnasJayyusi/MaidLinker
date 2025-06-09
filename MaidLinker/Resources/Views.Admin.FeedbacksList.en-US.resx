@@ -117,40 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Closed" xml:space="preserve">
-    <value>مغلق</value>
-  </data>
-  <data name="Friday" xml:space="preserve">
-    <value>الجمعة</value>
-  </data>
-  <data name="InsuranceCompany" xml:space="preserve">
-    <value>شركات التأمين</value>
-  </data>
-  <data name="Monday" xml:space="preserve">
-    <value>الاثنين</value>
-  </data>
-  <data name="NoInsuranceCompanines" xml:space="preserve">
-    <value>لا يوجد شركات تأمين</value>
-  </data>
-  <data name="OpeningHours" xml:space="preserve">
-    <value>ساعات العمل</value>
-  </data>
-  <data name="Saturday" xml:space="preserve">
-    <value>السبت</value>
-  </data>
-  <data name="Sunday" xml:space="preserve">
-    <value>الاحد</value>
-  </data>
-  <data name="Thursday" xml:space="preserve">
-    <value>الخميس</value>
-  </data>
-  <data name="To" xml:space="preserve">
-    <value>إلى</value>
-  </data>
-  <data name="Tuesday" xml:space="preserve">
-    <value>الثلاثاء</value>
-  </data>
-  <data name="Wednesday" xml:space="preserve">
-    <value>الاربعاء</value>
+	<data name="FeedbacksTitle" xml:space="preserve">
+    <value>Feedbacks</value>
   </data>
 </root>

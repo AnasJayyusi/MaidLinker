@@ -70,26 +70,14 @@
                         </h6>
 
                         <!-- Userbar (replace with your partial or your markup) -->
-                        <div class="dropdown" style="margin-right: 5%;">
-                            <a href="#" class="d-flex align-items-center text-decoration-none">
-                                <label style="font-weight:bold;color:#5F7AE7; margin-right: 10px;">Administrator</label>
-                                <img src="~/users/images/Default-User-Profile.jpg" width="40" height="40" alt="user-profile" />
-                            </a>
-                            <div class="dropdown-content">
-                                <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
-                                    <button class="my-profile-button" type="submit" style="text-transform:none;">Logout</button>
-                                </form>
-                            </div>
-                        </div>
+                        @Html.Partial("_Userbar")
                     </div>
 
                     <!-- Notifications Card -->
                     <div class="row">
                         <div class="col-xl-12 col-lg-12">
                             <div class="card shadow mb-4">
-                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-primary">@Localizer["Notifications"]</h6>
-                                </div>
+                               
                                 <div class="card-body" style="max-height: 768px; overflow-y: auto;">
                                     @if (Model != null && Model.Count > 0)
                                     {

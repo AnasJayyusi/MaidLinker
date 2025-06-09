@@ -1,5 +1,16 @@
 ﻿@model List<MaidLinker.Data.Entites.Feedback>
 
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@{
+    string cultureCode = System.Threading.Thread.CurrentThread.CurrentCulture.Name;
+    string direction = cultureCode.StartsWith("ar", StringComparison.OrdinalIgnoreCase) ? "rtl" : "ltr";
+    string textAlign = direction == "rtl" ? "right" : "left";
+    bool isEng = cultureCode.StartsWith("en", StringComparison.OrdinalIgnoreCase) ? true : false;
+    string closeButtonValue = isEng ? "0" : "1%";
+}
+
+
 @{
     var defaultPageSize = 5; // Default number of items per page
     var currentPage = Context.Request.Query["page"].ToString();
@@ -29,11 +40,11 @@
         <div class="col-md-6 d-flex justify-content-start">
             <form id="filterForm" method="get" class="d-flex flex-wrap align-items-center">
                 <div class="form-group mr-2">
-                    <input type="text" class="form-control" id="searchInput" name="search" placeholder="Search" value="@searchQuery">
+                    <input type="text" class="form-control" id="searchInput" name="search" placeholder="@Localizer["Search"]" value="@searchQuery">
                 </div>
 
                 <div class="form-group mr-2">
-                    <button type="submit" class="btn btn-primary">Search</button>
+                    <button type="submit" class="btn btn-primary">@Localizer["Search"]</button>
                 </div>
             </form>
         </div>
@@ -44,26 +55,22 @@
                     <input type="number" class="form-control" id="pageSizeInput" name="pageSize" min="1" max="@totalItems" value="@pageSize">
                 </div>
                 <div class="form-group mr-2">
-                    <button type="submit" class="btn btn-primary">Apply</button>
+                    <button type="submit" class="btn btn-primary">@Localizer["Apply"]</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
 
-
-
-
-
 <table class="table table-striped" id="dataTable-feedbacks" width="100%" cellspacing="0">
     <thead>
         <tr>
             <th>#</th>
-            <th>Name</th>
-            <th>Phone</th>
-            <th>Email </th>
-            <th>Message</th>
-            <th>Seen</th>
+            <th>@Localizer["Name"]</th>
+            <th>@Localizer["Phone"]</th>
+            <th>@Localizer["Email"]</th>
+            <th>@Localizer["Message"]</th>
+            <th>@Localizer["Seen"]</th>
         </tr>
     </thead>
     <tbody>
@@ -76,7 +83,7 @@
                 <td>@feedbacks.Phone</td>
                 <td>@feedbacks.Email</td>
                 <td style="word-break: break-word; white-space: normal; max-width: 300px;">@feedbacks.Message</td>
-               <td>
+                <td>
                     <div class="custom-control custom-switch">
                         <input type="checkbox" class="custom-control-input" id="statusToggle_@feedbacks.Id" @(feedbacks.StatusId == MaidLinker.Enums.FeedbackStatusEnum.Seen ? "checked" : "") data-id="@feedbacks.Id">
                         <label class="custom-control-label" for="statusToggle_@feedbacks.Id"></label>
@@ -91,21 +98,20 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="EditUserServicesModal">Edit</h5>
+                <h5 class="modal-title" id="EditUserServicesModal">@Localizer["Edit"]</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <!-- Add your modal content here -->
                 <form>
                     <div class="form-group">
-                        <label style="font-weight:bold;color:#5F7AE7" for="titleEnInputEdit">Title (English):</label>
+                        <label style="font-weight:bold;color:#5F7AE7" for="titleEnInputEdit">@Localizer["TitleEnglish"]</label>
                         <input type="text" class="form-control" id="titleEnInputEdit" required>
                     </div>
                     <div class="form-group">
                         <input hidden type="text" class="form-control" id="titleId">
-                        <label style="font-weight:bold;color:#5F7AE7" for="titleArInputEdit">Title (Arabic):</label>
+                        <label style="font-weight:bold;color:#5F7AE7" for="titleArInputEdit">@Localizer["TitleArabic"]</label>
                         <input type="text" class="form-control" id="titleArInputEdit" required>
                     </div>
                 </form>
@@ -114,19 +120,17 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button id="close-edit-UserServices" type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
-                <button id="edit-UserServices" type="button" class="btn btn-success" style="background-color:#5F7AE7">Update</button>
+                <button id="close-edit-UserServices" type="button" class="btn btn-danger" data-dismiss="modal">@Localizer["Cancel"]</button>
+                <button id="edit-UserServices" type="button" class="btn btn-success" style="background-color:#5F7AE7">@Localizer["Update"]</button>
             </div>
         </div>
     </div>
 </div>
 
-
-
 @if (totalItems == 0)
 {
     <div style="text-align:center">
-        <label style="font-weight:bold">No Results Found</label>
+        <label style="font-weight:bold">@Localizer["NoResultsFound"]</label>
         <img src="~/icon/no-result-found-icon.png" width="25" height="25" /> <span style="color:black"></span>
     </div>
 }
@@ -145,77 +149,55 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
-
     $(document).ready(function () {
         $('.custom-control-input').on('change', function () {
-
             var isChecked = $(this).is(':checked');
             var feedbacksId = $(this).data('id');
-
-            // Make an API call to update the status using the feedbacksId and isChecked values
             updateStatus(feedbacksId, isChecked);
         });
     });
+
     function rejectService(feedbacksId){
         var reason = $('#rejectionReason').val();
-  $.ajax({
-            url: '/Admin/RejectDashboardfeedbacks?id='+feedbacksId+'&rejectionReason='+reason,
+        $.ajax({
+            url: '/Admin/RejectDashboardfeedbacks?id=' + feedbacksId + '&rejectionReason=' + reason,
             type: 'GET',
             data: null,
             success: function (response) {
-
-    location.reload();
-
-
+                location.reload();
             },
             error: function (error) {
-                // Handle the error response if needed
             }
         });
-
     }
+
     function updateStatus(feedbacksId, isChecked) {
-        // Perform the API call here to update the status based on the feedbacksId and isChecked values
-        // You can use $.ajax or any other method to make the API request
-        // Example using $.ajax:
         $.ajax({
             url: '/Admin/UpdatefeedbacksStatus/' + feedbacksId + '/' + isChecked,
             type: 'GET',
             data: { isActive: isChecked },
             success: function (response) {
-                // Show the success message
                 $('.alert-success').removeClass('hidden').hide().fadeIn();
-                // Hide the success message after 2 seconds
                 setTimeout(function () {
                     $('.alert-success').fadeOut();
                 }, 3000);
-
-
             },
             error: function (error) {
-                // Handle the error response if needed
             }
         });
     }
-
 
     function getfeedbacks(id) {
         $.ajax({
             url: '/Admin/Getfeedbacks/' + id,
             type: 'GET',
             success: function (data) {
-                // Handle the success response here
-                console.log(data); // Output the received data to the console
-
-                // Perform further operations with the returned data as needed
-                // For example, you can update HTML elements with the received values
                 $('#titleArInputEdit').val(data.titleAr);
                 $('#titleEnInputEdit').val(data.titleEn);
                 $('#titleId').val(data.id);
             },
             error: function (error) {
-                // Handle the error response here
-                console.log(error); // Output the error to the console
+                console.log(error);
             }
         });
     }
@@ -228,36 +210,29 @@
         };
 
         $.ajax({
-            url: '/Admin/Updatefeedbacks', // Replace with your actual API endpoint URL
+            url: '/Admin/Updatefeedbacks',
             type: 'POST',
             data: JSON.stringify(feedbacks),
             contentType: 'application/json',
             success: function (response) {
-                // Show the success message
                 $('.alert-success').removeClass('hidden').hide().fadeIn();
-                // Close the modal after the success message fades out
-                $("#close-edit-feedbacks").trigger("click");
+                $('#close-edit-feedbacks').trigger('click');
                 $('#dataTableContainer').load('/Admin/Getfeedbacks');
 
-                // Hide the success message after 2 seconds
                 setTimeout(function () {
                     $('.alert-success').fadeOut();
                 }, 3000);
 
             },
             error: function (xhr, status, error) {
-                  
-                // Show the error message
                 $('.alert-danger').removeClass('hidden');
                 var msg = xhr.responseText;
                 $('#error-msg-add').text(msg.toString());
-                // Hide the error message after 2 seconds
+
                 setTimeout(function () {
                     $('.alert-danger').addClass('hidden');
                 }, 5000);
-
             }
         });
     });
-
 </script>

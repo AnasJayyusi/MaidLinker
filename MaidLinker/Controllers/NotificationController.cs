@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
+using System.Globalization;
 namespace MaidLinker.Controllers
 {
 
@@ -39,13 +40,19 @@ namespace MaidLinker.Controllers
         public ActionResult GetNotifications()
         {
             var currentUserId = GetAspNetUserId();
-            var maxNumberOfNotifications = _dbContext.Notifications.Count(a => a.AssignedToUserId == currentUserId && !a.IsRead);
-            if (maxNumberOfNotifications < 10 || maxNumberOfNotifications > 15)
-                maxNumberOfNotifications = 15;
-
+          
             var model = _dbContext.Notifications.Where(a => a.AssignedToUserId == currentUserId)
                                                 .OrderByDescending(a => a.CreationDate)
-                                                .Take(maxNumberOfNotifications).ToList();
+                                                .ToList();
+
+
+            foreach (var notification in model)
+            {
+                // Assuming CreationDate is a DateTime property in your model
+                notification.CreationDate = notification.CreationDate.ToLocalTime(); // Convert to local time if necessary
+                notification.CreationDateFormatted = notification.CreationDate.ToString("yyyy-MM-dd hh:mm:ss tt", CultureInfo.InvariantCulture);
+            }
+
             // Pass the data to the view
             return PartialView("NotificationsList", model);
 

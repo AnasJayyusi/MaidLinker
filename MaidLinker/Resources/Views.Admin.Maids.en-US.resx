@@ -234,4 +234,13 @@
   <data name="Search" xml:space="preserve">
     <value>Search</value>
   </data>
+  <data name="Status" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="MaidNumber" xml:space="preserve">
+    <value>MaidNumber</value>
+  </data>
+  <data name="UseCtrlToMultiSelect" xml:space="preserve">
+    <value>Use Ctrl To MultiSelect</value>
+  </data>
 </root>

@@ -1,4 +1,14 @@
-﻿@model List<MaidLinker.Data.Entites.Feedback>
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@{
+    string cultureCode = System.Threading.Thread.CurrentThread.CurrentCulture.Name;
+    string direction = cultureCode.StartsWith("ar", StringComparison.OrdinalIgnoreCase) ? "rtl" : "ltr";
+    string textAlign = direction == "rtl" ? "right" : "left";
+    bool isEng = cultureCode.StartsWith("en", StringComparison.OrdinalIgnoreCase) ? true : false;
+    string closeButtonValue = isEng ? "0" : "1%";
+}
+
+@model List<MaidLinker.Data.Entites.Feedback>
 
 <head>
     <!-- Custom styles for this template -->
@@ -24,7 +34,7 @@
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h6 style="font-weight:bold;color:#5F7AE7" class="h6 mb-0">
-                            <i class="fas fa-comments"></i>  Feedbacks
+                            <i class="fas fa-comments"></i> @Localizer["FeedbacksTitle"]
                         </h6>
                         @Html.Partial("_Userbar")
                     </div>
@@ -33,8 +43,6 @@
                     <div class="row">
                         <div class="col-xl-12 col-lg-12">
                             <div class="card shadow mb-4">
-                                <!-- Card Header -->
-                               
                                 <!-- Card Body -->
                                 <div class="card-body" style="max-height: 768px; overflow-y: auto;">
                                     <br />

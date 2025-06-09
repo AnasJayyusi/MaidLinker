@@ -117,13 +117,28 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="NoNotifications" xml:space="preserve">
-    <value>لا يوجد لديك إشعارات</value>
-  </data>
-  <data name="Notifications" xml:space="preserve">
-    <value>إشعارات</value>
-  </data>
-  <data name="ShowMore" xml:space="preserve">
-    <value>اظهر المزيد</value>
-  </data>
+	<data name="GeneralSettings" xml:space="preserve">
+  <value>General Settings</value>
+</data>
+	<data name="PhoneNumber" xml:space="preserve">
+  <value>Phone Number</value>
+</data>
+	<data name="WhatsAppNumber" xml:space="preserve">
+  <value>WhatsApp Number</value>
+</data>
+	<data name="AddressAr" xml:space="preserve">
+  <value>Address (Arabic)</value>
+</data>
+	<data name="AddressEn" xml:space="preserve">
+  <value>Address (English)</value>
+</data>
+	<data name="FacebookUrl" xml:space="preserve">
+  <value>Facebook URL</value>
+</data>
+	<data name="InstagramUrl" xml:space="preserve">
+  <value>Instagram URL</value>
+</data>
+	<data name="SaveSettings" xml:space="preserve">
+  <value>Save Settings</value>
+</data>
 </root>

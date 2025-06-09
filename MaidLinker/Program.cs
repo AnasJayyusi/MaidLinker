@@ -1,4 +1,4 @@
-using MaidLinker.Data;
+﻿using MaidLinker.Data;
 using MaidLinker.Hubs;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
@@ -37,7 +37,7 @@ try
     builder.Services.AddSingleton<INotificationService, NotificationService>();
     builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation()
          .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
-         .AddDataAnnotationsLocalization(); 
+         .AddDataAnnotationsLocalization();
 
     builder.Services.AddRazorPages();
     logger = "AddRazorPages Applied";
@@ -60,7 +60,7 @@ try
     });
     logger = "IdentityOptions Applied";
 
-  
+
     //builder.Services.AddScoped<RoleManager<IdentityRole>>();
 
     //logger = "IdentityRole Applied";

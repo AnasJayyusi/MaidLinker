@@ -62,6 +62,18 @@
 	  <Folder Include="wwwroot\uploads\maids\4\" />
 	</ItemGroup>
 	<ItemGroup>
+	  <EmbeddedResource Update="Resources\Views.Admin.FeedbacksList.en-US.resx">
+	    <SubType>Designer</SubType>
+	  </EmbeddedResource>
+	  <EmbeddedResource Update="Resources\Views.Admin.FeedbacksList.ar-SA.resx">
+	    <SubType>Designer</SubType>
+	  </EmbeddedResource>
+	  <EmbeddedResource Update="Resources\Views.Admin._InProgressRequestsPartial.ar-SA.resx">
+	    <SubType>Designer</SubType>
+	  </EmbeddedResource>
+	  <EmbeddedResource Update="Resources\Views.Admin._InProgressRequestsPartial.en-US.resx">
+	    <SubType>Designer</SubType>
+	  </EmbeddedResource>
 	  <EmbeddedResource Update="Resources\Views.Admin.MaidRequestsList.en-US.resx">
 	    <SubType>Designer</SubType>
 	  </EmbeddedResource>

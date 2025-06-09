@@ -117,181 +117,46 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AccountType" xml:space="preserve">
-    <value>Account Type:</value>
-  </data>
-  <data name="Actions" xml:space="preserve">
-    <value>Actions</value>
-  </data>
-  <data name="Agreement" xml:space="preserve">
-    <value>Platform Agreement</value>
-  </data>
-  <data name="Attach" xml:space="preserve">
-    <value>Attach</value>
-  </data>
-  <data name="AttachCertifications" xml:space="preserve">
-    <value>Attach Certifications</value>
-  </data>
-  <data name="Bio" xml:space="preserve">
-    <value>Bio</value>
-  </data>
-  <data name="Cancel" xml:space="preserve">
-    <value>Cancel</value>
-  </data>
-  <data name="CertificateDeleted" xml:space="preserve">
-    <value>Certificate deleted successfully</value>
-  </data>
-  <data name="CertificatesAdded" xml:space="preserve">
-    <value>Certificates added</value>
-  </data>
-  <data name="Certifications" xml:space="preserve">
-    <value>Certifications</value>
-  </data>
-  <data name="CertificationsFile" xml:space="preserve">
-    <value>Certifications File</value>
-  </data>
-  <data name="CertificationUploaded" xml:space="preserve">
-    <value>Certification uploaded successfully</value>
-  </data>
-  <data name="City" xml:space="preserve">
-    <value>City:</value>
-  </data>
-  <data name="Confirmation" xml:space="preserve">
-    <value>Confirmation</value>
-  </data>
-  <data name="ConfirmationMessage" xml:space="preserve">
-    <value>Are you sure you want to signed on this agreement?</value>
-  </data>
-  <data name="Country" xml:space="preserve">
-    <value>Country:</value>
-  </data>
-  <data name="Degree" xml:space="preserve">
-    <value>Degree</value>
-  </data>
-  <data name="DropHere" xml:space="preserve">
-    <value>Drop files here</value>
-  </data>
-  <data name="EditProfile" xml:space="preserve">
-    <value>Edit Profile</value>
-  </data>
-  <data name="EditUserProfile" xml:space="preserve">
-    <value>Edit User Profile</value>
-  </data>
-  <data name="Email" xml:space="preserve">
-    <value>Email:</value>
-  </data>
-  <data name="Error" xml:space="preserve">
-    <value>Error occurred</value>
-  </data>
-  <data name="Failed" xml:space="preserve">
-    <value>Failed !!</value>
-  </data>
-  <data name="FailedDelete" xml:space="preserve">
-    <value>Failed to delete certificate:</value>
-  </data>
-  <data name="FillAllFeilds" xml:space="preserve">
-    <value>Please fill in all the required fields.</value>
-  </data>
-  <data name="FullName" xml:space="preserve">
-    <value>Full Name</value>
-  </data>
-  <data name="IAgree" xml:space="preserve">
-    <value>I Agree</value>
-  </data>
-  <data name="InsuranceAccept" xml:space="preserve">
-    <value>Insurance Accept</value>
-  </data>
-  <data name="No" xml:space="preserve">
-    <value>No</value>
-  </data>
-  <data name="NoBio" xml:space="preserve">
-    <value>No Bio Added Yet.</value>
-  </data>
-  <data name="NoCertifications" xml:space="preserve">
-    <value>No Certifications added yet.</value>
-  </data>
-  <data name="NoSpeciality" xml:space="preserve">
-    <value>No Specialty Added Yet.</value>
-  </data>
-  <data name="NotNow" xml:space="preserve">
-    <value>Not Now</value>
-  </data>
-  <data name="NumberPatients" xml:space="preserve">
-    <value>Number Of Patients</value>
-  </data>
-  <data name="Phone" xml:space="preserve">
-    <value>Phone:</value>
-  </data>
-  <data name="PractitionerType" xml:space="preserve">
-    <value>Practitioner Type:</value>
-  </data>
-  <data name="ProfessionalRank" xml:space="preserve">
-    <value>Professional Rank:</value>
-  </data>
-  <data name="ProfileUpdated" xml:space="preserve">
-    <value>User profile updated successfully</value>
-  </data>
-  <data name="RejectionReasonIs" xml:space="preserve">
-    <value>Rejection Reason Is :</value>
-  </data>
-  <data name="Reviews" xml:space="preserve">
-    <value>Reviews</value>
-  </data>
-  <data name="SelectCity" xml:space="preserve">
-    <value>Select a City</value>
-  </data>
-  <data name="SelectCountry" xml:space="preserve">
-    <value>Select a Country</value>
-  </data>
-  <data name="SelectDegree" xml:space="preserve">
-    <value>Select Degree</value>
-  </data>
-  <data name="SelectFile" xml:space="preserve">
-    <value>Please select a file.</value>
-  </data>
-  <data name="SelectOption" xml:space="preserve">
-    <value>Select an option</value>
-  </data>
-  <data name="SelectProfessionalRank" xml:space="preserve">
-    <value>Select a professional Rank</value>
-  </data>
-  <data name="SelectState" xml:space="preserve">
-    <value>Select a State</value>
-  </data>
-  <data name="SendToReview" xml:space="preserve">
-    <value>Send To Review</value>
-  </data>
-  <data name="Speciality" xml:space="preserve">
-    <value>Speciality</value>
-  </data>
-  <data name="State" xml:space="preserve">
-    <value>State:</value>
-  </data>
-  <data name="Success" xml:space="preserve">
-    <value>Success !!</value>
-  </data>
-  <data name="UniversityArabic" xml:space="preserve">
-    <value>University Name In Arabic</value>
-  </data>
-  <data name="UniversityEnglish" xml:space="preserve">
-    <value>University Name In English</value>
-  </data>
-  <data name="UniversityName" xml:space="preserve">
-    <value>University Name</value>
-  </data>
-  <data name="Update" xml:space="preserve">
-    <value>Update</value>
-  </data>
-  <data name="Upload" xml:space="preserve">
-    <value>Upload</value>
-  </data>
-  <data name="Welcome" xml:space="preserve">
-    <value>Welcome!</value>
-  </data>
-  <data name="Yes" xml:space="preserve">
-    <value>Yes</value>
-  </data>
-  <data name="YouHave" xml:space="preserve">
-    <value>You have</value>
-  </data>
+	<data name="RequestNumber" xml:space="preserve">
+  <value>Request Number</value>
+</data>
+	<data name="VisitorName" xml:space="preserve">
+  <value>Visitor Name</value>
+</data>
+	<data name="VisitorNumber" xml:space="preserve">
+  <value>Visitor Number</value>
+</data>
+	<data name="MaidName" xml:space="preserve">
+  <value>Maid Name</value>
+</data>
+	<data name="MaidNumber" xml:space="preserve">
+  <value>Maid Number</value>
+</data>
+	<data name="Status" xml:space="preserve">
+  <value>Status</value>
+</data>
+	<data name="Action" xml:space="preserve">
+  <value>Action</value>
+</data>
+	<data name="InProgress" xml:space="preserve">
+  <value>In Progress</value>
+</data>
+	<data name="Prepared" xml:space="preserve">
+  <value>Prepared</value>
+</data>
+	<data name="WaitingForPrepare" xml:space="preserve">
+  <value>Waiting For Prepare</value>
+</data>
+	<data name="Completed" xml:space="preserve">
+  <value>Completed</value>
+</data>
+	<data name="Cancel" xml:space="preserve">
+  <value>Cancel</value>
+</data>
+	<data name="Confirm" xml:space="preserve">
+  <value>Confirm</value>
+</data>
+	<data name="NoInProgressRequestsFound" xml:space="preserve">
+  <value>No In Progress Requests Found</value>
+</data>
 </root>
