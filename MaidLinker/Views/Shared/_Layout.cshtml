@@ -599,35 +599,9 @@
         });
     }
     var currentUrl = window.location.href;
-    if (currentUrl.includes("/ServiceProvider/Profile")) {
-        // Show the loading spinner
-        document.getElementById('loadingSpinner').style.display = 'block';
+  
 
-        // Hide the loading spinner after 3 seconds
-        setTimeout(function () {
-            document.getElementById('loadingSpinner').style.display = 'none';
-        }, 3000);
-    }
-
-    if (currentUrl.includes("/ServiceProvider/Referrals")) {
-        // Show the loading spinner
-        document.getElementById('loadingSpinner').style.display = 'block';
-
-        // Hide the loading spinner after 3 seconds
-        setTimeout(function () {
-            document.getElementById('loadingSpinner').style.display = 'none';
-        }, 800);
-    }
-
-    if (currentUrl.includes("/ServiceProvider/AddServices")) {
-        // Show the loading spinner
-        document.getElementById('loadingSpinner').style.display = 'block';
-
-        // Hide the loading spinner after 3 seconds
-        setTimeout(function () {
-            document.getElementById('loadingSpinner').style.display = 'none';
-        }, 800);
-    }
+  
 
     function isEnglishCulture() {
         var isEn = true;

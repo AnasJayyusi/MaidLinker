@@ -117,46 +117,76 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-	<data name="RequestNumber" xml:space="preserve">
-  <value>رقم الطلب</value>
-</data>
-	<data name="VisitorName" xml:space="preserve">
-  <value>اسم الزائر</value>
-</data>
-	<data name="VisitorNumber" xml:space="preserve">
-  <value>رقم الزائر</value>
-</data>
-	<data name="MaidName" xml:space="preserve">
-  <value>اسم العاملة</value>
-</data>
-	<data name="MaidNumber" xml:space="preserve">
-  <value>رقم العاملة</value>
-</data>
-	<data name="Status" xml:space="preserve">
-  <value>الحالة</value>
-</data>
+	<data name="FinancialReportTitle" xml:space="preserve">
+    <value>Financial Report</value>
+  </data>
+	<data name="FromDate" xml:space="preserve">
+    <value>From Date</value>
+  </data>
+	<data name="ToDate" xml:space="preserve">
+    <value>To Date</value>
+  </data>
+	<data name="FilterButton" xml:space="preserve">
+    <value>Filter</value>
+  </data>
+	<data name="RequestsStatusChartTitle" xml:space="preserve">
+    <value>Requests Status Chart</value>
+  </data>
+	<data name="CompletedPreparedRequestsTitle" xml:space="preserve">
+    <value>Completed and Prepared Requests</value>
+  </data>
+	<data name="IncomeExpensesTitle" xml:space="preserve">
+    <value>Income and Expenses</value>
+  </data>
+	<data name="TransactionTitle" xml:space="preserve">
+    <value>Transaction Title</value>
+  </data>
+	<data name="Amount" xml:space="preserve">
+    <value>Amount</value>
+  </data>
+	<data name="Type" xml:space="preserve">
+    <value>Type</value>
+  </data>
+	<data name="Income" xml:space="preserve">
+    <value>Income</value>
+  </data>
+	<data name="Expense" xml:space="preserve">
+    <value>Expense</value>
+  </data>
+	<data name="Add" xml:space="preserve">
+    <value>Add</value>
+  </data>
+	<data name="AddDate" xml:space="preserve">
+    <value>Add Date</value>
+  </data>
 	<data name="Action" xml:space="preserve">
-  <value>الإجراء</value>
-</data>
-	<data name="InProgress" xml:space="preserve">
-  <value>قيد المعالجة</value>
-</data>
-	<data name="Prepared" xml:space="preserve">
-  <value>مُجهّز</value>
-</data>
-	<data name="WaitingForPrepare" xml:space="preserve">
-  <value>في انتظار التجهيز</value>
-</data>
+    <value>Action</value>
+  </data>
+	<data name="TotalIncome" xml:space="preserve">
+    <value>Total Income</value>
+  </data>
+	<data name="TotalExpenses" xml:space="preserve">
+    <value>Total Expenses</value>
+  </data>
+	<data name="TotalProfit" xml:space="preserve">
+    <value>Total Profit</value>
+  </data>
+	<data name="JOD" xml:space="preserve">
+    <value>JOD</value>
+  </data>
 	<data name="Completed" xml:space="preserve">
-  <value>مكتمل</value>
-</data>
-	<data name="Cancel" xml:space="preserve">
-  <value>إلغاء</value>
-</data>
-	<data name="Confirm" xml:space="preserve">
-  <value>تأكيد</value>
-</data>
-	<data name="NoInProgressRequestsFound" xml:space="preserve">
-  <value>لا توجد طلبات قيد المعالجة</value>
-</data>
+    <value>Completed</value>
+  </data>
+	<data name="Prepared" xml:space="preserve">
+    <value>Prepared</value>
+  </data>
+	<data name="RequestsCount" xml:space="preserve">
+    <value>Requests Count</value>
+  </data>
+	<data name="PleaseFillAllFieldsCorrectly" xml:space="preserve">
+    <value>Please fill all fields correctly.</value>
+  </data>
+	<data name="AreYouSureDelete" xml:space="preserve">
+    <value>Are you sure you want to delete this entry?</value>
+  </data>
 </root>

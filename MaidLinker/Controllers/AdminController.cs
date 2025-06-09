@@ -673,30 +673,36 @@ namespace MaidLinker.Controllers
             if (maid == null)
                 return NotFound("Maid not found");
 
-            // Directory for maid attachments - adjust as needed
             string uploadFolder = Path.Combine(_webHostEnvironment.WebRootPath, "uploads", "maids", maid.Id.ToString());
 
             if (!Directory.Exists(uploadFolder))
                 Directory.CreateDirectory(uploadFolder);
 
-            // Helper function to save file and update database attachment
             async Task SaveFileAndUpdateAttachment(IFormFile file, AttachmentType type)
             {
-
-
-                // Remove existing attachment of this type
                 var existing = maid.Attachments.FirstOrDefault(a => a.AttachmentType == type);
-                if (existing != null)
-                {
-                    // Optional: delete old file physically if needed
-                    var oldFilePath = Path.Combine(_webHostEnvironment.WebRootPath, existing.FilePath.TrimStart('/').Replace('/', Path.DirectorySeparatorChar));
-                    if (System.IO.File.Exists(oldFilePath))
-                        System.IO.File.Delete(oldFilePath);
 
-                    _dbContext.Attachments.Remove(existing);
+                // Handle deletion request
+                if (model.AttachmentsToDelete != null && model.AttachmentsToDelete.Contains(type))
+                {
+                    if (existing != null)
+                    {
+                        var oldFilePath = Path.Combine(_webHostEnvironment.WebRootPath, existing.FilePath.TrimStart('/').Replace('/', Path.DirectorySeparatorChar));
+                        if (System.IO.File.Exists(oldFilePath))
+                            System.IO.File.Delete(oldFilePath);
+
+                        _dbContext.Attachments.Remove(existing);
+                    }
+
+                    // If user only wants to delete without uploading a new file, exit here
+                    if (file == null)
+                        return;
                 }
 
-                if (file == null) return;
+                // Skip if no new file and no delete request
+                if (file == null)
+                    return;
+
                 // Save new file
                 var uniqueFileName = $"{type}_{DateTime.Now:yyyyMMddHHmmss}_{Path.GetFileName(file.FileName)}";
                 var filePath = Path.Combine(uploadFolder, uniqueFileName);
@@ -718,7 +724,6 @@ namespace MaidLinker.Controllers
                 _dbContext.Attachments.Add(attachment);
             }
 
-            // Call helper for each file from model
             await SaveFileAndUpdateAttachment(model.MedicalFile, AttachmentType.Medical);
             await SaveFileAndUpdateAttachment(model.ResidencyFile, AttachmentType.Residency);
             await SaveFileAndUpdateAttachment(model.PassportFile, AttachmentType.Passport);
@@ -726,9 +731,8 @@ namespace MaidLinker.Controllers
 
             await _dbContext.SaveChangesAsync();
 
-            return Ok(new { Message = "Attachments uploaded successfully" });
+            return Ok(new { Message = "Attachments processed successfully" });
         }
-
         [HttpGet]
         [Route("GetAttachments/{id}")]
         public IActionResult GetAttachments(int id)

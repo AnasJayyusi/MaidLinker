@@ -51,12 +51,12 @@
                                     }
                                 </td>
                                 <td>
-                                    @if ((User.IsInRole("Reception")) && request.Status == SharedEnum.RequestStatus.InProgress )
+                                    @if ((User.IsInRole("Reception") ) && request.Status == SharedEnum.RequestStatus.InProgress )
                                     {
                                         <i class="fas fa-hourglass-half text-warning"></i> 
                                         @Localizer["WaitingForPrepare"]
                                     }
-                                    @if ((User.IsInRole("Reception")) && request.Status == SharedEnum.RequestStatus.Prepared)
+                                    @if ((User.IsInRole("Reception") || User.IsInRole("Administrator")) && request.Status == SharedEnum.RequestStatus.Prepared)
                                     {
                                         <button class="btn btn-sm btn-success complete-request-btn" data-id="@request.Id">
                                             <i class="fas fa-check-circle"></i> @Localizer["Completed"]

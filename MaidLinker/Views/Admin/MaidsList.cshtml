@@ -32,6 +32,16 @@
 
     var visibleItems = filteredItems.GetRange(startIndex, endIndex - startIndex + 1);
 }
+<style>
+    .anchorlimit {
+        display: inline-block; /* Make sure it's a block or inline-block */
+        max-width: 160px; /* Adjust max width as needed */
+        white-space: nowrap; /* Prevent text from wrapping */
+        overflow: hidden; /* Hide overflow */
+        text-overflow: ellipsis; /* Show ... when text is cut */
+        vertical-align: middle; /* Align nicely with icon */
+    }
+</style>
 <!-- #endregion -->
 <!-- #region Filter UI -->
 <div class="row justify-content-between">
@@ -321,7 +331,7 @@
 
                         <!-- View/Delete UI -->
                         <div id="medicalLink" class="mt-2 d-none">
-                            <a href="#" target="_blank" id="medicalAnchor" class="btn btn-outline-primary btn-sm mr-2">
+                            <a href="#" target="_blank" id="medicalAnchor" class="btn btn-outline-primary btn-sm mr-2 anchorlimit anchorlimit">
                                 <i class="fa fa-file"></i> @Localizer["ViewFile"]
                             </a>
                             <button type="button" class="btn btn-outline-danger btn-sm" onclick="toggleInput('medical')">
@@ -348,7 +358,7 @@
 
                         <!-- File preview & remove controls -->
                         <div id="residencyLink" class="mt-2 d-none">
-                            <a href="#" target="_blank" id="residencyAnchor" class="btn btn-outline-primary btn-sm mr-2">
+                            <a href="#" target="_blank" id="residencyAnchor" class="btn btn-outline-primary btn-sm mr-2 anchorlimit">
                                 <i class="fa fa-file"></i> @Localizer["ViewFile"]
                             </a>
                             <button type="button" class="btn btn-outline-danger btn-sm" onclick="toggleInput('residency')">
@@ -370,7 +380,7 @@
                             <span class="ml-2 text-muted" id="passportFileName">@Localizer["NoFileSelected"]</span>
                         </div>
                         <div id="passportLink" class="mt-2 d-none">
-                            <a href="#" target="_blank" id="passportAnchor" class="btn btn-outline-primary btn-sm mr-2">
+                            <a href="#" target="_blank" id="passportAnchor" class="btn btn-outline-primary btn-sm mr-2 anchorlimit ">
                                 <i class="fa fa-file"></i> @Localizer["ViewFile"]
                             </a>
                             <button type="button" class="btn btn-outline-danger btn-sm" onclick="toggleInput('passport')">
@@ -390,7 +400,7 @@
                             <span class="ml-2 text-muted" id="otherFileName">@Localizer["NoFileSelected"]</span>
                         </div>
                         <div id="otherLink" class="mt-2 d-none">
-                            <a href="#" target="_blank" id="otherAnchor" class="btn btn-outline-primary btn-sm mr-2">
+                            <a href="#" target="_blank" id="otherAnchor" class="btn btn-outline-primary btn-sm mr-2 anchorlimit">
                                 <i class="fa fa-file"></i> @Localizer["ViewFile"]
                             </a>
                             <button type="button" class="btn btn-outline-danger btn-sm" onclick="toggleInput('other')">
@@ -581,6 +591,7 @@
 <!-- #endregion -->
 <script>
 
+    var attachmentsToDelete = [];
     $('#attachmentForm').submit(function (e) {
         e.preventDefault();
 
@@ -595,6 +606,14 @@
             }
         });
 
+        if (attachmentsToDelete.length > 0)
+        {
+            alert("Hello")
+                // Append to formData
+        attachmentsToDelete.forEach(function(type) {
+        formData.append('AttachmentsToDelete', type);
+    });
+        }
         $.ajax({
 
          url: '/Admin/UploadAttachments', // your API endpoint here
@@ -604,9 +623,13 @@
             processData: false,
             success: function (res) {
               $('#close-attachments-Maid').trigger('click');
+              showSuccessMessage();
+              attachmentsToDelete = [];
             },
             error: function (xhr) {
-                alert('Upload failed: ' + xhr.responseText);
+                attachmentsToDelete = [];
+                showErrorMessage();
+                console.log(xhr.responseText)
             }
         });
     });
@@ -630,13 +653,14 @@
                 document.getElementById(`${type}Link`).classList.remove('d-none');
             }
         }
-
+     
         function toggleInput(type) {
             document.getElementById(`${type}Input`).value = "";
             document.getElementById(`${type}FileName`).innerText = "@Localizer["NoFileSelected"]";
             document.getElementById(`${type}Group`).querySelector('.icon-upload').classList.remove('d-none');
             document.getElementById(`${type}Link`).classList.add('d-none');
             document.getElementById(`${type}Anchor`).href = "#";
+           attachmentsToDelete.push(type);
         }
 
         function getFileIcon(fileName) {
@@ -696,6 +720,7 @@
         }
 
             function getAttachments(maidId) {
+                   var attachmentsToDelete = [];
               document.getElementById('attachmentMaidId').value = maidId;
             $.ajax({
                     url: '/Admin/GetAttachments/' + maidId,

@@ -1,5 +1,7 @@
 ﻿using MaidLinker.Models;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Globalization;
 using static MaidLinker.Enums.SharedEnum;
 
 namespace MaidLinker.Data.Entites
@@ -16,5 +18,14 @@ namespace MaidLinker.Data.Entites
         public FinancialEntryType Type { get; set; } // Income or Expense
 
         public DateTime CreatedDate { get; set; } = DateTime.Now;
+
+        [NotMapped]
+        public string CreationDateFormatted
+        {
+            get
+            {
+                return CreatedDate.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
+            }
+        }
     }
 }

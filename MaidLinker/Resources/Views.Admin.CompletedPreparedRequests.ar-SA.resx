@@ -117,46 +117,49 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-	<data name="RequestNumber" xml:space="preserve">
-  <value>رقم الطلب</value>
-</data>
-	<data name="VisitorName" xml:space="preserve">
-  <value>اسم الزائر</value>
-</data>
-	<data name="VisitorNumber" xml:space="preserve">
-  <value>رقم الزائر</value>
-</data>
-	<data name="MaidName" xml:space="preserve">
-  <value>اسم العاملة</value>
-</data>
-	<data name="MaidNumber" xml:space="preserve">
-  <value>رقم العاملة</value>
-</data>
-	<data name="Status" xml:space="preserve">
-  <value>الحالة</value>
-</data>
-	<data name="Action" xml:space="preserve">
-  <value>الإجراء</value>
-</data>
-	<data name="InProgress" xml:space="preserve">
-  <value>قيد المعالجة</value>
-</data>
-	<data name="Prepared" xml:space="preserve">
-  <value>مُجهّز</value>
-</data>
-	<data name="WaitingForPrepare" xml:space="preserve">
-  <value>في انتظار التجهيز</value>
-</data>
-	<data name="Completed" xml:space="preserve">
-  <value>مكتمل</value>
-</data>
-	<data name="Cancel" xml:space="preserve">
-  <value>إلغاء</value>
-</data>
-	<data name="Confirm" xml:space="preserve">
-  <value>تأكيد</value>
-</data>
-	<data name="NoInProgressRequestsFound" xml:space="preserve">
-  <value>لا توجد طلبات قيد المعالجة</value>
-</data>
+  <data name="RequestNumber" xml:space="preserve">
+    <value>رقم الطلب</value>
+  </data>
+  <data name="ClientName" xml:space="preserve">
+    <value>اسم العميل</value>
+  </data>
+  <data name="Phone" xml:space="preserve">
+    <value>رقم الهاتف</value>
+  </data>
+  <data name="RequestDate" xml:space="preserve">
+    <value>تاريخ الطلب</value>
+  </data>
+  <data name="Status" xml:space="preserve">
+    <value>الحالة</value>
+  </data>
+  <data name="ContractSigned" xml:space="preserve">
+    <value>تم توقيع العقد</value>
+  </data>
+  <data name="Attachment" xml:space="preserve">
+    <value>العقود</value>
+  </data>
+  <data name="Prepared" xml:space="preserve">
+    <value>مُعد</value>
+  </data>
+  <data name="Completed" xml:space="preserve">
+    <value>مكتمل</value>
+  </data>
+  <data name="SignedOn" xml:space="preserve">
+    <value>تم التوقيع بتاريخ</value>
+  </data>
+  <data name="UploadViewContract" xml:space="preserve">
+    <value>رفع / عرض العقد</value>
+  </data>
+  <data name="SelectContractFile" xml:space="preserve">
+    <value>اختر ملف العقد</value>
+  </data>
+  <data name="ChooseFile" xml:space="preserve">
+    <value>اختر ملف</value>
+  </data>
+  <data name="UploadContract" xml:space="preserve">
+    <value>رفع العقد</value>
+  </data>
+  <data name="ViewCurrentContract" xml:space="preserve">
+    <value>عرض العقد الحالي</value>
+  </data>
 </root>
