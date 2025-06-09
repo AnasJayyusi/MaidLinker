@@ -1,4 +1,5 @@
 ﻿using MaidLinker.Enums;
+using static MaidLinker.Enums.SharedEnum;
 
 namespace MaidLinker.Data.Entites
 {

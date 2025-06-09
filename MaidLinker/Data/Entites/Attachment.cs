@@ -8,11 +8,9 @@ namespace MaidLinker.Data.Entites
 
         public int MaidId { get; set; }         
         public Maid Maid { get; set; }             
-
         public string FileName { get; set; }
         public string FilePath { get; set; }       
         public AttachmentType AttachmentType { get; set; } // e.g. "Medical", "Residency", "Passport" ,"Other"
-
         public DateTime UploadedAt { get; set; }
     }
 }

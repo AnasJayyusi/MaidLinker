@@ -117,52 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-	<data name="FeedbacksTitle" xml:space="preserve">
+  <data name="FeedbacksTitle" xml:space="preserve">
     <value>Feedbacks</value>
   </data>
-	<data name="FeedbacksTitle" xml:space="preserve">
-    <value>Feedbacks</value>
-  </data>
-	<data name="SearchPlaceholder" xml:space="preserve">
-    <value>Search</value>
-  </data>
-	<data name="SearchButton" xml:space="preserve">
-    <value>Search</value>
-  </data>
-	<data name="ApplyButton" xml:space="preserve">
-    <value>Apply</value>
-  </data>
-	<data name="Name" xml:space="preserve">
-    <value>Name</value>
-  </data>
-	<data name="Phone" xml:space="preserve">
-    <value>Phone</value>
-  </data>
-	<data name="Email" xml:space="preserve">
-    <value>Email</value>
-  </data>
-	<data name="Message" xml:space="preserve">
-    <value>Message</value>
-  </data>
-	<data name="Seen" xml:space="preserve">
-    <value>Seen</value>
-  </data>
-	<data name="EditTitle" xml:space="preserve">
-    <value>Edit</value>
-  </data>
-	<data name="TitleEn" xml:space="preserve">
-    <value>Title (English):</value>
-  </data>
-	<data name="TitleAr" xml:space="preserve">
-    <value>Title (Arabic):</value>
-  </data>
-	<data name="CancelButton" xml:space="preserve">
-    <value>Cancel</value>
-  </data>
-	<data name="UpdateButton" xml:space="preserve">
-    <value>Update</value>
-  </data>
-	<data name="NoResults" xml:space="preserve">
+  <data name="NoResultsFound" xml:space="preserve">
     <value>No Results Found</value>
   </data>
 </root>

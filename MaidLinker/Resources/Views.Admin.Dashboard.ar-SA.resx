@@ -214,9 +214,6 @@
 	<data name="MaidName" xml:space="preserve">
     <value>اسم الخادمة</value>
   </data>
-	<data name="MaidNumber" xml:space="preserve">
-    <value>رقم الخادمة</value>
-  </data>
 	<data name="Action" xml:space="preserve">
     <value>الإجراء</value>
   </data>

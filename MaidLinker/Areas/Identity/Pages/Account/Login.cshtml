@@ -96,7 +96,7 @@
                             <input class="radio-check" asp-for="Input.RememberMe" />
                             <label asp-for="Input.RememberMe" class="radio-title">      @Localizer["RememberMe"]</label>
                         </div>
-                        <a id="forgot-password" class="link" asp-page="./ForgotPassword">   @Localizer["ForgetPassword"]</a>
+                        
                     </div>
 
                     <button id="login-submit" type="submit" class="custom-btn mb-3">
@@ -105,12 +105,7 @@
                         </span>
                     </button>
 
-                    <a type="button" class="link" asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">
-                        @Localizer["NoAccountYet"]
-                        <span>
-                            @Localizer["SignUp"]
-                        </span>
-                    </a>
+                
 
                 </form>
             </div>

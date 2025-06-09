@@ -18,27 +18,12 @@ namespace MaidLinker.Controllers
         public const int _adminUserProfileId = 0;
         private readonly UserManager<IdentityUser> _userManager;
 
-
         public BaseController(ApplicationDbContext dbContext, INotificationService notificationService, UserManager<IdentityUser> userManager)
         {
             _dbContext = dbContext;
             _notificationService = notificationService;
             _userManager = userManager;
         }
-
-        //public int GetUserProfileId()
-        //{
-        //    string currentUserProfileId = GetAspNetUserId();
-
-        //    if (_userProfileId == null)
-        //    {
-        //        if (currentUserProfileId != null)
-        //            return _dbContext.UserProfiles.IgnoreQueryFilters().Where(w => w.UserId == currentUserProfileId).Select(x => x.Id).Single();
-        //        return -1;
-        //    }
-        //    else
-        //        return _userProfileId.Value;
-        //}
 
         public string GetAspNetUserId()
         {
@@ -52,38 +37,7 @@ namespace MaidLinker.Controllers
 
         }
 
-        //public string GetShortName()
-        //{
-        //    string fullName = _dbContext.UserProfiles.Where(w => w.Id == GetUserProfileId()).Select(s => s.FullName).Single();
-        //    // Split the full name into individual words using space as the separator
-        //    string[] nameParts = fullName.Split(' ');
-
-        //    // The first element of the array will be the first name
-        //    string firstName = nameParts[0];
-
-        //    return firstName;
-        //}
-
-        //public string GetUserImage()
-        //{
-        //    var userId = GetUserProfileId();
-        //    var userProfilePath = _dbContext.UserProfiles.Where(w => w.Id == userId).Select(a => a.ProfilePicturePath).FirstOrDefault();
-        //    if (userProfilePath == null)
-        //    {
-        //        return "/users/images/Default-User-Profile.jpg";
-        //    }
-        //    return userProfilePath;
-        //}
-
-        //public void SetImagePathInCookies()
-        //{
-        //    var cookieOptions = new CookieOptions();
-        //    cookieOptions.Expires = DateTime.Now.AddDays(1);
-        //    cookieOptions.Path = "/";
-        //    Response.Cookies.Append("userImagePath", GetUserImage(), cookieOptions);
-        //}
-
-        private  List<string> GetReceptionUserIds()
+        private List<string> GetReceptionUserIds()
         {
             var receptionUsers =  _userManager.GetUsersInRoleAsync("Reception").Result;
             var receptionUserIds = receptionUsers.Select(u => u.Id).ToList();
@@ -204,12 +158,38 @@ namespace MaidLinker.Controllers
 
         }
 
+        #region User Profile Methods
+        //public string GetShortName()
+        //{
+        //    string fullName = _dbContext.UserProfiles.Where(w => w.Id == GetUserProfileId()).Select(s => s.FullName).Single();
+        //    // Split the full name into individual words using space as the separator
+        //    string[] nameParts = fullName.Split(' ');
 
-        public string GetFileFullPath(IWebHostEnvironment _webHostEnvironment, string folderName, string fileName)
-        {
-            //Build the File Path.  
-            return Path.Combine(_webHostEnvironment.WebRootPath, folderName, fileName);
-        }
+        //    // The first element of the array will be the first name
+        //    string firstName = nameParts[0];
+
+        //    return firstName;
+        //}
+
+        //public string GetUserImage()
+        //{
+        //    var userId = GetUserProfileId();
+        //    var userProfilePath = _dbContext.UserProfiles.Where(w => w.Id == userId).Select(a => a.ProfilePicturePath).FirstOrDefault();
+        //    if (userProfilePath == null)
+        //    {
+        //        return "/users/images/Default-User-Profile.jpg";
+        //    }
+        //    return userProfilePath;
+        //}
+
+        //public void SetImagePathInCookies()
+        //{
+        //    var cookieOptions = new CookieOptions();
+        //    cookieOptions.Expires = DateTime.Now.AddDays(1);
+        //    cookieOptions.Path = "/";
+        //    Response.Cookies.Append("userImagePath", GetUserImage(), cookieOptions);
+        //}
+        #endregion
     }
 }
 

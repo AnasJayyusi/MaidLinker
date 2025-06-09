@@ -203,6 +203,7 @@ namespace MaidLinker.Controllers
         }
 
         #endregion
+
         #region Culture
         [HttpGet]
         public IActionResult SetCulture(string culureCode, string returnUrl)

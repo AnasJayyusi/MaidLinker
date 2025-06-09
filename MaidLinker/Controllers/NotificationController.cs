@@ -13,12 +13,10 @@ namespace MaidLinker.Controllers
     public class NotificationController : BaseController
     {
         private readonly UserManager<IdentityUser> _userManager;
-
         public NotificationController(UserManager<IdentityUser> userManager, ApplicationDbContext dbContext, INotificationService notificationService) : base(dbContext, notificationService, userManager)
         {
             _userManager = userManager;
         }
-
 
         [HttpGet]
         [AllowAnonymous]
@@ -40,7 +38,7 @@ namespace MaidLinker.Controllers
         public ActionResult GetNotifications()
         {
             var currentUserId = GetAspNetUserId();
-          
+
             var model = _dbContext.Notifications.Where(a => a.AssignedToUserId == currentUserId)
                                                 .OrderByDescending(a => a.CreationDate)
                                                 .ToList();

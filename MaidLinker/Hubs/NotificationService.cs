@@ -6,7 +6,6 @@ namespace MaidLinker.Hubs
     {
         Task SendMessage(string userId, string message);
     }
-
     public class NotificationService : INotificationService
     {
         private readonly IHubContext<NotificationHub> _hubContext;
@@ -15,13 +14,10 @@ namespace MaidLinker.Hubs
         {
             _hubContext = hubContext;
         }
-
+        
         public async Task SendMessage(string userId, string message)
         {
-            //await _hubContext.Clients.User(userId).SendAsync("ReceiveMessage", message);
             await _hubContext.Clients.All.SendAsync("ReceiveMessage",userId, message);
         }
-
-        
     }
 }

@@ -3,7 +3,7 @@ using static MaidLinker.Enums.SharedEnum;
 
 namespace MaidLinker.Models
 {
-    public class MaidDto
+    public class MaidViewModel
     {
         public int? Id { get; set; }
         public string? VideoURL { get; set; }

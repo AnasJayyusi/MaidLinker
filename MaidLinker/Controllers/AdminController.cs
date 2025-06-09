@@ -453,7 +453,7 @@ namespace MaidLinker.Controllers
 
         [HttpPost]
         [Route("AddMaid")]
-        public async Task<IActionResult> AddMaid([FromForm] MaidDto dto)
+        public async Task<IActionResult> AddMaid([FromForm] MaidViewModel dto)
         {
             var maid = new Maid
             {
@@ -584,7 +584,7 @@ namespace MaidLinker.Controllers
 
         [HttpPost]
         [Route("UpdateMaid")]
-        public async Task<IActionResult> UpdateMaid([FromForm] MaidDto dto)
+        public async Task<IActionResult> UpdateMaid([FromForm] MaidViewModel dto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -1099,9 +1099,6 @@ namespace MaidLinker.Controllers
         #endregion
 
         #region FinancialReport
-
-
-
         [Route("Financial/FinancialReport")]
         public IActionResult FinancialReport(DateTime? fromDate, DateTime? toDate)
         {
@@ -1270,7 +1267,7 @@ namespace MaidLinker.Controllers
                     return NotFound();
                 }
 
-                practitionerType.StatusId = isSeen ? Enums.FeedbackStatusEnum.Seen : Enums.FeedbackStatusEnum.Unread;
+                practitionerType.StatusId = isSeen ? FeedbackStatusEnum.Seen : FeedbackStatusEnum.Unread;
                 _dbContext.SaveChanges();
 
                 return Ok();

@@ -85,7 +85,7 @@
                 <td style="word-break: break-word; white-space: normal; max-width: 300px;">@feedbacks.Message</td>
                 <td>
                     <div class="custom-control custom-switch">
-                        <input type="checkbox" class="custom-control-input" id="statusToggle_@feedbacks.Id" @(feedbacks.StatusId == MaidLinker.Enums.FeedbackStatusEnum.Seen ? "checked" : "") data-id="@feedbacks.Id">
+                        <input type="checkbox" class="custom-control-input" id="statusToggle_@feedbacks.Id" @(feedbacks.StatusId == MaidLinker.Enums.SharedEnum.FeedbackStatusEnum.Seen ? "checked" : "") data-id="@feedbacks.Id">
                         <label class="custom-control-label" for="statusToggle_@feedbacks.Id"></label>
                     </div>
                 </td>

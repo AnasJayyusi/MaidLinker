@@ -1,7 +1,6 @@
 ﻿using MaidLinker.Data;
 using MaidLinker.Data.Entites;
 using MaidLinker.Hubs;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -17,7 +16,6 @@ namespace MaidLinker.Controllers
         public CommonController(ApplicationDbContext dbContext, INotificationService notificationService, UserManager<IdentityUser> userManager) : base(dbContext, notificationService, userManager)
         {
         }
-
         #region Shared DropDownList
 
         [HttpGet]
@@ -104,18 +102,8 @@ namespace MaidLinker.Controllers
             return Json(dropdownData);
         }
 
-        [HttpGet]
-        [Route("GetAccountTypesDDL")]
-        public ActionResult GetAccountTypesDDL()
-        {
-            // Retrieve the data for the dropdown list
-            var dropdownData = _dbContext.AccountTypes.ToList();
 
-            // Pass the data to the view
-            return Json(dropdownData);
-        }
 
-       
         [HttpPost]
         [Route("SendRequest/{maidId}/{name}/{phone}")]
         public async Task<IActionResult> SendRequest(int maidId, string name, string phone)
@@ -143,7 +131,7 @@ namespace MaidLinker.Controllers
             _dbContext.Requests.Add(request);
             await _dbContext.SaveChangesAsync();
             var newRequestId = request.Id;  // <-- here you get the new request ID
-            PushNewNotification(NotificationTypeEnum.NewRequest,AccountTypeEnum.All , $"#{newRequestId.ToString()}");
+            PushNewNotification(NotificationTypeEnum.NewRequest, AccountTypeEnum.All, $"#{newRequestId.ToString()}");
 
 
             return Ok();
@@ -177,13 +165,12 @@ namespace MaidLinker.Controllers
                   ? (settings.ContainsKey("AddressAr") ? settings["AddressAr"] : "")
                 : (settings.ContainsKey("AddressEn") ? settings["AddressEn"] : ""),
 
-            FacebookUrl = settings.ContainsKey("FacebookUrl") ? settings["FacebookUrl"] : "",
+                FacebookUrl = settings.ContainsKey("FacebookUrl") ? settings["FacebookUrl"] : "",
                 InstagramUrl = settings.ContainsKey("InstagramUrl") ? settings["InstagramUrl"] : ""
             };
 
             return Json(data);
         }
         #endregion
-
     }
 }

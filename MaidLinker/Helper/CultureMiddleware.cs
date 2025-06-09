@@ -19,7 +19,7 @@ namespace MaidLinker.Helper
             var requestCultureFeature = context.Features.Get<IRequestCultureFeature>();
 
             // Get the selected culture from the cookie or use a default value
-            string selectedCulture = context.Request.Cookies["CultureInfo"] ?? "en-US";
+            string selectedCulture = context.Request.Cookies["CultureInfo"] ?? "ar-SA";
 
             // Update the culture for the current request
             CultureInfo.CurrentCulture = new CultureInfo(selectedCulture);

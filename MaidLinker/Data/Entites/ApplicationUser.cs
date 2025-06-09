@@ -5,12 +5,6 @@ namespace MaidLinker.Data.Entites
 {
     public class ApplicationUser : IdentityUser
     {
-
         public string? FullName { get; set; }
-
-        [ForeignKey(nameof(AccountType))]
-        public int? AccountTypeId { get; set; }
-        public AccountType? AccountType { get; set; }
-
     }
 }

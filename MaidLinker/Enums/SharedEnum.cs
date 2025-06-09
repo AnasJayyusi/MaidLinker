@@ -28,12 +28,6 @@
             Completed = 4      // الطلب مكتمل
         }
 
-        public enum Gender
-        {
-            Undefined = -1,
-            Female = 0,
-            Male = 1
-        }
 
         public enum Age
         {
@@ -45,8 +39,6 @@
             Old = 5         // > 50
         }
 
-
-
         public enum Experience
         {
             Undefined = -1,
@@ -57,13 +49,6 @@
             Expert = 4 // > 10 years
         }
        
-
-        public enum ProfileStatus
-        {
-            InActive = 0,
-            Active = 1,
-        }
-
         public enum MaritalStatus
         {
             Undefined = -1,
@@ -86,6 +71,12 @@
         {
             Income = 1,
             Expense = 2
+        }
+
+        public enum FeedbackStatusEnum
+        {
+            Unread = 0,
+            Seen = 1
         }
     }
 }
