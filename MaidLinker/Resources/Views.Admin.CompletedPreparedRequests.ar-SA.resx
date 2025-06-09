@@ -162,4 +162,7 @@
   <data name="ViewCurrentContract" xml:space="preserve">
     <value>عرض العقد الحالي</value>
   </data>
+  <data name="Attach" xml:space="preserve">
+    <value>ارفق</value>
+  </data>
 </root>

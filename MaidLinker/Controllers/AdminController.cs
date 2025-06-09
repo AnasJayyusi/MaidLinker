@@ -76,7 +76,7 @@ namespace MaidLinker.Controllers
             {
                 inProgressRequests = await _dbContext.Requests
                     .Include(r => r.Maid)
-                    .Where(r => r.Status == RequestStatus.InProgress || r.Status == RequestStatus.Prepared && r.ServedByUserId == userId)
+                    .Where(r => r.Status == RequestStatus.InProgress || r.Status == RequestStatus.Prepared)
                     .ToListAsync();
             }
 

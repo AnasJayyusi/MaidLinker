@@ -117,52 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="RequestNumber" xml:space="preserve">
-    <value>Request Number</value>
-  </data>
-  <data name="ClientName" xml:space="preserve">
-    <value>Client Name</value>
-  </data>
-  <data name="Phone" xml:space="preserve">
-    <value>Phone</value>
-  </data>
-  <data name="RequestDate" xml:space="preserve">
-    <value>Request Date</value>
-  </data>
-  <data name="Status" xml:space="preserve">
-    <value>Status</value>
-  </data>
-  <data name="ContractSigned" xml:space="preserve">
-    <value>Contract Signed</value>
-  </data>
-  <data name="Attachment" xml:space="preserve">
-    <value>Contract</value>
-  </data>
-  <data name="Prepared" xml:space="preserve">
-    <value>Prepared</value>
-  </data>
-  <data name="Completed" xml:space="preserve">
-    <value>Completed</value>
-  </data>
-  <data name="SignedOn" xml:space="preserve">
-    <value>Signed on</value>
-  </data>
-  <data name="UploadViewContract" xml:space="preserve">
-    <value>Upload / View Contract</value>
-  </data>
-  <data name="SelectContractFile" xml:space="preserve">
-    <value>Select Contract File</value>
-  </data>
-  <data name="ChooseFile" xml:space="preserve">
-    <value>Choose File</value>
-  </data>
-  <data name="UploadContract" xml:space="preserve">
-    <value>Upload Contract</value>
-  </data>
-  <data name="ViewCurrentContract" xml:space="preserve">
-    <value>View Current Contract</value>
-  </data>
-  <data name="Attach" xml:space="preserve">
-    <value>Attach</value>
+  <data name="Logout" xml:space="preserve">
+    <value>تسجيل الخروج</value>
   </data>
 </root>

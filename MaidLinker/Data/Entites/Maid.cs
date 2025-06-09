@@ -16,9 +16,9 @@ namespace MaidLinker.Data.Entites
         [MaxLength(250)]
         public string FirstNameEn { get; set; }
         [MaxLength(250)]
-        public string SecondNameEn { get; set; }
+        public string? SecondNameEn { get; set; }
         [MaxLength(250)]
-        public string ThirdNameEn { get; set; }
+        public string? ThirdNameEn { get; set; }
         [MaxLength(250)]
         public string LastNameEn { get; set; }
         #endregion
@@ -27,29 +27,29 @@ namespace MaidLinker.Data.Entites
         [MaxLength(250)]
         public string FirstNameAr { get; set; }
         [MaxLength(250)]
-        public string SecondNameAr { get; set; }
+        public string? SecondNameAr { get; set; }
         [MaxLength(250)]
-        public string ThirdNameAr { get; set; }
+        public string? ThirdNameAr { get; set; }
         [MaxLength(250)]
         public string LastNameAr { get; set; }
         #endregion
-        public double TotalExperience { get; set; }
+        public double? TotalExperience { get; set; }
 
-        public List<Country> ServedCountries { get; set; }
-        public MaritalStatus MaritalStatus { get; set; }
-        public int Childs { get; set; }
-        public List<Language> Langauges { get; set; }
+        public List<Country>? ServedCountries { get; set; }
+        public MaritalStatus? MaritalStatus { get; set; }
+        public int? Childs { get; set; }
+        public List<Language>? Langauges { get; set; }
         public DateTime DateOfBirth { get; set; }
-        public string Note { get; set; }
+        public string? Note { get; set; }
 
         public bool IsAvailable { get; set; } = true;
 
         #region Navagations
-        public int NationalityId { get; set; }
+        public int? NationalityId { get; set; }
 
         [ForeignKey("NationalityId")]
         public Nationality Nationality { get; set; }
-        public List<Attachment> Attachments { get; set; }
+        public List<Attachment>? Attachments { get; set; }
         #endregion
 
         [NotMapped]

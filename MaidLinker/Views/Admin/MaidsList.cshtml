@@ -71,7 +71,7 @@
 <table class="table table-striped" dir="@direction">
     <thead>
         <tr>
-            <th>MaidNumber</th>
+            <th>@Localizer["MaidNumber"]</th>
             <th>@Localizer["FirstNameEn"]</th>
             <th>@Localizer["FirstNameAr"]</th>
             <th>@Localizer["Status"]</th>
@@ -288,7 +288,7 @@
                     </div>
                 </form>
 
-                <div style="text-align:center"  class="alert alert-danger hidden" role="alert" id="error-msg">@Localizer["PleaseFillAllFields"]</div>
+                <div style="text-align:center"  class="alert alert-info hidden" role="alert" id="error-msg">@Localizer["PleaseFillAllFields"]</div>
             </div>
             <div class="modal-footer">
                 <button id="close-edit-Maid" type="button" class="btn btn-danger" data-dismiss="modal">@Localizer["Cancel"]</button>
@@ -568,7 +568,7 @@
                 // reload or update UI accordingly
             },
             error: function(xhr) {
-               $('#error-msg').removeClass('hidden').text(@Localizer["FillAllRequiredFeildsPlease"]);
+               showErrorMessage();
             }
         });
     });
