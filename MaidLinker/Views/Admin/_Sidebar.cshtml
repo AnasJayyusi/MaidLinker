@@ -128,9 +128,9 @@
                <i class="fas fa-money-bill"></i>
                 <span>@Localizer["Financial"] </span>
             </a>
-            <div id="collapseReports" class="collapse @(currentPath.Contains("Reports".ToString().ToLower()) == true ? "show" : "")" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div id="collapseReports" class="collapse @(currentPath.Contains("Financia".ToString().ToLower()) == true ? "show" : "")" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item @(currentPath.Contains("ServicesReport".ToString().ToLower()) == true ? "active" : "")" asp-area="" asp-controller="Admin" asp-action="ServicesReport">@Localizer["FinancialReport"] </a>
+                    <a class="collapse-item @(currentPath.Contains("FinancialReport".ToString().ToLower()) == true ? "active" : "")" asp-area="" asp-controller="Admin" asp-action="FinancialReport">@Localizer["FinancialReport"] </a>
                 </div>
             </div>
         </li>

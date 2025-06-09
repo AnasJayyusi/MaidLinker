@@ -23,7 +23,6 @@ namespace MaidLinker.Data
         public DbSet<GeneralSettings> GeneralSettings { get; set; }
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public DbSet<AccountType> AccountTypes { get; set; }
-        public DbSet<PractitionerType> PractitionerTypes { get; set; }
         public DbSet<Feedback> Feedbacks { get; set; }
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<Country> Countries { get; set; }
@@ -32,5 +31,6 @@ namespace MaidLinker.Data
         public DbSet<Language> Languages { get; set; }
         public DbSet<Attachment> Attachments { get; set; }
         public DbSet<Request> Requests { get; set; }
+        public DbSet<FinancialEntry> FinancialEntries { get; set; }
     }
 }

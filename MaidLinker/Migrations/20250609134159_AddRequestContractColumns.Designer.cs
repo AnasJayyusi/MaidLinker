@@ -4,6 +4,7 @@ using MaidLinker.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MaidLinker.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250609134159_AddRequestContractColumns")]
+    partial class AddRequestContractColumns
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -155,33 +157,6 @@ namespace MaidLinker.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Feedbacks");
-                });
-
-            modelBuilder.Entity("MaidLinker.Data.Entites.FinancialEntry", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("FinancialEntries");
                 });
 
             modelBuilder.Entity("MaidLinker.Data.Entites.GeneralSettings", b =>
@@ -381,6 +356,28 @@ namespace MaidLinker.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Notifications");
+                });
+
+            modelBuilder.Entity("MaidLinker.Data.Entites.PractitionerType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("TitleAr")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TitleEn")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PractitionerTypes");
                 });
 
             modelBuilder.Entity("MaidLinker.Data.Entites.Request", b =>
@@ -652,7 +649,12 @@ namespace MaidLinker.Migrations
                     b.Property<string>("FullName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("PractitionerTypeId")
+                        .HasColumnType("int");
+
                     b.HasIndex("AccountTypeId");
+
+                    b.HasIndex("PractitionerTypeId");
 
                     b.HasDiscriminator().HasValue("ApplicationUser");
                 });
@@ -783,6 +785,10 @@ namespace MaidLinker.Migrations
                         .WithMany("ApplicationUsers")
                         .HasForeignKey("AccountTypeId");
 
+                    b.HasOne("MaidLinker.Data.Entites.PractitionerType", null)
+                        .WithMany("ApplicationUsers")
+                        .HasForeignKey("PractitionerTypeId");
+
                     b.Navigation("AccountType");
                 });
 
@@ -799,6 +805,11 @@ namespace MaidLinker.Migrations
             modelBuilder.Entity("MaidLinker.Data.Entites.Nationality", b =>
                 {
                     b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("MaidLinker.Data.Entites.PractitionerType", b =>
+                {
+                    b.Navigation("ApplicationUsers");
                 });
 #pragma warning restore 612, 618
         }

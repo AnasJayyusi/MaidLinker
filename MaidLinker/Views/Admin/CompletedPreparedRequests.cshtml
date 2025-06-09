@@ -1,0 +1,104 @@
+﻿@model IEnumerable<MaidLinker.Data.Entites.Request>
+@using Microsoft.AspNetCore.Mvc.Localization
+@using MaidLinker.Data
+@inject IViewLocalizer Localizer
+
+@{
+    string cultureCode = System.Threading.Thread.CurrentThread.CurrentCulture.Name;
+    string direction = cultureCode.StartsWith("ar", StringComparison.OrdinalIgnoreCase) ? "rtl" : "ltr";
+    string textAlign = direction == "rtl" ? "right" : "left";
+    bool isEng = cultureCode.StartsWith("en", StringComparison.OrdinalIgnoreCase);
+}
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>RequestNumber</th>
+            <th>Client Name</th>
+            <th>Phone</th>
+            <th>Request Date</th>
+            <th>Status</th>
+            <th>Contract Signed</th>
+            <th>Attachment</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var request in Model)
+        {
+            <tr>
+                <td>#@request.Id</td>
+                <td>@request.Name</td>
+                <td>@request.Phone</td>
+                <td>@request.RequestDate.ToString("yyyy-MM-dd")</td>
+                <td>
+                    @if (request.Status ==  MaidLinker.Enums.SharedEnum.RequestStatus.Prepared)
+                    {
+                        <span class="badge bg-info ">@Localizer["Prepared"]</span>
+                    }
+                    else if ( request.Status == MaidLinker.Enums.SharedEnum.RequestStatus.Completed)
+                    {
+                    <span class="badge bg-success">@Localizer["Completed"]</span>
+                    }
+                   
+                
+                
+                </td>
+                <td class="text-center align-middle">
+                    @if (request.ContractSigned)
+                    {
+                        <i class="fas fa-signature text-info"
+                           style="font-size: 1.5rem;"
+                           title="Signed on @request.SignedDate?.ToString("yyyy-MM-dd")"></i>
+                    }
+                    else
+                    {
+                        <text>-</text>
+                    }
+                </td>
+
+                <td>
+                    <button class="btn btn-sm btn-primary" onclick="openAttachmentModal(@request.Id, '@request.ContractFilePath')">
+                        <i class="fas fa-paperclip"></i> Attach /  <i class="fas fa-eye"></i> View
+                    </button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Attachment Modal -->
+<div class="modal fade" id="attachmentModal" tabindex="-1" role="dialog" aria-labelledby="attachmentModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <!-- Centered modal -->
+        <div class="modal-content">
+            <div class="modal-header text-white">
+                <h5 class="modal-title" id="attachmentModalLabel">Upload / View Contract</h5>
+                <button type="button" class="close-btn" style="border:none" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <form id="attachmentForm" enctype="multipart/form-data">
+                    <input type="hidden" id="modalRequestId" name="requestId" />
+                    <div class="form-group">
+                        <label class="font-weight-bold">Select Contract File</label>
+                        <div class="custom-file">
+                            <input type="file" name="contractFile" class="custom-file-input" id="contractFileInput" required />
+                            <label class="custom-file-label" for="contractFileInput">Choose file</label>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-between mt-4">
+                        <button type="submit" class="btn btn-success" id="uploadButton" >
+                            <i class="fas fa-upload"></i> Upload Contract
+                        </button>
+                        <a id="viewContractLink" href="#" target="_blank" class="btn btn-info" style="display:none;">
+                            <i class="fas fa-eye"></i> View Current Contract
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+

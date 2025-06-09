@@ -20,5 +20,8 @@ namespace MaidLinker.Data.Entites
         // Navigation properties
         public Maid Maid { get; set; }
         public IdentityUser? ServedByUser { get; set; }
+        public bool ContractSigned { get; set; }
+        public DateTime? SignedDate { get; set; }  // Nullable because it may not be signed yet
+        public string? ContractFilePath { get; set; }
     }
 }

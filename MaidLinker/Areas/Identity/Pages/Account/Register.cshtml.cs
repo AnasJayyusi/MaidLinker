@@ -96,7 +96,7 @@ namespace MaidLinker.Areas.Identity.Pages.Account
         private void LoadDDLs()
         {
             FillAccountTypes();
-            FillPractitionerTypes();
+        
         }
 
         public async Task<IActionResult> OnPostAsync(string? returnUrl, int account_type, int practitioner_type, int professional_Rank)
@@ -216,12 +216,7 @@ namespace MaidLinker.Areas.Identity.Pages.Account
 
         }
 
-        private void FillPractitionerTypes()
-        {
-            PractitionerTypes = _dbContext.PractitionerTypes.Where(x => x.IsActive).ToList();
-        }
-
- 
+     
 
         public FileResult DownloadFileFromFolder(string fileName)
         {

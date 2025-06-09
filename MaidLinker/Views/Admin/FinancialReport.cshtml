@@ -1,0 +1,313 @@
+﻿@model FinancialReportViewModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+@{
+    string cultureCode = System.Threading.Thread.CurrentThread.CurrentCulture.Name;
+    string direction = cultureCode.StartsWith("ar", StringComparison.OrdinalIgnoreCase) ? "rtl" : "ltr";
+    string textAlign = direction == "rtl" ? "right" : "left";
+    bool isEng = cultureCode.StartsWith("en", StringComparison.OrdinalIgnoreCase);
+
+}
+
+<!-- #region Styles -->
+<head>
+    <link href="~/css/sb-admin-2.css" rel="stylesheet">
+</head>
+<!-- #endregion -->
+
+<div id="page-top" class="mt-5">
+    <div id="wrapper">
+        @await Html.PartialAsync("_Sidebar")
+
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content" style="background-color:lavender">
+                <div class="container-fluid mt-5">
+
+                    <!-- Page Heading -->
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <h6 class="h6 mb-0" style="font-weight:bold;color:#5F7AE7 ">@Localizer["FinancialReportTitle"]</h6>
+                        @await Html.PartialAsync("_Userbar")
+                    </div>
+
+                    <!-- Filter Section -->
+                    <form method="get" asp-action="FinancialReport">
+                        <div class="row mb-4">
+                            <div class="col-md-3">
+                                <label>@Localizer["FromDate"]</label>
+                                <input type="date" name="fromDate" value="@Model.FromDate?.ToString("yyyy-MM-dd")" class="form-control" />
+                            </div>
+                            <div class="col-md-3">
+                                <label>@Localizer["ToDate"]</label>
+                                <input type="date" name="toDate" value="@Model.ToDate?.ToString("yyyy-MM-dd")" class="form-control" />
+                            </div>
+                            <div class="col-md-3 d-flex align-items-end">
+                                <button type="submit" class="btn btn-primary">@Localizer["FilterButton"]</button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <!-- Status Chart -->
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                            <h6 class="m-0 font-weight-bold text-primary">@Localizer["RequestsStatusChartTitle"]</h6>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="statusChart" width="400" height="150"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Requests Table -->
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                            <h6 class="m-0 font-weight-bold text-primary">@Localizer["CompletedPreparedRequestsTitle"]</h6>
+                        </div>
+                        <div class="card-body" style="max-height:768px; overflow-y:auto;">
+                            <div class="table-responsive" id="requestsTableContainer">
+                                <!-- Dynamic Table Loaded via Partial View -->
+                                @await Html.PartialAsync("CompletedPreparedRequests", Model.FilteredRequests)
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Income and Expenses Section -->
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                            <h6 class="m-0 font-weight-bold text-primary">@Localizer["IncomeExpensesTitle"]</h6>
+                        </div>
+                        <div class="card-body">
+                            <form id="incomeExpenseForm" class="mb-4">
+                                <div class="form-row">
+                                    <div class="form-group col-md-4">
+                                        <label>@Localizer["TransactionTitle"]</label>
+                                        <input type="text" class="form-control" id="transactionTitle" required />
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label>@Localizer["Amount"]</label>
+                                        <input type="number" class="form-control" id="transactionAmount" required />
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label>@Localizer["Type"]</label>
+                                        <select class="form-control" id="transactionType">
+                                            <option value="income">@Localizer["Income"]</option>
+                                            <option value="expense">@Localizer["Expense"]</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-2 d-flex align-items-end">
+                                        <button type="button" class="btn btn-success" onclick="addTransaction()">@Localizer["Add"]</button>
+                                    </div>
+                                </div>
+                            </form>
+
+                            <div class="table-responsive mb-4">
+                                <table class="table table-bordered" id="transactionsTable">
+                                    <thead>
+                                        <tr>
+                                            <th>@Localizer["TransactionTitle"]</th>
+                                            <th>@Localizer["Amount"]</th>
+                                            <th>@Localizer["Type"]</th>
+                                            <th>@Localizer["AddDate"]</th>
+                                            <th>@Localizer["Action"]</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var entry in Model.FinancialEntries)
+                                        {
+                                            <tr>
+                                                <td>@entry.Title</td>
+                                                <td>@entry.Amount.ToString("N2")</td>
+                                                <td>
+                                                    @if (entry.Type == MaidLinker.Enums.SharedEnum.FinancialEntryType.Income)
+                                                    {
+                                                        <span class="badge badge-success">Income</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="badge badge-danger">Expense</span>
+                                                    }
+                                                </td>
+                                                <td>@entry.CreatedDate</td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-danger" onclick="deleteTransaction(@entry.Id)">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="mt-4">
+                                <div class="chart-container" style="position: relative; min-height: 400px;">
+                                    <canvas id="incomeExpensesChart"></canvas>
+                                </div>
+                            </div>
+
+                            <div>
+
+                                <h5 class="d-flex align-items-center">
+                                  
+
+                                    @Localizer["TotalIncome"]:
+                                    <span id="totalProfit" class="ml-2 text-success">
+                                        @Model.TotalIncome.ToString("N2")
+                                    </span>&nbsp;
+                                    @Localizer["JOD"]
+                                </h5>
+
+
+                                <h5 class="d-flex align-items-center">
+                                    @Localizer["TotalExpenses"]:
+                                    <span id="totalProfit" class="ml-2 text-danger">
+                                        @Model.TotalExpenses.ToString("N2")
+                                    </span>&nbsp;
+                                    @Localizer["JOD"]
+                                </h5>
+
+
+
+                                <h5 class="d-flex align-items-center">
+                                    @Localizer["TotalProfit"]:
+                                    <span id="totalProfit" class="ml-2 @(Model.Profit >= 0 ? "text-success" : "text-danger")">
+                                        @Model.Profit.ToString("N2")
+                                    </span>&nbsp;
+                                    @Localizer["JOD"]
+                                    @if (Model.Profit >= 0)
+                                    {
+                                        <i class="fas fa-arrow-up text-success ml-2"></i>
+                                    }
+                                    else
+                                    {
+                                        <i class="fas fa-arrow-down text-danger ml-2"></i>
+                                    }
+                                </h5>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            let ctx = document.getElementById('statusChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['@Localizer["Completed"]', '@Localizer["Prepared"]'],
+                    datasets: [{
+                        label: '@Localizer["RequestsCount"]',
+                        data: [@Model.CompletedCount, @Model.PreparedCount],
+                        backgroundColor: [ '#1cc88a' ,'#4e73df'],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: { beginAtZero: true }
+                    }
+                }
+            });
+        });
+
+                function addTransaction() {
+            var title = $('#transactionTitle').val();
+            var amount = parseFloat($('#transactionAmount').val());
+            var type = $('#transactionType').val();
+
+            if (!title || isNaN(amount)) {
+                alert('Please fill all fields correctly.');
+                return;
+            }
+
+            $.ajax({
+                url: '/Admin/AddFinancialEntry',
+                type: 'POST',
+                data: { title: title, amount: amount, type: type },
+                success: function () {
+                    showSuccessMessage();
+                    location.reload(); // Reload to refresh the table and chart
+                },
+                error: function () {
+                    showErrorMessage();
+                }
+            });
+        }
+
+                function deleteTransaction(id) {
+            if (!confirm('Are you sure you want to delete this entry?')) return;
+
+            $.ajax({
+                url: '/Admin/DeleteFinancialEntry',
+                type: 'POST',
+                data: { id: id },
+                success: function () {
+                    showSuccessMessage();
+                    location.reload();
+                },
+                error: function () {
+                  showErrorMessage();
+                }
+            });
+
+        }
+
+                function loadIncomeExpensesChart() {
+            $.ajax({
+                url: '/Admin/GetFinancialSummary',
+                type: 'GET',
+                success: function (data) {
+                    renderChart(data.income, data.expenses);
+                },
+                error: function () {
+                    console.error('Failed to load financial data.');
+                }
+            });
+        }
+
+        function renderChart(income, expenses) {
+            var ctx = document.getElementById('incomeExpensesChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: ['Income', 'Expenses'],
+                    datasets: [{
+                        label: 'Amount',
+                        data: [income, expenses],
+                        backgroundColor: ['#28a745', '#dc3545']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                      maintainAspectRatio: false,
+                    scales: {
+                        y: { beginAtZero: true }
+                    }
+                }
+            });
+        }
+
+                // Call this function on page load
+        $(document).ready(function () {
+            loadIncomeExpensesChart();
+        });
+    </script>
+    <script src="~/js/FinancialReport.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+}
+
+

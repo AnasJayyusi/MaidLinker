@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Razor.Language.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
+using NPOI.OpenXmlFormats.Spreadsheet;
 using NPOI.SS.Formula.Functions;
 using System.Globalization;
 using System.Security.Claims;
@@ -56,7 +57,7 @@ namespace MaidLinker.Controllers
 
             // Filter InProgress requests based on role
             List<Request> inProgressRequests = new();
-            if ( isAccountant)
+            if (isAccountant)
             {
                 inProgressRequests = await _dbContext.Requests
                     .Include(r => r.Maid)
@@ -75,7 +76,7 @@ namespace MaidLinker.Controllers
             {
                 inProgressRequests = await _dbContext.Requests
                     .Include(r => r.Maid)
-                    .Where(r => r.Status == RequestStatus.InProgress || r.Status == RequestStatus.Prepared  && r.ServedByUserId == userId)
+                    .Where(r => r.Status == RequestStatus.InProgress || r.Status == RequestStatus.Prepared && r.ServedByUserId == userId)
                     .ToListAsync();
             }
 
@@ -769,9 +770,9 @@ namespace MaidLinker.Controllers
                                .Include(m => m.Langauges)
                                .Include(m => m.ServedCountries);
 
-       
 
-            if (!string.IsNullOrWhiteSpace(name) )
+
+            if (!string.IsNullOrWhiteSpace(name))
             {
                 var loweredName = name.ToLower();
 
@@ -889,7 +890,7 @@ namespace MaidLinker.Controllers
         #endregion
 
         #region UserManagment
-      
+
 
         [Route("UserManagement/ManageUsers")]
         public async Task<IActionResult> ManageUsers()
@@ -1093,23 +1094,135 @@ namespace MaidLinker.Controllers
 
         #endregion
 
-        #region ServicesReport
+        #region FinancialReport
 
 
-        //[HttpGet]
-        //[Route("ExportReport")]
-        //public ActionResult ExportReport()
-        //{
-        //    // Set Title
-        //    string reportName = string.Format("Invoice" + DateTime.Now.ToString("yyyyMMdd") + ".xlsx");
-        //    // Generate Report
-        //    ExcelReportGenerator reportGenerator = new ExcelReportGenerator();
-        //    var vatValue = Convert.ToDouble(0);
-        //    var sitePercentage = Convert.ToDouble(0);
-        //    var tempFilePath = reportGenerator.GenerateReport(GetReport(), vatValue, sitePercentage);
 
-        //    return File(System.IO.File.ReadAllBytes(tempFilePath), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", reportName);
-        //}
+        [Route("Financial/FinancialReport")]
+        public IActionResult FinancialReport(DateTime? fromDate, DateTime? toDate)
+        {
+            var model = new FinancialReportViewModel
+            {
+                FromDate = fromDate,
+                ToDate = toDate
+            };
+
+            var query = _dbContext.Requests
+                .Where(r => (r.Status == RequestStatus.Completed || r.Status == RequestStatus.Prepared));
+
+            if (fromDate.HasValue && toDate.HasValue)
+            {
+                query = query.Where(r => r.RequestDate.Date >= fromDate.Value.Date && r.RequestDate.Date <= toDate.Value.Date);
+            }
+
+            var filteredRequests = query.ToList();
+
+            model.FilteredRequests = filteredRequests;
+            model.CompletedCount = filteredRequests.Count(r => r.Status == RequestStatus.Completed);
+            model.PreparedCount = filteredRequests.Count(r => r.Status == RequestStatus.Prepared);
+
+            var financialEntriesquery = _dbContext.FinancialEntries.AsQueryable();
+
+            if (fromDate.HasValue)
+                financialEntriesquery = financialEntriesquery.Where(x => x.CreatedDate.Date >= fromDate.Value.Date);
+
+            if (toDate.HasValue)
+                financialEntriesquery = financialEntriesquery.Where(x => x.CreatedDate.Date <= toDate.Value.Date);
+
+            model.FinancialEntries =  financialEntriesquery.OrderByDescending(x => x.CreatedDate).ToList();
+     
+
+            return View(model);
+        }
+
+        [HttpGet("GetFinancialSummary")]
+        public IActionResult GetFinancialSummary()
+        {
+            var financialEntries = _dbContext.FinancialEntries.ToList();
+
+            var totalIncome = financialEntries.Where(x => x.Type == FinancialEntryType.Income).Sum(x => x.Amount);
+            var totalExpenses = financialEntries.Where(x => x.Type == FinancialEntryType.Expense).Sum(x => x.Amount);
+
+            return Json(new { income = totalIncome, expenses = totalExpenses });
+        }
+
+        [HttpPost("UpdateContractStatus")]
+        public IActionResult UpdateContractStatus(int id, bool isSigned)
+        {
+            var request = _dbContext.Requests.Find(id);
+            if (request == null) return NotFound();
+
+            request.ContractSigned = isSigned;
+            _dbContext.SaveChanges();
+
+            return Ok();
+        }
+
+        [HttpPost("UploadContract")]
+        public async Task<IActionResult> UploadContract(IFormFile contractFile, int requestId)
+        {
+            if (contractFile != null && contractFile.Length > 0)
+            {
+                var fileName = $"{Guid.NewGuid()}_{contractFile.FileName}";
+                var path = Path.Combine(_webHostEnvironment.WebRootPath, "uploads", "contracts", fileName);
+
+                using (var stream = new FileStream(path, FileMode.Create))
+                {
+                    await contractFile.CopyToAsync(stream);
+                }
+
+                var request = _dbContext.Requests.Find(requestId);
+                if (request == null) return NotFound();
+
+                request.ContractFilePath = $"/uploads/contracts/{fileName}";
+                request.ContractSigned = true;
+                request.SignedDate = DateTime.Now;
+                _dbContext.SaveChanges();
+
+                return Ok();
+            }
+            return BadRequest();
+        }
+
+        [HttpGet("GetContractAttachment")]
+        public IActionResult GetContractAttachment(int id)
+        {
+            var request = _dbContext.Requests.Find(id);
+            if (request == null || string.IsNullOrEmpty(request.ContractFilePath))
+                return Json(new { contractUrl = "" });
+
+            return Json(new { contractUrl = request.ContractFilePath });
+        }
+
+
+        [HttpPost("AddFinancialEntry")]
+        public async Task<IActionResult> AddFinancialEntry(string title, decimal amount, FinancialEntryType type)
+        {
+            var entry = new FinancialEntry
+            {
+                Title = title,
+                Amount = amount,
+                Type = type,
+                CreatedDate = DateTime.Now
+            };
+
+            _dbContext.FinancialEntries.Add(entry);
+            await _dbContext.SaveChangesAsync();
+
+            return Ok();
+        }
+
+        [HttpPost("DeleteFinancialEntry")]
+        public async Task<IActionResult> DeleteFinancialEntry(int id)
+        {
+            var entry = await _dbContext.FinancialEntries.FindAsync(id);
+            if (entry == null) return NotFound();
+
+            _dbContext.FinancialEntries.Remove(entry);
+            await _dbContext.SaveChangesAsync();
+
+            return Ok();
+        }
 
         #endregion
 

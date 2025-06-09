@@ -115,17 +115,7 @@ namespace MaidLinker.Controllers
             return Json(dropdownData);
         }
 
-        [HttpGet]
-        [Route("GetPractitionerTypesDDL")]
-        public ActionResult GetPractitionerTypesDDL()
-        {
-            // Retrieve the data for the dropdown list
-            var dropdownData = _dbContext.PractitionerTypes.Where(w => w.IsActive).ToList();
-
-            // Pass the data to the view
-            return Json(dropdownData);
-        }
-
+       
         [HttpPost]
         [Route("SendRequest/{maidId}/{name}/{phone}")]
         public async Task<IActionResult> SendRequest(int maidId, string name, string phone)

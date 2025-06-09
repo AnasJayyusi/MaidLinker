@@ -55,11 +55,13 @@
 	  <Content Remove="wwwroot\images\InsuranceLogo\Default-insurance-Image.jpg" />
 	  <Content Remove="wwwroot\images\navbar\bell.svg" />
 	  <Content Remove="wwwroot\images\warning.png" />
+	  <Content Remove="wwwroot\js\FinancialReport.js" />
 	</ItemGroup>
 	<ItemGroup>
 	  <Folder Include="Migrations\" />
 	  <Folder Include="wwwroot\uploads\maids\" />
 	  <Folder Include="wwwroot\uploads\maids\4\" />
+	  <Folder Include="wwwroot\uploads\contracts\" />
 	</ItemGroup>
 	<ItemGroup>
 	  <EmbeddedResource Update="Resources\Views.Admin.FeedbacksList.en-US.resx">

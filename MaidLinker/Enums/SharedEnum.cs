@@ -81,5 +81,11 @@
             Other=3
         }
 
+
+        public enum FinancialEntryType
+        {
+            Income = 1,
+            Expense = 2
+        }
     }
 }
