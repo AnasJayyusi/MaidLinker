@@ -33,7 +33,7 @@
                     bool isLessThan5Minutes = DateTime.Now.Subtract(notification.CreationDate).Duration() < TimeSpan.FromMinutes(5);
                     if (isLessThan5Minutes)
                     {
-                        <text>Now</text>
+                        <text>@Localizer["Now"]</text>
                     }
                     else
                     {

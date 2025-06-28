@@ -165,4 +165,10 @@
   <data name="Attach" xml:space="preserve">
     <value>ارفق</value>
   </data>
+  <data name="Print" xml:space="preserve">
+    <value>طباعه</value>
+  </data>
+  <data name="Actions" xml:space="preserve">
+    <value>الإجراءات</value>
+  </data>
 </root>

@@ -123,6 +123,9 @@
   <data name="Notifications" xml:space="preserve">
     <value>الإشعارات</value>
   </data>
+  <data name="Now" xml:space="preserve">
+    <value>الآن</value>
+  </data>
   <data name="ShowMore" xml:space="preserve">
     <value>اظهر المزيد</value>
   </data>

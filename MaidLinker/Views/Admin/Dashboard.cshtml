@@ -48,6 +48,11 @@
         <div class="card shadow mb-4">
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                 <h6 class="m-0" style="font-weight:bold;color:#5F7AE7 ">@Localizer["MaidPageTitle"]</h6>
+          <button class="btn btn-success fw-bold refresh-btn">
+  <i class="fa-solid fa-rotate-right me-1 refresh-icon"></i> تحديث
+</button>
+       
+
             </div>
         <div class="card-body">
     <!-- Replace this div in your current code -->
@@ -60,7 +65,7 @@
                 var groupedRequests = Model.NewRequests
                     .GroupBy(r => r.Maid?.Id ?? 0)
                     .ToList();
-            <table class="table table-bordered table-hover scrollable-table">
+            <table class="table table-bordered table-hover scrollable-table" style="text-align:@textAlign">
                 <thead class="table-light">
                     <tr>
                         <th>@Localizer["Status"]</th>
@@ -114,7 +119,7 @@
                                     <td>@maid?.Id</td>
                                     <td>
                                         <!-- Only Cancel button shown when multiple requests -->
-                                        <button class="btn btn-sm btn-danger cancel-request-btn" data-id="@request.Id" @(isTaken ? "disabled" : "")>
+                                        <button class="btn btn-sm btn-danger cancel-request-btn-Dashboard" data-id="@request.Id" @(isTaken ? "disabled" : "")>
                                             @Localizer["Cancel"]
                                         </button>
                                     </td>
@@ -152,7 +157,7 @@
                                     </button>
 
                                     <!-- Cancel button always -->
-                                    <button class="btn btn-sm btn-danger cancel-request-btn" data-id="@request.Id" @(isTaken ? "disabled" : "")>
+                                    <button class="btn btn-sm btn-danger cancel-request-btn-Dashboard" data-id="@request.Id" @(isTaken ? "disabled" : "")>
                                         @Localizer["Cancel"]
                                     </button>
                                 </td>
@@ -207,7 +212,7 @@
 
 @section Scripts {
     <script>
-        document.querySelectorAll('.cancel-request-btn').forEach(btn => {
+        document.querySelectorAll('.cancel-request-btn-Requests').forEach(btn => {
             btn.addEventListener('click', function () {
                 const requestId = this.getAttribute('data-id');
                 if (confirm('@Localizer["ConfirmCancelRequest"]')) {
@@ -234,7 +239,10 @@
                         <div class="col-xl-12 col-lg-12">
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0" style="font-weight:bold;color:#5F7AE7 ">@Localizer["MaidPageTitle"]</h6>
+                                    <h6 class="m-0" style="font-weight:bold;color:#5F7AE7 ">@Localizer["InProgressRequests"]</h6>
+                                    <button class="btn btn-success fw-bold refresh-btn">
+  <i class="fa-solid fa-rotate-right me-1 refresh-icon"></i> تحديث
+</button>
                                 </div>
                                 <div class="card-body">
                                     <!-- Replace this div in your current code -->
@@ -264,25 +272,27 @@
             $.post("/Admin/TakeOverRequest", { id: requestId }, function (res) {
                 if (res.success) {
                    showSuccessMessage();
-                    setTimeout(() => location.reload(), 1000);
+                    setTimeout(() => location.reload(), 300);
                 } else {
                  showErrorMessage();
                 }
             });
         });
 
-          $(".cancel-request-btn").click(function () {
+          $(".cancel-request-btn-Dashboard").click(function () {
             const btn = $(this);
             const requestId = btn.data("id");
 
             $.post("/Admin/CancelRequest", { id: requestId }, function (res) {
                 if (res.success) {
                    showSuccessMessage();
-                    setTimeout(() => location.reload(), 1000);
+                    setTimeout(() => location.reload(), 300);
                 } else {
                       showErrorMessage();
                 }
             });
         });
     });
+
+    
 </script>

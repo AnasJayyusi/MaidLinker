@@ -12,7 +12,7 @@
 <!-- #endregion -->
 <!-- #region Pagination Logic -->
 @{
-    var defaultPageSize = 5;
+    var defaultPageSize = 8;
     var currentPage = Context.Request.Query["page"].ToString();
     if (string.IsNullOrEmpty(currentPage)) currentPage = "1";
 

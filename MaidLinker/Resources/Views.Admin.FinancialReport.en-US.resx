@@ -117,76 +117,79 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-	<data name="FinancialReportTitle" xml:space="preserve">
+  <data name="FinancialReportTitle" xml:space="preserve">
     <value>Financial Report</value>
   </data>
-	<data name="FromDate" xml:space="preserve">
+  <data name="FromDate" xml:space="preserve">
     <value>From Date</value>
   </data>
-	<data name="ToDate" xml:space="preserve">
+  <data name="ToDate" xml:space="preserve">
     <value>To Date</value>
   </data>
-	<data name="FilterButton" xml:space="preserve">
+  <data name="FilterButton" xml:space="preserve">
     <value>Filter</value>
   </data>
-	<data name="RequestsStatusChartTitle" xml:space="preserve">
+  <data name="RequestsStatusChartTitle" xml:space="preserve">
     <value>Requests Status Chart</value>
   </data>
-	<data name="CompletedPreparedRequestsTitle" xml:space="preserve">
+  <data name="CompletedPreparedRequestsTitle" xml:space="preserve">
     <value>Completed and Prepared Requests</value>
   </data>
-	<data name="IncomeExpensesTitle" xml:space="preserve">
+  <data name="IncomeExpensesTitle" xml:space="preserve">
     <value>Income and Expenses</value>
   </data>
-	<data name="TransactionTitle" xml:space="preserve">
+  <data name="TransactionTitle" xml:space="preserve">
     <value>Transaction Title</value>
   </data>
-	<data name="Amount" xml:space="preserve">
+  <data name="Amount" xml:space="preserve">
     <value>Amount</value>
   </data>
-	<data name="Type" xml:space="preserve">
+  <data name="Type" xml:space="preserve">
     <value>Type</value>
   </data>
-	<data name="Income" xml:space="preserve">
+  <data name="Income" xml:space="preserve">
     <value>Income</value>
   </data>
-	<data name="Expense" xml:space="preserve">
+  <data name="Expense" xml:space="preserve">
     <value>Expense</value>
   </data>
-	<data name="Add" xml:space="preserve">
+  <data name="Add" xml:space="preserve">
     <value>Add</value>
   </data>
-	<data name="AddDate" xml:space="preserve">
+  <data name="AddDate" xml:space="preserve">
     <value>Add Date</value>
   </data>
-	<data name="Action" xml:space="preserve">
+  <data name="Action" xml:space="preserve">
     <value>Action</value>
   </data>
-	<data name="TotalIncome" xml:space="preserve">
+  <data name="TotalIncome" xml:space="preserve">
     <value>Total Income</value>
   </data>
-	<data name="TotalExpenses" xml:space="preserve">
+  <data name="TotalExpenses" xml:space="preserve">
     <value>Total Expenses</value>
   </data>
-	<data name="TotalProfit" xml:space="preserve">
+  <data name="TotalProfit" xml:space="preserve">
     <value>Total Profit</value>
   </data>
-	<data name="JOD" xml:space="preserve">
+  <data name="JOD" xml:space="preserve">
     <value>JOD</value>
   </data>
-	<data name="Completed" xml:space="preserve">
+  <data name="Completed" xml:space="preserve">
     <value>Completed</value>
   </data>
-	<data name="Prepared" xml:space="preserve">
+  <data name="Prepared" xml:space="preserve">
     <value>Prepared</value>
   </data>
-	<data name="RequestsCount" xml:space="preserve">
+  <data name="RequestsCount" xml:space="preserve">
     <value>Requests Count</value>
   </data>
-	<data name="PleaseFillAllFieldsCorrectly" xml:space="preserve">
+  <data name="PleaseFillAllFieldsCorrectly" xml:space="preserve">
     <value>Please fill all fields correctly.</value>
   </data>
-	<data name="AreYouSureDelete" xml:space="preserve">
+  <data name="AreYouSureDelete" xml:space="preserve">
     <value>Are you sure you want to delete this entry?</value>
+  </data>
+  <data name="Print" xml:space="preserve">
+    <value>Print</value>
   </data>
 </root>

@@ -14,24 +14,24 @@ namespace MaidLinker.Data.Entites
 
         #region English Name
         [MaxLength(250)]
-        public string FirstNameEn { get; set; }
+        public string? FirstNameEn { get; set; }
         [MaxLength(250)]
         public string? SecondNameEn { get; set; }
         [MaxLength(250)]
         public string? ThirdNameEn { get; set; }
         [MaxLength(250)]
-        public string LastNameEn { get; set; }
+        public string? LastNameEn { get; set; }
         #endregion
 
         #region Arabic Name
         [MaxLength(250)]
-        public string FirstNameAr { get; set; }
+        public string? FirstNameAr { get; set; }
         [MaxLength(250)]
         public string? SecondNameAr { get; set; }
         [MaxLength(250)]
         public string? ThirdNameAr { get; set; }
         [MaxLength(250)]
-        public string LastNameAr { get; set; }
+        public string? LastNameAr { get; set; }
         #endregion
         public double? TotalExperience { get; set; }
 
@@ -57,21 +57,15 @@ namespace MaidLinker.Data.Entites
         {
             get
             {
-                var isArabic = CultureInfo.CurrentCulture.TwoLetterISOLanguageName == "ar";
+                var arabicParts = new[] { FirstNameAr, SecondNameAr, ThirdNameAr, LastNameAr };
+                var englishParts = new[] { FirstNameEn, SecondNameEn, ThirdNameEn, LastNameEn };
 
-                if (isArabic)
-                {
-                    return string.Join(" ", new[] { FirstNameAr, SecondNameAr, ThirdNameAr, LastNameAr }
-                        .Where(s => !string.IsNullOrWhiteSpace(s)));
-                }
-                else
-                {
-                    return string.Join(" ", new[] { FirstNameEn, SecondNameEn, ThirdNameEn, LastNameEn }
-                        .Where(s => !string.IsNullOrWhiteSpace(s)));
-                }
+                bool hasArabic = arabicParts.Any(part => !string.IsNullOrWhiteSpace(part));
+                var selectedParts = hasArabic ? arabicParts : englishParts;
+
+                return string.Join(" ", selectedParts.Where(part => !string.IsNullOrWhiteSpace(part)));
             }
         }
-
     }
 }
 

@@ -165,4 +165,7 @@
   <data name="Confirmation" xml:space="preserve">
     <value>تأكيد</value>
   </data>
+  <data name="Now" xml:space="preserve">
+    <value>الآن</value>
+  </data>
 </root>

@@ -1,6 +1,7 @@
 ﻿@model IEnumerable<MaidLinker.Data.Entites.Request>
 @using Microsoft.AspNetCore.Mvc.Localization
 @using MaidLinker.Data
+@using System.Globalization
 @inject IViewLocalizer Localizer
 
 @{
@@ -19,7 +20,7 @@
             <th>@Localizer["RequestDate"]</th>
             <th>@Localizer["Status"]</th>
             <th>@Localizer["ContractSigned"]</th>
-            <th>@Localizer["Attachment"]</th>
+            <th>@Localizer["Actions"]</th>
         </tr>
     </thead>
     <tbody>
@@ -29,7 +30,7 @@
                 <td>#@request.Id</td>
                 <td>@request.Name</td>
                 <td>@request.Phone</td>
-                <td>@request.RequestDate.ToString("yyyy-MM-dd")</td>
+                <td>@request.RequestDateFormatted</td>
                 <td>
                     @if (request.Status == MaidLinker.Enums.SharedEnum.RequestStatus.Prepared)
                     {
@@ -45,16 +46,43 @@
                     {
                         <i class="fas fa-signature text-info"
                            style="font-size: 1.5rem;"
-                           title="@Localizer["SignedOn"] @request.SignedDate?.ToString("yyyy-MM-dd")"></i>
+                           title="@Localizer["SignedOn"] @request.SignedDateFormatted"></i>
                     }
                     else
                     {
                         <text>-</text>
                     }
                 </td>
-                <td>
-                    <button class="btn btn-sm btn-primary" onclick="openAttachmentModal(@request.Id, '@request.ContractFilePath')">
+                <td style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
+
+                    <!-- الأزرار -->
+                    <button class="btn btn-sm btn-warning" onclick="openAttachmentModal(@request.Id, '@request.ContractFilePath')">
                         <i class="fas fa-paperclip"></i> @Localizer["Attach"]
+                    </button>
+
+                    <button class="btn btn-sm btn-info" onclick="window.open('@Url.Action("Invoice", "Admin", new { id = request.Id })', '_blank')">
+                        <i class="fas fa-print"></i> @Localizer["Print"]
+                    </button>
+
+                    <!-- الحقول القابلة للتعديل -->
+                    <div style="display: flex; gap: 0.8rem; font-size: 0.9rem; font-weight: 600; align-items: center;">
+                        <label style="color: #007bff; white-space: nowrap;">الإجمالي:</label>
+                        <input type="number" step="10" value="@request.TotalAmount.ToString(CultureInfo.InvariantCulture)"
+                               id="totalAmount-@request.Id" style="width: 80px; padding: 2px 5px; border: 1px solid #ccc; border-radius: 3px;" />
+                    </div>
+
+                    <div style="display: flex; gap: 0.8rem; font-size: 0.9rem; font-weight: 600; align-items: center;">
+                        <label style="color: #28a745; white-space: nowrap;">المدفوع:</label>
+                        <input type="number" step="10" value="@request.AmountPaid.ToString(CultureInfo.InvariantCulture)"
+                               id="amountPaid-@request.Id" style="width: 80px; padding: 2px 5px; border: 1px solid #ccc; border-radius: 3px;" />
+                    </div>
+
+                    <div style="color: #dc3545; font-weight: 600; white-space: nowrap;">
+                        المتبقي: <span id="amountLeft-@request.Id">@request.AmountLeft</span>
+                    </div>
+
+                    <button class="btn btn-sm btn-success" onclick="saveAmounts(@request.Id)" title="حفظ التغييرات">
+                        حفظ
                     </button>
                 </td>
             </tr>
@@ -98,3 +126,40 @@
         </div>
     </div>
 </div>
+
+<script>
+        function updateAmountLeft(requestId) {
+      const total = parseFloat(document.getElementById(`totalAmount-${requestId}`).value) || 0;
+      const paid = parseFloat(document.getElementById(`amountPaid-${requestId}`).value) || 0;
+      const left = total - paid;
+      document.getElementById(`amountLeft-${requestId}`).textContent = left.toFixed(2);
+    }
+
+    document.querySelectorAll('input[id^="totalAmount-"], input[id^="amountPaid-"]').forEach(input => {
+      input.addEventListener('input', () => {
+        const idParts = input.id.split('-');
+        const requestId = idParts[1];
+        updateAmountLeft(requestId);
+      });
+    });
+
+        function saveAmounts(requestId) {
+      const totalAmount = parseFloat(document.getElementById(`totalAmount-${requestId}`).value) || 0;
+      const amountPaid = parseFloat(document.getElementById(`amountPaid-${requestId}`).value) || 0;
+
+      fetch('/Admin/UpdateAmounts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ requestId, totalAmount, amountPaid })
+      })
+      .then(res => {
+        if (!res.ok) showErrorMessage();
+        return res.json();
+      })
+      .then(data => {
+        document.getElementById(`amountLeft-${requestId}`).textContent = data.amountLeft.toFixed(2);
+      showSuccessMessage()
+      })
+      .catch(err => alert(err.message));
+    }
+</script>

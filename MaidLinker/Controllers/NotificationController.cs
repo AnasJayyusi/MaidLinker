@@ -47,7 +47,7 @@ namespace MaidLinker.Controllers
             foreach (var notification in model)
             {
                 // Assuming CreationDate is a DateTime property in your model
-                notification.CreationDate = notification.CreationDate.ToLocalTime(); // Convert to local time if necessary
+                notification.CreationDate = notification.CreationDate;
                 notification.CreationDateFormatted = notification.CreationDate.ToString("yyyy-MM-dd hh:mm:ss tt", CultureInfo.InvariantCulture);
             }
 

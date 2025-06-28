@@ -138,61 +138,67 @@
   <data name="Nationalities" xml:space="preserve">
     <value>Nationalities</value>
   </data>
-	<data name="MaidPageTitle" xml:space="preserve">
-    <value>Maid Requests</value>
-  </data>
-	<data name="NewRequests" xml:space="preserve">
+  <data name="NewRequests" xml:space="preserve">
     <value>New Requests</value>
   </data>
-	<data name="Status" xml:space="preserve">
+  <data name="Status" xml:space="preserve">
     <value>Status</value>
   </data>
-	<data name="RequestNumber" xml:space="preserve">
+  <data name="RequestNumber" xml:space="preserve">
     <value>Request Number</value>
   </data>
-	<data name="VisitorName" xml:space="preserve">
+  <data name="VisitorName" xml:space="preserve">
     <value>Visitor Name</value>
   </data>
-	<data name="VisitorNumber" xml:space="preserve">
+  <data name="VisitorNumber" xml:space="preserve">
     <value>Visitor Number</value>
   </data>
-	<data name="MaidName" xml:space="preserve">
+  <data name="MaidName" xml:space="preserve">
     <value>Maid Name</value>
   </data>
-	<data name="MaidNumber" xml:space="preserve">
+  <data name="MaidNumber" xml:space="preserve">
     <value>Maid Number</value>
   </data>
-	<data name="Action" xml:space="preserve">
+  <data name="Action" xml:space="preserve">
     <value>Action</value>
   </data>
-	<data name="MultipleRequestsFor" xml:space="preserve">
+  <data name="MultipleRequestsFor" xml:space="preserve">
     <value>Multiple Requests for</value>
   </data>
-	<data name="MultipleRequestsForThisMaid" xml:space="preserve">
+  <data name="MultipleRequestsForThisMaid" xml:space="preserve">
     <value>Multiple Requests for this Maid</value>
   </data>
-	<data name="Pending" xml:space="preserve">
+  <data name="Pending" xml:space="preserve">
     <value>Pending</value>
   </data>
-	<data name="InProgress" xml:space="preserve">
+  <data name="InProgress" xml:space="preserve">
     <value>In Progress</value>
   </data>
-	<data name="Completed" xml:space="preserve">
+  <data name="Completed" xml:space="preserve">
     <value>Completed</value>
   </data>
-	<data name="Cancel" xml:space="preserve">
+  <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
-	<data name="TakeOver" xml:space="preserve">
+  <data name="TakeOver" xml:space="preserve">
     <value>Take Over</value>
   </data>
-	<data name="NoNewRequestsFound" xml:space="preserve">
+  <data name="NoNewRequestsFound" xml:space="preserve">
     <value>No New Requests Found</value>
   </data>
-	<data name="RequestStatusSummary" xml:space="preserve">
+  <data name="RequestStatusSummary" xml:space="preserve">
     <value>Request Status Summary</value>
   </data>
-	<data name="ConfirmCancelRequest" xml:space="preserve">
+  <data name="ConfirmCancelRequest" xml:space="preserve">
     <value>Are you sure you want to cancel this request?</value>
+  </data>
+  <data name="MaidPageTitle" xml:space="preserve">
+    <value>Maid Requests</value>
+  </data>
+  <data name="InProgressRequests" xml:space="preserve">
+    <value>In Progress Requests</value>
+  </data>
+  <data name="FollowedBy" xml:space="preserve">
+    <value>Followed by</value>
   </data>
 </root>

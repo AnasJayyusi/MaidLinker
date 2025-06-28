@@ -114,6 +114,8 @@ namespace MaidLinker.Controllers
 
             var userId = _userManager.GetUserId(User);
             request.ServedByUserId = userId;
+            var user = await _userManager.FindByIdAsync(request.ServedByUserId);
+            request.FollowByUsername = user?.UserName ?? "Unknown";
             request.Status = RequestStatus.InProgress;
 
             // Mark the maid as unavailable
@@ -174,6 +176,36 @@ namespace MaidLinker.Controllers
             await _dbContext.SaveChangesAsync();
             PushNewNotification(NotificationTypeEnum.Completed, AccountTypeEnum.All, $"#{request.Id.ToString()}");
             return Json(new { success = true });
+        }
+
+        [HttpGet("GetStatus/{id}")]
+        public async Task<IActionResult> GetStatus(int id)
+        {
+            var request = await _dbContext.Requests.FindAsync(id);
+            if (request == null) return NotFound();
+
+            if (request.WorkFlowStatus == null)
+                request.WorkFlowStatus = WorkFlowStatus.NotStarted;
+            return Ok((int)request.WorkFlowStatus); // return enum as int
+        }
+
+        [HttpPost("UpdateStatus")]
+        public async Task<IActionResult> UpdateStatus([FromBody] StatusDto dto)
+        {
+            var request = await _dbContext.Requests.FindAsync(dto.RequestId);
+            if (request == null) return NotFound();
+
+
+            if (request.WorkFlowStatus == null)
+                request.WorkFlowStatus = WorkFlowStatus.NotStarted;
+
+            if (dto.Status > (int)request.WorkFlowStatus)
+            {
+                request.WorkFlowStatus = (WorkFlowStatus)dto.Status;
+                await _dbContext.SaveChangesAsync();
+            }
+
+            return Ok();
         }
 
         #endregion
@@ -461,12 +493,10 @@ namespace MaidLinker.Controllers
                 SecondNameEn = dto.SecondNameEn,
                 ThirdNameEn = dto.ThirdNameEn,
                 LastNameEn = dto.LastNameEn,
-
                 FirstNameAr = dto.FirstNameAr,
                 SecondNameAr = dto.SecondNameAr,
                 ThirdNameAr = dto.ThirdNameAr,
                 LastNameAr = dto.LastNameAr,
-
                 DateOfBirth = dto.DateOfBirth,
                 TotalExperience = dto.TotalExperience,
                 MaritalStatus = dto.MaritalStatus,
@@ -474,12 +504,10 @@ namespace MaidLinker.Controllers
                 Note = dto.Note,
                 NationalityId = dto.NationalityId,
                 VideoURL = dto.VideoURL,
-
-                // Assuming you fetch countries/languages from DB
-                ServedCountries = await _dbContext.Countries.Where(c => dto.ServedCountryIds.Contains(c.Id)).ToListAsync(),
-                Langauges = await _dbContext.Languages.Where(l => dto.LanguageIds.Contains(l.Id)).ToListAsync(),
             };
 
+            maid.ServedCountries = dto.ServedCountryIds is not null ? _dbContext.Countries.Where(c => dto.ServedCountryIds.Contains(c.Id)).ToList() : null;
+            maid.Langauges = dto.LanguageIds is not null ? _dbContext.Languages.Where(l => dto.LanguageIds.Contains(l.Id)).ToList() : null;
             // Handle Image Upload
             if (dto.ImagePath != null && dto.ImagePath.Length > 0)
             {
@@ -586,9 +614,6 @@ namespace MaidLinker.Controllers
         [Route("UpdateMaid")]
         public async Task<IActionResult> UpdateMaid([FromForm] MaidViewModel dto)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
             var maid = await _dbContext.Maids
                 .Include(m => m.Nationality)
                 .Include(m => m.ServedCountries)
@@ -620,15 +645,21 @@ namespace MaidLinker.Controllers
             // Update many-to-many relationships
             // ServedCountries
             maid.ServedCountries.Clear();
-            var countries = await _dbContext.Countries.Where(c => dto.ServedCountryIds.Contains(c.Id)).ToListAsync();
-            foreach (var country in countries)
-                maid.ServedCountries.Add(country);
+            var countries = dto.ServedCountryIds is not null ? await _dbContext.Countries.Where(c => dto.ServedCountryIds.Contains(c.Id)).ToListAsync() : null;
+            if (countries is not null)
+            {
+                foreach (var country in countries)
+                    maid.ServedCountries.Add(country);
+            }
 
             // Languages
             maid.Langauges.Clear();
-            var languages = await _dbContext.Languages.Where(l => dto.LanguageIds.Contains(l.Id)).ToListAsync();
-            foreach (var lang in languages)
-                maid.Langauges.Add(lang);
+            var languages = dto.LanguageIds is not null ? await _dbContext.Languages.Where(l => dto.LanguageIds.Contains(l.Id)).ToListAsync() : null;
+            if (languages is not null)
+            {
+                foreach (var lang in languages)
+                    maid.Langauges.Add(lang);
+            }
 
             // Handle Image upload if present
             if (dto.ImagePath != null && dto.ImagePath.Length > 0)
@@ -1130,8 +1161,8 @@ namespace MaidLinker.Controllers
             if (toDate.HasValue)
                 financialEntriesquery = financialEntriesquery.Where(x => x.CreatedDate.Date <= toDate.Value.Date);
 
-            model.FinancialEntries =  financialEntriesquery.OrderByDescending(x => x.CreatedDate).ToList();
-     
+            model.FinancialEntries = financialEntriesquery.OrderByDescending(x => x.CreatedDate).ToList();
+
 
             return View(model);
         }
@@ -1193,6 +1224,52 @@ namespace MaidLinker.Controllers
                 return Json(new { contractUrl = "" });
 
             return Json(new { contractUrl = request.ContractFilePath });
+        }
+
+        [HttpGet]
+        public IActionResult Invoice(int id)
+        {
+            var request = _dbContext.Requests.Find(id);
+            if (request == null) return NotFound();
+
+            // استرجاع البيانات من قاعدة البيانات مثلاً
+            var model = new InvoiceViewModel
+            {
+                CustomerName = request.Name,
+                InvoiceDate = DateTime.Now.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture),
+                AmountLeft = request.AmountLeft,
+                Items = new List<InvoiceItem>
+        {
+            new InvoiceItem { Description = "خدمة استقدام عاملة ",  TotalAmount = request.TotalAmount , AmountPaid=request.AmountPaid  },
+        }
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [HttpPost("UpdateAmounts")]
+        public IActionResult UpdateAmounts([FromBody] AmountsRequest request)
+        {
+            var entity = _dbContext.Requests.Find(request.RequestId);
+            if (entity == null)
+                return NotFound(new { message = "الطلب غير موجود" });
+
+            // تحديث القيم
+            entity.TotalAmount = request.TotalAmount;
+            entity.AmountPaid = request.AmountPaid;
+
+            _dbContext.SaveChanges();
+
+            // حساب المتبقي
+            var amountLeft = entity.TotalAmount - entity.AmountPaid;
+
+            return Ok(new
+            {
+                totalAmount = entity.TotalAmount,
+                amountPaid = entity.AmountPaid,
+                amountLeft = amountLeft
+            });
         }
 
 
@@ -1315,8 +1392,9 @@ namespace MaidLinker.Controllers
             foreach (var notification in model)
             {
                 // Assuming CreationDate is a DateTime property in your model
-                notification.CreationDate = notification.CreationDate.ToLocalTime(); // Convert to local time if necessary
+                notification.CreationDate = notification.CreationDate; // Convert to local time if necessary
                 notification.CreationDateFormatted = notification.CreationDate.ToString("yyyy-MM-dd hh:mm:ss tt", CultureInfo.InvariantCulture);
+
             }
 
 

@@ -27,18 +27,12 @@
                         </span> *@
                     </div>
 
-                    @if (isEng)
-                    {
+                  
                         <h5 class="item-card-title">
-                            @($"{item.FirstNameEn} {item.SecondNameEn} {item.LastNameEn}")
+                            @($"{item.FullName}")
                         </h5>
-                    }
-                    else
-                    {
-                        <h5 class="item-card-title">
-                            @($"{item.FirstNameAr} {item.SecondNameAr} {item.LastNameAr}")
-                        </h5>
-                    }
+                  
+                 
 
                     <!-- Brief info -->
                     <p style="font-size: 13px; margin-top: 5px;">

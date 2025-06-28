@@ -7,7 +7,7 @@
             Administrator = 0,
             Reception = 1,
             Accountant = 2,
-            All= 3 // For all users
+            All = 3 // For all users
         }
 
         public enum NotificationTypeEnum
@@ -15,7 +15,7 @@
             NewRequest = 1,
             TakeOverRequest = 2,
             Confirm = 3,
-            Cancel=4,
+            Cancel = 4,
             Completed = 5
         }
 
@@ -48,7 +48,7 @@
             HighExperience = 3, // > 6 -10 years
             Expert = 4 // > 10 years
         }
-       
+
         public enum MaritalStatus
         {
             Undefined = -1,
@@ -63,7 +63,7 @@
             Medical = 0,
             Residency = 1,
             Passport = 2,
-            Other=3
+            Other = 3
         }
 
 
@@ -77,6 +77,15 @@
         {
             Unread = 0,
             Seen = 1
+        }
+
+        public enum WorkFlowStatus
+        {
+            NotStarted = 0,              // لم يتم أي إجراء بعد
+            ContactedCustomer = 1,        // اتصال بالزبون
+            DocumentsDelivered = 2,       // تسليم الأوراق
+            ProcessingStarted = 3         // تم السير بالمعاملة
+
         }
     }
 }

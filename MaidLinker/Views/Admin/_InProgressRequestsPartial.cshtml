@@ -13,7 +13,7 @@
 @if (Model != null && Model.Any())
 {
     <div class="card shadow mb-4">
-        <div class="card-body" style="max-height:768px; overflow-y:auto;">
+        <div class="card-body" style="max-height:768px; overflow-y:auto;text-align:@textAlign">
             <div class="table-responsive">
                 <table class="table table-bordered table-hover scrollable-table">
                     <thead class="table-light">
@@ -24,6 +24,8 @@
                             <th>@Localizer["MaidName"]</th>
                             <th>@Localizer["MaidNumber"]</th>
                             <th>@Localizer["Status"]</th>
+                            <th>@Localizer["FollowedBy"]</th>
+                            <th>@Localizer["Workflow"]</th>
                             <th>@Localizer["Action"]</th>
                         </tr>
                     </thead>
@@ -51,6 +53,17 @@
                                     }
                                 </td>
                                 <td>
+                                    @request.FollowByUsername
+                                </td>
+                                <td>
+                           <div style="cursor:help" onclick="openStatusModal(@request.Id)" title="تفاصيل @Localizer["WorkFlowDetails"]"  class="workflow-bar">
+    <div class="step @(request.WorkFlowStatus >= SharedEnum.WorkFlowStatus.ContactedCustomer ? "completed" : "")"></div>
+    <div class="step @(request.WorkFlowStatus >= SharedEnum.WorkFlowStatus.DocumentsDelivered ? "completed" : "")"></div>
+    <div class="step @(request.WorkFlowStatus >= SharedEnum.WorkFlowStatus.ProcessingStarted ? "completed" : "")"></div>
+  </div>
+
+                                </td>
+                                <td>
                                     @if ((User.IsInRole("Reception") ) && request.Status == SharedEnum.RequestStatus.InProgress )
                                     {
                                         <i class="fas fa-hourglass-half text-warning"></i> 
@@ -73,7 +86,6 @@
                                             @Localizer["Confirm"]
                                         </button>
                                     }
-
 
                                     else if ((User.IsInRole("Accountant") || User.IsInRole("Administrator")) && request.Status == SharedEnum.RequestStatus.Prepared)
                                     {
@@ -102,6 +114,191 @@ else
         <h5 class="mt-3">@Localizer["NoInProgressRequestsFound"]</h5>
     </div>
 }
+
+
+<!-- Modal -->
+<div class="modal fade" id="statusModal" tabindex="-1" aria-labelledby="statusModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content shadow">
+      <div class="modal-header text-white">
+        <h5 class="modal-title"> @Localizer["WorkFlowDetails"] </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+       <ul class="list-group" id="workflowSteps">
+  <li class="list-group-item d-flex justify-content-between align-items-center" data-step="1" onclick="toggleStep(1)">
+    1 - @Localizer["ContactedCustomer"] 
+    <span class="status-icon"></span>
+  </li>
+  <li class="list-group-item d-flex justify-content-between align-items-center" data-step="2" onclick="toggleStep(2)">
+    2 - @Localizer["DocumentsDelivered"]  
+    <span class="status-icon"></span>
+  </li>
+  <li class="list-group-item d-flex justify-content-between align-items-center" data-step="3" onclick="toggleStep(3)">
+    3 - @Localizer["ProcessingStarted"] 
+    <span class="status-icon"></span>
+  </li>
+</ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<style>
+
+    .workflow-bar {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 4px;
+}
+
+.workflow-bar .step {
+  flex: 1;
+  height: 10px;
+  background-color: #ddd;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.workflow-bar .step.completed {
+  background-color: #28a745; /* أخضر */
+}
+
+.workflow-bar .step.notStart {
+  background-color: gray; /* أخضر */
+}
+    /* لون الخلفية والخط للصف المكتمل */
+.status-completed {
+  background-color: #d4edda !important; /* أخضر فاتح */
+  color: #155724 !important;            /* أخضر غامق للنص */
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+  cursor: default;
+}
+
+/* صف غير مكتمل */
+.status-not-completed {
+  background-color: transparent !important;
+  color: inherit;
+  font-weight: normal;
+  cursor: default;
+}
+
+/* أيقونة الحالة */
+.status-icon {
+  font-size: 1.5rem;
+  user-select: none;
+  width: 24px;
+  height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  /* اللون الافتراضي للأيقونة */
+  color: #ccc;
+}
+
+/* أيقونة مكتملة لونها أخضر */
+.status-completed .status-icon {
+  color: #28a745;
+}
+
+/* عند تفعيل النقر على السطر التالي */
+.list-group-item[style*="pointer-events: auto"] {
+  cursor: pointer;
+}
+
+</style>
+
+<script>
+ let currentRequestId = null;
+ let currentStatus = 0;
+
+function openStatusModal(requestId) {
+    currentRequestId = requestId;
+    currentStatus = 0;
+
+    // Reset all icons to not completed
+    document.querySelectorAll('#workflowSteps li').forEach(li => {
+      li.querySelector('.status-icon').textContent = '✗';
+      li.querySelector('.status-icon').classList.remove('completed');
+      li.querySelector('.status-icon').classList.add('not-completed');
+      li.style.pointerEvents = 'none'; // Disable clicks initially
+    });
+
+    // Fetch current status from backend
+     fetch(`/Admin/GetStatus/${requestId}`)
+      .then(res => res.json())
+      .then(status => {
+        currentStatus = status;
+        updateUI();
+
+        // Enable click only on next step
+        enableClickableSteps();
+        
+        // Show modal
+        new bootstrap.Modal(document.getElementById('statusModal')).show();
+      });
+  }
+
+function updateUI() {
+  for (let i = 1; i <= 3; i++) {
+    const li = document.querySelector(`#workflowSteps li[data-step="${i}"]`);
+    const icon = li.querySelector('.status-icon');
+    if (i <= currentStatus) {
+      icon.textContent = '✓';
+      li.classList.add('status-completed');
+      li.classList.remove('status-not-completed');
+    } else {
+      icon.textContent = '✗';
+      li.classList.add('status-not-completed');
+      li.classList.remove('status-completed');
+    }
+  }
+}
+
+function enableClickableSteps() {
+  const nextStep = currentStatus + 1;
+  document.querySelectorAll('#workflowSteps li').forEach(li => {
+    li.style.pointerEvents = 'none'; // disable all clicks first
+    li.style.cursor = 'default';
+  });
+  if (nextStep <= 3) {
+    const nextLi = document.querySelector(`#workflowSteps li[data-step="${nextStep}"]`);
+    nextLi.style.pointerEvents = 'auto'; // enable click only on next step
+    nextLi.style.cursor = 'pointer';
+  }
+}
+
+function toggleStep(stepNumber) {
+    if (stepNumber !== currentStatus + 1) {
+      // Prevent skipping or going back
+      return;
+    }
+
+    // Call backend API to update status
+   fetch('/Admin/UpdateStatus', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        requestId: currentRequestId,
+        status: stepNumber
+      })
+    }).then(res => {
+      if (res.ok) {
+        currentStatus = stepNumber;
+        updateUI();
+        enableClickableSteps();
+      } else {
+        alert('حدث خطأ أثناء تحديث الحالة.');
+      }
+    }).catch(() => {
+      alert('تعذر الاتصال بالخادم.');
+    });
+  }
+</script>
+
 
 
 <script>

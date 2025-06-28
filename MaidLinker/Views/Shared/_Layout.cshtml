@@ -7,7 +7,7 @@
 }
 <!DOCTYPE html>
 
-<html lang="@cultureCode"  >
+<html lang="@cultureCode">
 
 <head>
     <!-- Releate To HTMl-->
@@ -76,7 +76,6 @@
             text-align: left !important;
         }
     </style>
-
     <script>
         toastr.options = {
             "closeButton": true,
@@ -91,8 +90,6 @@
         };
     </script>
     <!-- End of Toastr JS + Css-->
-
-
     <style>
         #screenSizeWarning {
             display: none;
@@ -227,6 +224,25 @@
         }
 
     </style>
+    <style>
+        .loading-spinner {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            background-color: rgba(0, 0, 0, 0.1); /* Adjust the opacity value (0.5) as needed */
+        }
+
+
+        .loading-text {
+            color: white;
+            font-size: 16px;
+            margin-top: 10px;
+            text-align: center;
+        }
+    </style>
 
     <!-- For User Image -->
     <script>
@@ -243,6 +259,14 @@
             }
         });
     </script>
+
+    <!-- End of For User Image -->
+    <!-- For SignlR -->
+    @if (User.Identity.IsAuthenticated)
+    {
+        <script src="~/js/signalr/dist/browser/signalr.js"></script>
+        <script src="~/js/notification.js"></script>
+    }
 </head>
 
 @await RenderSectionAsync("Scripts", required: false)
@@ -276,12 +300,6 @@
                             </a>
                         </li>
 
-                        @*   <li>
-                        <a href="linkedin.com">
-                        <img src="~/images/navbar/linkedn.svg" alt="">
-                        </a>
-                        </li> *@
-
                         <li>
                             <a id="instagramLinkLayout" href="#" target="_blank">
                                 <img src="~/images/navbar/insta.svg" alt="">
@@ -290,7 +308,7 @@
 
                         <li id="whatsAppLink">
                             <a id="whatsAppLinkAnchor" href="#" target="_blank">
-                                <img  src="~/images/navbar/whatsapp.svg" alt="">
+                                <img src="~/images/navbar/whatsapp.svg" alt="">
                             </a>
                         </li>
                     </ul>
@@ -298,10 +316,7 @@
                     @{
                         if (User.Identity.IsAuthenticated)
                         {
-                            
                             <text>
-
-
                                 <div class="button-container">
 
                                     <!-- Modal -->
@@ -312,20 +327,16 @@
                                         </a>
                                     }
 
+
                                 </div>
-
-                           
-
-
+                                <partial name="_LoginPartial" />
                             </text>
-
-
                         }
                     }
                     @{
                         if (!User.Identity.IsAuthenticated)
                         {
-                          
+
                             <text>
                                 <div class="drop-list-shape data">
                                     <a href="#" class="drop-name">
@@ -362,114 +373,44 @@
         </div>
 
         @{
-            if (!this.User.IsInRole("Administrator") && !this.User.IsInRole("Accountant") && !this.User.IsInRole("Reception"))
+            if (!User.Identity.IsAuthenticated)
             {
+                <div class="bottom-nav" style="direction:@direction">
+                    <div class="container">
+                        <div class="content">
 
-                <text>
-                    <div class="bottom-nav" style="direction:@direction">
-                        <div class="container">
-                            <div class="content">
-
-
-                                @if (User.Identity.IsAuthenticated)
-                                {
-                                
-                                    <div id="mobiledropDown" class="dropdown" style="direction:@direction;text-align:@textAlign">
-                                        <a href="#">
-                                            <img style="border-radius:30%" id="user-image-layout" src="" width="40" height="40" alt="user-image-profile" onerror="this.src='/users/images/Default-User-Profile.jpg'">
-                                        </a>
-
-                                        <div class="dropdown-content">
-                                            <a class="nav-link text-dark  linkButton" asp-area="" asp-controller="Home" asp-action="MyProfile">@Localizer["MyProfile"] </a>
-                                            <a class="nav-link text-dark linkButton" asp-area="" asp-controller="ServiceProvider" asp-action="Referrals">@Localizer["MyOrders"]  </a>
-
-
-                                            <a style="text-transform: none;" class="my-profile-button" asp-area="Identity" asp-page="/Account/Logout">
-                                                @Localizer["Logout"]
-                                                <span>
-                                                    <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("MyProfile", "Home", new { area = "" })">
-                                                        <button style="text-transform: none;" class="my-profile-button" type="submit"></button>
-                                                    </form>
-                                                </span>
-
-                                            </a>
-
-                                        </div>
-                                    </div>
-                                }
-
-
-                                <a class="brand-name" asp-area="" asp-controller="Home" asp-action="Index">
+                            <a class="brand-name" asp-area="" asp-controller="Home" asp-action="Index">
                                 <img src="~/images/logo.png" class="navbar-logo" alt="logo" style="height:50px">
-                                </a>
+                            </a>
 
-                                <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                                   
-                                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-                                            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                                        <span class="navbar-toggler-icon"></span>
-                                    </button>
+                            <nav class="navbar navbar-expand-lg navbar-light ">
 
-                                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                                        <ul class="navbar-nav ml-auto">
-                                            <li class="nav-item">
-                                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">@Localizer["Home"]</a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="About">@Localizer["AboutUs"]</a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Maids">@Localizer["Maids"]</a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Contact">@Localizer["ContactUs"]</a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </nav>
+                                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                                    <span class="navbar-toggler-icon"></span>
+                                </button>
 
-                                @if (!User.Identity.IsAuthenticated)
-                                {
-
-                                    <partial name="_LoginPartial" />
-                                }
-                                else
-                                {
-                                    <div id="loadingSpinner" class="loading-spinner" style="display:none">
-                                        <!-- Add your loading spinner HTML here -->
-                                        <!-- For example, you can use a GIF or a CSS-based spinner -->
-                                        <img src="~/icon/spinner-loading.gif" alt="Loading" />
-                                        <div class="loading-text">@Localizer["PleaseWait"]</div>
-                                    </div>
-                                    <div id="deskTopdropDown" class="dropdown" style="direction:@direction;text-align:@textAlign">
-                                        <a href="#">
-                                            <img style="border-radius:30%" id="user-image-layout" src="" width="40" height="40" alt="user-image-profile" onerror="this.src='/users/images/Default-User-Profile.jpg'">
-                                        </a>
-
-                                        <div class="dropdown-content">
-                                            <a class="nav-link text-dark  linkButton" asp-area="" asp-controller="Home" asp-action="MyProfile">@Localizer["MyProfile"] </a>
-                                            <a class="nav-link text-dark linkButton" asp-area="" asp-controller="ServiceProvider" asp-action="Referrals">@Localizer["MyOrders"]  </a>
-
-
-                                            <a style="text-transform: none;" class="my-profile-button" asp-area="Identity" asp-page="/Account/Logout">
-                                                @Localizer["Logout"]
-                                                <span>
-                                                    <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("MyProfile", "Home", new { area = "" })">
-                                                        <button style="text-transform: none;" class="my-profile-button" type="submit"></button>
-                                                    </form>
-                                                </span>
-
-                                            </a>
-
-                                        </div>
-                                    </div>
-                                }
-
-
-                            </div>
+                                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                                    <ul class="navbar-nav ml-auto">
+                                        <li class="nav-item">
+                                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">@Localizer["Home"]</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="About">@Localizer["AboutUs"]</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Maids">@Localizer["Maids"]</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Contact">@Localizer["ContactUs"]</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </nav>
+                            <partial name="_LoginPartial" />
                         </div>
                     </div>
-                </text>
+                </div>
             }
         }
     </nav>
@@ -477,57 +418,39 @@
 
 
 
-        <main role="main" style="direction:@direction">
-            <div id="layoutContent">
+    <main role="main" style="direction:@direction">
+        <div id="layoutContent">
             @RenderBody()
-            </div>
-        </main>
-        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="NotificationModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content" style="width: 400px">
-                    <div class="modal-header" style="direction:@direction">
-                        <h5 class="modal-title" style="text-align:center;"id=" NotificationModalLabel">@Localizer["Notifications"]</h5>
-                        <button type="button" class="custom-notification-close-btn" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+        </div>
+    </main>
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="NotificationModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content" style="width: 400px">
+                <div class="modal-header" style="direction:@direction">
+                    <h5 class="modal-title" style="text-align:center;" id=" NotificationModalLabel">@Localizer["Notifications"]</h5>
+                    <button type="button" class="custom-notification-close-btn" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="text-align:center; max-height: 300px; overflow-y: auto;">
+                    <!-- Add your content here -->
+                    <div class="custom-notification-list" id="notificationContainer">
+                        <!-- Your notification content goes here -->
                     </div>
-                    <div class="modal-body" style="text-align:center; max-height: 300px; overflow-y: auto;">
-                        <!-- Add your content here -->
-                        <div class="custom-notification-list" id="notificationContainer">
-                            <!-- Your notification content goes here -->
-                        </div>
-                    </div>
-                    <div class="modal-footer" style="direction:@direction;">
-                        <button type="button" class="btn btn-primary" data-dismiss="modal">@Localizer["Close"] </button>
+                </div>
+                <div class="modal-footer" style="direction:@direction;">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">@Localizer["Close"] </button>
 
-                    </div>
                 </div>
             </div>
         </div>
+    </div>
 
-        </body>
+</body>
 </html>
 
 
-<style>
-    .loading-spinner {
-        display: none;
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        z-index: 9999;
-        background-color: rgba(0, 0, 0, 0.1); /* Adjust the opacity value (0.5) as needed */
-    }
 
-
-    .loading-text {
-        color: white;
-        font-size: 16px;
-        margin-top: 10px;
-        text-align: center;
-    }
-</style>
 
 <script>
 
@@ -544,7 +467,7 @@
             $("#mobiledropDown").hide()
             $("#deskTopdropDown").show()
         }
-      
+
 
     })
     function showNotifications() {
@@ -578,9 +501,10 @@
         });
     }
     var currentUrl = window.location.href;
-  
 
-  
+
+
+
 
     function isEnglishCulture() {
         var isEn = true;
@@ -617,6 +541,14 @@
         }, 10); // wait for DOM injection
     }
 
+
+       $('.refresh-btn').click(function () {
+      const icon = $(this).find('.refresh-icon');
+      icon.addClass('fa-spin'); // أضف الدوران للأيقونة داخل نفس الزر
+      setTimeout(() => location.reload(), 300);
+    });
+
+
      function showErrorMessage() {
         setToastrDirection();
         const isEn = isEnglishCulture();
@@ -634,15 +566,6 @@
         }, 10);
         }
 </script>
-
-
-
-@if (User.Identity.IsAuthenticated)
-{
-    <script src="~/js/signalr/dist/browser/signalr.js"></script>
-    <script src="~/js/notification.js"></script>
-}
-
 <script>
        $(window).on('load', function () {
         $.ajax({
@@ -684,11 +607,12 @@
     window.addEventListener("resize", checkScreenSize);
 </script>
 
-@section Scripts {
-    @if (User.Identity.IsAuthenticated)
-    {
+
         <script>
             $(document).ready(function () {
+       
+                
+                if ($('#notifications-count').length || $('.notifications-count').length) {
                 $.ajax({
                     url: '/Notification/GetNotificationsCount',
                     method: 'GET',
@@ -703,7 +627,6 @@
                         console.log('Error occurred while retrieving notifications count.');
                     }
                 });
+                }
             });
         </script>
-    }
-}

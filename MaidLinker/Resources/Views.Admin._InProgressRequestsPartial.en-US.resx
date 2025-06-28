@@ -117,46 +117,58 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-	<data name="RequestNumber" xml:space="preserve">
-  <value>Request Number</value>
-</data>
-	<data name="VisitorName" xml:space="preserve">
-  <value>Visitor Name</value>
-</data>
-	<data name="VisitorNumber" xml:space="preserve">
-  <value>Visitor Number</value>
-</data>
-	<data name="MaidName" xml:space="preserve">
-  <value>Maid Name</value>
-</data>
-	<data name="MaidNumber" xml:space="preserve">
-  <value>Maid Number</value>
-</data>
-	<data name="Status" xml:space="preserve">
-  <value>Status</value>
-</data>
-	<data name="Action" xml:space="preserve">
-  <value>Action</value>
-</data>
-	<data name="InProgress" xml:space="preserve">
-  <value>In Progress</value>
-</data>
-	<data name="Prepared" xml:space="preserve">
-  <value>Prepared</value>
-</data>
-	<data name="WaitingForPrepare" xml:space="preserve">
-  <value>Waiting For Prepare</value>
-</data>
-	<data name="Completed" xml:space="preserve">
-  <value>Completed</value>
-</data>
-	<data name="Cancel" xml:space="preserve">
-  <value>Cancel</value>
-</data>
-	<data name="Confirm" xml:space="preserve">
-  <value>Confirm</value>
-</data>
-	<data name="NoInProgressRequestsFound" xml:space="preserve">
-  <value>No In Progress Requests Found</value>
-</data>
+  <data name="VisitorName" xml:space="preserve">
+    <value>Visitor Name</value>
+  </data>
+  <data name="VisitorNumber" xml:space="preserve">
+    <value>Visitor Number</value>
+  </data>
+  <data name="MaidName" xml:space="preserve">
+    <value>Maid Name</value>
+  </data>
+  <data name="MaidNumber" xml:space="preserve">
+    <value>Maid Number</value>
+  </data>
+  <data name="Status" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="Action" xml:space="preserve">
+    <value>Action</value>
+  </data>
+  <data name="InProgress" xml:space="preserve">
+    <value>In Progress</value>
+  </data>
+  <data name="Prepared" xml:space="preserve">
+    <value>Prepared</value>
+  </data>
+  <data name="WaitingForPrepare" xml:space="preserve">
+    <value>Waiting For Prepare</value>
+  </data>
+  <data name="Completed" xml:space="preserve">
+    <value>Completed</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Confirm" xml:space="preserve">
+    <value>Files are ready</value>
+  </data>
+  <data name="NoInProgressRequestsFound" xml:space="preserve">
+    <value>No In Progress Requests Found</value>
+  </data>
+  <data name="FollowedBy" xml:space="preserve">
+    <value>Followed By</value>
+  </data>
+  <data name="WorkFlowDetails" xml:space="preserve">
+    <value>Order Status Details</value>
+  </data>
+  <data name="ContactedCustomer" xml:space="preserve">
+    <value>Customer contact</value>
+  </data>
+  <data name="DocumentsDelivered" xml:space="preserve">
+    <value>Documents Delivered</value>
+  </data>
+  <data name="ProcessingStarted" xml:space="preserve">
+    <value>ProcessingStarted</value>
+  </data>
 </root>

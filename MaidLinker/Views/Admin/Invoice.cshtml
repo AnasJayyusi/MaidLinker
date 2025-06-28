@@ -1,0 +1,128 @@
+﻿@model MaidLinker.Models.InvoiceViewModel  
+@{  
+    Layout = null; // اختياري إذا كنت تريدها مستقلة للطباعة  
+}  
+
+<!DOCTYPE html>  
+<html lang="ar" dir="rtl">  
+<head>  
+    <meta charset="utf-8" />  
+    <title>فاتورة</title>  
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />  
+    <style>  
+        @@media print {  
+            .no-print {  
+                display: none !important;  
+            }  
+        }  
+        body {  
+            font-family: 'Arial', sans-serif;  
+            direction: rtl;  
+            margin: 40px;  
+        }  
+
+        .invoice-container {  
+            max-width: 800px;  
+            margin: auto;  
+            padding: 20px;  
+            border: 1px solid #ccc;  
+        }  
+
+        .invoice-header {  
+            display: flex;  
+            justify-content: space-between;  
+            align-items: center;  
+            border-bottom: 2px solid #000;  
+            padding-bottom: 10px;  
+            margin-bottom: 20px;  
+        }  
+
+        .logo img {  
+            height: 80px;  
+        }  
+
+        .company-details {  
+            text-align: right;  
+        }  
+
+        .invoice-body {  
+            margin-top: 20px;  
+        }  
+
+        .invoice-body table {  
+            width: 100%;  
+            border-collapse: collapse;  
+        }  
+
+        .invoice-body th, .invoice-body td {  
+            border: 1px solid #999;  
+            padding: 8px;  
+            text-align: center;  
+        }  
+
+        .invoice-footer {  
+            margin-top: 30px;  
+            text-align: center;  
+            font-size: 14px;  
+            color: #666;  
+        }  
+    </style>  
+</head>  
+<body>  
+
+    <div class="invoice-container">  
+        <div class="invoice-header">  
+            <div class="logo">  
+                <img src="/images/logo.png" alt="Logo" />  
+            </div>  
+            <div class="company-details">  
+                <h2>مؤسسة حيدر النهار لإستقدام الخادمات</h2>  
+                <p>الهاتف: ٠٧٧٥٧٣٤٨٨٧</p>  
+                <p>العنوان: عمّان، الأردن</p>  
+            </div>  
+        </div>  
+
+        <div class="invoice-body">  
+            <p><strong>التاريخ:</strong> @Model.InvoiceDate</p>  
+            <p><strong>اسم العميل:</strong> @Model.CustomerName</p>  
+
+            <table>  
+                <thead>  
+                    <tr>  
+                        <th>البيان</th>  
+                        <th>إجمالي مبلغ الخدمة</th>  
+                        <th>المبلغ المدفوع </th>  
+                    </tr>  
+                </thead>  
+                <tbody>  
+                    @foreach (var item in Model.Items)  
+                    {  
+                        <tr>  
+                            <td>@item.Description</td>  
+                            <td>@item.TotalAmount</td>  
+                            <td>@item.AmountPaid</td>  
+                        </tr>  
+                    }  
+                </tbody>  
+                <tfoot>  
+                    <tr>  
+                        <td colspan="3"><strong>حساب المبلغ المتبقي</strong></td>  
+                        <td><strong>@Model.AmountLeft</strong></td>  
+                    </tr>  
+                </tfoot>  
+            </table>  
+        </div>  
+
+        <div class="invoice-footer">  
+            <p>شكرًا لتعاملكم معنا</p>  
+        </div>  
+    </div>  
+
+    <div style="text-align: center;" class="no-print mt-3">  
+        <button onclick="window.print()" class="btn btn-primary">  
+            <i class="fa fa-print"></i> طباعة الفاتورة  
+        </button>  
+    </div>  
+
+</body>  
+</html>

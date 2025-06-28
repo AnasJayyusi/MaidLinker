@@ -9,12 +9,19 @@
     bool isEng = cultureCode.StartsWith("en", StringComparison.OrdinalIgnoreCase);
     string embedUrl = Model.VideoURL;
 
-    if (!string.IsNullOrWhiteSpace(embedUrl) && embedUrl.Contains("watch?v="))
+    if (!string.IsNullOrWhiteSpace(embedUrl))
     {
-        var videoId = embedUrl.Split("watch?v=").Last();
-        embedUrl = $"https://www.youtube.com/embed/{videoId}";
+        if (embedUrl.Contains("watch?v="))
+        {
+            var videoId = embedUrl.Split("watch?v=").Last();
+            embedUrl = $"https://www.youtube.com/embed/{videoId}";
+        }
+        else if (embedUrl.Contains("/shorts/"))
+        {
+            var videoId = embedUrl.Split("/shorts/").Last().Split('?')[0]; // strip off any query strings
+            embedUrl = $"https://www.youtube.com/embed/{videoId}";
+        }
     }
-
     string fullName = isEng
         ? $"{Model.FirstNameEn} {Model.SecondNameEn} {Model.ThirdNameEn} {Model.LastNameEn}"
         : $"{Model.FirstNameAr} {Model.SecondNameAr} {Model.ThirdNameAr} {Model.LastNameAr}";

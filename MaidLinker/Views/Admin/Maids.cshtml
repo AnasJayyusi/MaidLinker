@@ -3,393 +3,413 @@
 @inject IViewLocalizer Localizer
 
 @{
-	string cultureCode = System.Threading.Thread.CurrentThread.CurrentCulture.Name;
-	string direction = cultureCode.StartsWith("ar", StringComparison.OrdinalIgnoreCase) ? "rtl" : "ltr";
-	string textAlign = direction == "rtl" ? "right" : "left";
-	bool isEng = cultureCode.StartsWith("en", StringComparison.OrdinalIgnoreCase);
+    string cultureCode = System.Threading.Thread.CurrentThread.CurrentCulture.Name;
+    string direction = cultureCode.StartsWith("ar", StringComparison.OrdinalIgnoreCase) ? "rtl" : "ltr";
+    string textAlign = direction == "rtl" ? "right" : "left";
+    bool isEng = cultureCode.StartsWith("en", StringComparison.OrdinalIgnoreCase);
 }
 <!-- #region Styles -->
 <head>
-	<link href="~/css/sb-admin-2.css" rel="stylesheet">
+    <link href="~/css/sb-admin-2.css" rel="stylesheet">
 </head>
 <!-- #endregion -->
 
 
 <div id="page-top" class="mt-5">
-	<div id="wrapper">
-		@await Html.PartialAsync("_Sidebar")
+    <div id="wrapper">
+        @await Html.PartialAsync("_Sidebar")
 
-		<div id="content-wrapper" class="d-flex flex-column">
-			<div id="content" style="background-color:lavender">
-				<div class="container-fluid mt-5">
-					<div class="d-sm-flex align-items-center justify-content-between mb-4">
-						<h6 class="h6 mb-0" style="font-weight:bold;color:#5F7AE7 "></h6>
-						@await Html.PartialAsync("_Userbar")
-					</div>
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content" style="background-color:lavender">
+                <div class="container-fluid mt-5">
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <h6 class="h6 mb-0" style="font-weight:bold;color:#5F7AE7 "></h6>
+                        @await Html.PartialAsync("_Userbar")
+                    </div>
 
-					<div class="row">
-						<div class="col-xl-12 col-lg-12">
-							<div class="card shadow mb-4">
-								<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-									<h6 class="m-0" style="font-weight:bold;color:#5F7AE7 ">@Localizer["MaidPageTitle"]</h6>
-									<button id="popup_btn" type="button" class="btn btn-sm btn-primary shadow-sm" data-toggle="modal" data-target="#ViewPopup">
-										<i class="fa fa-plus text-white-50"></i>
-									</button>
-								</div>
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12">
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0" style="font-weight:bold;color:#5F7AE7 ">@Localizer["MaidPageTitle"]</h6>
+                                    <button class="btn btn-success fw-bold refresh-btn">
+                                        <i class="fa-solid fa-rotate-right me-1 refresh-icon"></i> تحديث
+                                    </button>
+                                    <button id="popup_btn" type="button" class="btn btn-sm btn-primary shadow-sm" data-toggle="modal" data-target="#ViewPopup">
+                                        <i class="fa fa-plus text-white-50"></i>
+                                    </button>
+                                </div>
 
-								<div class="card-body" style="max-height:768px; overflow-y:auto;">
-									<div class="table-responsive" id="dataTableContainer">
-										@await Html.PartialAsync("MaidsList", Model)
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+                                <div class="card-body" style="max-height:768px; overflow-y:auto;">
+                                    <div class="table-responsive" id="dataTableContainer">
+                                        @await Html.PartialAsync("MaidsList", Model)
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-	<a class="scroll-to-top rounded" href="#page-top"><i class="fas fa-angle-up"></i></a>
+    <a class="scroll-to-top rounded" href="#page-top"><i class="fas fa-angle-up"></i></a>
 </div>
 
 <!-- Modal -->
 <div class="modal fade" id="ViewPopup" tabindex="-1" role="dialog" aria-labelledby="ViewPopupModal" aria-hidden="true" style="direction:@(direction ?? "ltr")">
-	<div class="modal-dialog modal-xl" role="document">
-		<!-- wider dialog -->
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title">@Localizer["AddMaid"]</h5>
-				<button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"><h5>&times;</h5></button>
-			</div>
-			<div class="modal-body">
-				<form id="maidForm" enctype="multipart/form-data">
-					<div class="row">
-						<!-- English Names -->
-						<div class="col-md-5">
-							<h6 style="color:#4c65d1" class="modal-title">@Localizer["EnglishNames"]</h6>
-							<div class="form-group" style="text-align:@textAlign">
-								<label>@Localizer["FirstNameEn"]</label>
-								<input type="text" class="form-control" id="firstNameEn" maxlength="250" required />
-							</div>
-							<div class="form-group" style="text-align:@textAlign">
-								<label>@Localizer["SecondNameEn"]</label>
-								<input type="text" class="form-control" id="secondNameEn" maxlength="250" />
-							</div>
-							<div class="form-group" style="text-align:@textAlign">
-								<label>@Localizer["ThirdNameEn"]</label>
-								<input type="text" class="form-control" id="thirdNameEn" maxlength="250" />
-							</div>
-							<div class="form-group" style="text-align:@textAlign">
-								<label>@Localizer["LastNameEn"]</label>
-								<input type="text" class="form-control" id="lastNameEn" maxlength="250" />
-							</div>
-						</div>
+    <div class="modal-dialog modal-xl" role="document">
+        <!-- wider dialog -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">@Localizer["AddMaid"]</h5>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"><h5>&times;</h5></button>
+            </div>
+            <div class="modal-body">
+                <form id="maidForm" enctype="multipart/form-data">
+                    <div class="row">
+                        <!-- English Names -->
+                        <div class="col-md-5">
+                            <h6 style="color:#4c65d1" class="modal-title">@Localizer["EnglishNames"]</h6>
+                            <div class="form-group" style="text-align:@textAlign">
+                                <label>@Localizer["FirstNameEn"]</label>
+                                <input type="text" class="form-control" id="firstNameEn" maxlength="250" required />
+                            </div>
+                            <div class="form-group" style="text-align:@textAlign">
+                                <label>@Localizer["SecondNameEn"]</label>
+                                <input type="text" class="form-control" id="secondNameEn" maxlength="250" />
+                            </div>
+                            <div class="form-group" style="text-align:@textAlign">
+                                <label>@Localizer["ThirdNameEn"]</label>
+                                <input type="text" class="form-control" id="thirdNameEn" maxlength="250" />
+                            </div>
+                            <div class="form-group" style="text-align:@textAlign">
+                                <label>@Localizer["LastNameEn"]</label>
+                                <input type="text" class="form-control" id="lastNameEn" maxlength="250" />
+                            </div>
+                        </div>
 
-						<!-- Vertical Separator Line -->
-						<div class="col-md-1 d-flex justify-content-center">
-							<div style="border-left: 1px solid #ddd; height: 100%;"></div>
-						</div>
+                        <!-- Vertical Separator Line -->
+                        <div class="col-md-1 d-flex justify-content-center">
+                            <div style="border-left: 1px solid #ddd; height: 100%;"></div>
+                        </div>
 
-						<!-- Arabic Names -->
-						<div class="col-md-5">
-							<h6 style="color:#4c65d1">@Localizer["ArabicNames"]</h6>
-							<div class="form-group" style="text-align:@textAlign">
-								<label>@Localizer["FirstNameAr"]</label>
-								<input type="text" class="form-control" id="firstNameAr" maxlength="250" required />
-							</div>
-							<div class="form-group" style="text-align:@textAlign">
-								<label>@Localizer["SecondNameAr"]</label>
-								<input type="text" class="form-control" id="secondNameAr" maxlength="250" />
-							</div>
-							<div class="form-group" style="text-align:@textAlign">
-								<label>@Localizer["ThirdNameAr"]</label>
-								<input type="text" class="form-control" id="thirdNameAr" maxlength="250" />
-							</div>
-							<div class="form-group" style="text-align:@textAlign">
-								<label>@Localizer["LastNameAr"]</label>
-								<input type="text" class="form-control" id="lastNameAr" maxlength="250" />
-							</div>
-						</div>
-					</div>
+                        <!-- Arabic Names -->
+                        <div class="col-md-5">
+                            <h6 style="color:#4c65d1">@Localizer["ArabicNames"]</h6>
+                            <div class="form-group" style="text-align:@textAlign">
+                                <label>@Localizer["FirstNameAr"]</label>
+                                <input type="text" class="form-control" id="firstNameAr" maxlength="250" required />
+                            </div>
+                            <div class="form-group" style="text-align:@textAlign">
+                                <label>@Localizer["SecondNameAr"]</label>
+                                <input type="text" class="form-control" id="secondNameAr" maxlength="250" />
+                            </div>
+                            <div class="form-group" style="text-align:@textAlign">
+                                <label>@Localizer["ThirdNameAr"]</label>
+                                <input type="text" class="form-control" id="thirdNameAr" maxlength="250" />
+                            </div>
+                            <div class="form-group" style="text-align:@textAlign">
+                                <label>@Localizer["LastNameAr"]</label>
+                                <input type="text" class="form-control" id="lastNameAr" maxlength="250" />
+                            </div>
+                        </div>
+                    </div>
 
-					<hr />
+                    <hr />
 
-					<div class="row">
-						<!-- Left side: Experience, Date of Birth, Marital Status, Childs -->
-						<div class="col-md-6">
-							<div class="form-group" style="text-align:@textAlign">
-								<label>@Localizer["DateOfBirth"]</label>
-								<input type="date" class="form-control" id="dateOfBirth" placeholder="dd-mm-yyyy" required />
-							</div>
-							<div class="form-group" style="text-align:@textAlign">
-								<label>@Localizer["TotalExperience"] (@Localizer["Years"])</label>
-								<input type="number" class="form-control" id="totalExperience" min="0" step="1" />
-							</div>
-							<div class="form-group" style="text-align:@textAlign">
-								<label>@Localizer["MaritalStatus"]</label>
-								<select class="form-control" id="maritalStatus">
-								</select>
-							</div>
-							<div class="form-group" style="text-align:@textAlign">
-								<label>@Localizer["Childs"]</label>
-								<input type="number" class="form-control" id="childs" min="0" />
-							</div>
-
-
-							<div class="form-group" style="text-align:@textAlign">
-								<label>@Localizer["Nationality"]</label>
-								<select class="form-control" id="nationalities">
-								</select>
-							</div>
-						</div>
-
-						<!-- Right side: Served Countries, Languages -->
-						<div class="col-md-6">
-							<div class="form-group" style="text-align:@textAlign">
-								<label>@Localizer["ServedCountries"] <span class="alert-warning">(@Localizer["UseCtrlToMultiSelect"])</span></label>
-								<select multiple class="form-control" id="countries">
-									<!-- Populate dynamically -->
-
-								</select>
-							</div>
-							<div class="form-group" style="text-align:@textAlign">
-								<label>@Localizer["Languages"] <span class="alert-warning">(@Localizer["UseCtrlToMultiSelect"])</span></label>
-								<select multiple class="form-control" id="languages">
-									<!-- Populate dynamically -->
-
-								</select>
-							</div>
-
-							<div class="col-md-12">
-								<div class="form-group" style="text-align:@textAlign">
-									<label>@Localizer["Note"]</label>
-									<textarea class="form-control" style="background-color:beige" id="note" rows="3"></textarea>
-								</div>
-							</div>
+                    <div class="row">
+                        <!-- Left side: Experience, Date of Birth, Marital Status, Childs -->
+                        <div class="col-md-6">
+                            <div class="form-group" style="text-align:@textAlign">
+                                <label>@Localizer["DateOfBirth"]</label>
+                                <input type="date" class="form-control" id="dateOfBirth" placeholder="dd-mm-yyyy" required />
+                            </div>
+                            <div class="form-group" style="text-align:@textAlign">
+                                <label>@Localizer["TotalExperience"] (@Localizer["Years"])</label>
+                                <input type="number" class="form-control" id="totalExperience" min="0" step="1" onchange="handleExperienceChange()" />
+                            </div>
+                            <div class="form-group" style="text-align:@textAlign">
+                                <label>@Localizer["MaritalStatus"]</label>
+                                <select class="form-control" id="maritalStatus">
+                                </select>
+                            </div>
+                            <div class="form-group" style="text-align:@textAlign">
+                                <label>@Localizer["Childs"]</label>
+                                <input type="number" class="form-control" id="childs" min="0" />
+                            </div>
 
 
-						</div>
+                            <div class="form-group" style="text-align:@textAlign">
+                                <label>@Localizer["Nationality"]</label>
+                                <select class="form-control" id="nationalities">
+                                </select>
+                            </div>
+                        </div>
 
-					</div>
+                        <!-- Right side: Served Countries, Languages -->
+                        <div class="col-md-6">
+                            <div class="form-group" style="text-align:@textAlign">
+                                <label>@Localizer["ServedCountries"] <span class="alert-warning">(@Localizer["UseCtrlToMultiSelect"])</span></label>
+                                <select multiple class="form-control" id="countries">
+                                    <!-- Populate dynamically -->
 
-					<hr />
+                                </select>
+                            </div>
+                            <div class="form-group" style="text-align:@textAlign">
+                                <label>@Localizer["Languages"] <span class="alert-warning">(@Localizer["UseCtrlToMultiSelect"])</span></label>
+                                <select multiple class="form-control" id="languages">
+                                    <!-- Populate dynamically -->
 
-					<div class="row">
-						<!-- Media URLs and Address -->
-						<div class="col-md-12">
-							<div class="form-group" style="text-align:@textAlign">
-								<label>@Localizer["ImagePath"] (@Localizer["UploadImage"])</label>
-								<input type="file" accept="image/*" class="form-control" id="imagePath" />
-							</div>
-							<div class="form-group" style="text-align:@textAlign">
-								<label>@Localizer["VideoURL"]</label>
-								<input type="url" class="form-control" id="videoURL" placeholder="https://www.youtube.com/watch?v=example" />
-							</div>
-						</div>
+                                </select>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="form-group" style="text-align:@textAlign">
+                                    <label>@Localizer["Note"]</label>
+                                    <textarea class="form-control" style="background-color:beige" id="note" rows="3"></textarea>
+                                </div>
+                            </div>
 
 
+                        </div>
+
+                    </div>
+
+                    <hr />
+
+                    <div class="row">
+                        <!-- Media URLs and Address -->
+                        <div class="col-md-12">
+                            <div class="form-group" style="text-align:@textAlign">
+                                <label>@Localizer["ImagePath"] (@Localizer["UploadImage"])</label>
+                                <input type="file" accept="image/*" class="form-control" id="imagePath" />
+                            </div>
+                            <div class="form-group" style="text-align:@textAlign">
+                                <label>@Localizer["VideoURL"]</label>
+                                <input type="url" class="form-control" id="videoURL" placeholder="https://www.youtube.com/watch?v=example" />
+                            </div>
+                        </div>
 
 
 
-					</div>
 
-				</form>
 
-				<div style="text-align:center" class="alert alert-info hidden" role="alert" id="error-msg">@Localizer["PleaseFillAllFields"]</div>
-			</div>
-			<div class="modal-footer">
-				<button id="close-add-Maid" type="button" class="btn btn-danger" data-dismiss="modal">@Localizer["Cancel"]</button>
-				<button id="add-Maid" type="button" class="btn btn-success" style="background-color:#5F7AE7">@Localizer["Save"]</button>
-			</div>
-		</div>
-	</div>
+                    </div>
+
+                </form>
+
+                <div style="text-align:center" class="alert alert-info hidden" role="alert" id="error-msg">@Localizer["PleaseFillAllFields"]</div>
+            </div>
+            <div class="modal-footer">
+                <button id="close-add-Maid" type="button" class="btn btn-danger" data-dismiss="modal">@Localizer["Cancel"]</button>
+                <button id="add-Maid" type="button" class="btn btn-success" style="background-color:#5F7AE7">@Localizer["Save"]</button>
+            </div>
+        </div>
+    </div>
 </div>
 
 
 
 
 @section Scripts {
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-	<script>
-		   $(document).ready(function () {
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script>
+           $(document).ready(function () {
 
 
-			  // Auto fade success alert after 3 seconds
-			  setTimeout(() => $('.alert-success').fadeOut(), 3000);
+              // Auto fade success alert after 3 seconds
+              setTimeout(() => $('.alert-success').fadeOut(), 3000);
 
-			  // Clear all inputs when opening the add maid modal (assuming you have a button with id popup_btn to open it)
-			  $('#popup_btn').click(function () {
+              // Clear all inputs when opening the add maid modal (assuming you have a button with id popup_btn to open it)
+              $('#popup_btn').click(function () {
 
-				 $('#maidForm input, #maidForm select, #maidForm textarea').val('');
-				 $('#error-msg-add').addClass('hidden');
+                 $('#maidForm input, #maidForm select, #maidForm textarea').val('');
+                 $('#error-msg-add').addClass('hidden');
 
-				 // Load dropdowns only when modal is opened
-				 loadLanguages('#languages');
-				 loadCountries('#countries');
-				 loadMaritalStatuses('#maritalStatus');
-				 loadNationalities('#nationalities');
-			  });
+                 // Load dropdowns only when modal is opened
+                 loadLanguages('#languages');
+                 loadCountries('#countries');
+                 loadMaritalStatuses('#maritalStatus');
+                 loadNationalities('#nationalities');
+              });
 
-			  $('#add-Maid').on('click', function (e) {
-				 e.preventDefault();
+              $('#add-Maid').on('click', function (e) {
+                 e.preventDefault();
 
-				 // Create a FormData object to handle file uploads
-				 var formData = new FormData();
+                 // Create a FormData object to handle file uploads
+                 var formData = new FormData();
 
-				 // Collect input values
-				 formData.append("FirstNameEn", $('#firstNameEn').val());
-				 formData.append("SecondNameEn", $('#secondNameEn').val());
-				 formData.append("ThirdNameEn", $('#thirdNameEn').val());
-				 formData.append("LastNameEn", $('#lastNameEn').val());
+                 // Collect input values
+                 formData.append("FirstNameEn", $('#firstNameEn').val());
+                 formData.append("SecondNameEn", $('#secondNameEn').val());
+                 formData.append("ThirdNameEn", $('#thirdNameEn').val());
+                 formData.append("LastNameEn", $('#lastNameEn').val());
 
-				 formData.append("FirstNameAr", $('#firstNameAr').val());
-				 formData.append("SecondNameAr", $('#secondNameAr').val());
-				 formData.append("ThirdNameAr", $('#thirdNameAr').val());
-				 formData.append("LastNameAr", $('#lastNameAr').val());
-				 const rawDate = $('#dateOfBirth').val();  // usually "1994-01-14"
-				 if (rawDate != '')
-				 var formattedDate =new Date(rawDate).toISOString();  // still "1994-01-14"
-				 formData.append("DateOfBirth", formattedDate);
-				 formData.append("TotalExperience", $('#totalExperience').val());
-				 formData.append("MaritalStatus", $('#maritalStatus').val());
-				 formData.append("NationalityId", $('#nationalities').val());
-				 formData.append("Childs", $('#childs').val());
-
-
-				 // Multiple select (served countries and languages)
-				  var servedCountryIds=[]
-				 $('#countries option:selected').each(function () {
-					 servedCountryIds.push( $(this).val())
-
-				 });
-				 if (servedCountryIds.length != 0)
-				 formData.append("servedCountryIds",servedCountryIds);
-
-				 var languageIds=[]
-				 $('#languages option:selected').each(function () {
-					
-					 languageIds.push($(this).val())
-
-				 });
-				 if (languageIds.length != 0)
-				 formData.append("LanguageIds", languageIds);
-				 // Media
-				 var imageFile = $('#imagePath')[0].files[0];
-				 if (imageFile) {
-					formData.append("ImagePath", imageFile);
-				 }
-
-				 formData.append("VideoURL", $('#videoURL').val());
-				 formData.append("Note", $('#note').val());
-
-				 // AJAX Call
-				 $.ajax({
-					url: '/Admin/AddMaid', // Your backend API endpoint
-					type: 'POST',
-					data: formData,
-					contentType: false, // Required for file upload
-					processData: false, // Required for FormData
-					success: function (response) {
-					   // Success logic here
-					   $('#error-msg-add').addClass('hidden');
-					   $('#maidForm')[0].reset();
-					   // Optionally close modal
-					   $('#close-add-Maid').trigger('click');
-					   // Refresh list
-					   loadMaids();
-						  showSuccessMessage();
-					},
-					error: function (xhr) {
-					   showErrorMessage();
-					}
-				 });
-			  });
-		   });
-
-		   function loadMaids()
-		   {
-				 $('#dataTableContainer').load('/Admin/GetMaids');
-		   }
-
-		function loadLanguages(targetSelector) {
-		   var isEng = isEnglishCulture();
-		   $.ajax({
-			  url: '@Url.Action("GetLanguagesDDL", "Common")',
-			  method: 'GET',
-			  success: function (data) {
-				const $dropdown = $(targetSelector);
-				 $dropdown.empty();
-				 data.forEach(function (lang) {
-					// Use lang instead of item, and use a proper ternary operator
-					$dropdown.append(
-					   `<option value="${lang.id}">${isEng ? lang.nameEn : lang.nameAr}</option>`
-					);
-				 });
-			  },
-			  error: function () {
-			   showErrorMessage();
-			  }
-		   });
-		}
-
-		function loadCountries(targetSelector) {
-			var isEng = isEnglishCulture();
-			$.ajax({
-				url: '@Url.Action("GetCountriesDDL", "Common")',
-				method: 'GET',
-				success: function (data) {
-					const $dropdown = $(targetSelector);
-					$dropdown.empty();
-					data.forEach(function (country) {
-						$dropdown.append(
-							`<option value="${country.id}">${isEng ? country.titleEn : country.titleAr}</option>`
-						);
-					});
-				},
-				error: function () {
-					   showErrorMessage();
-				}
-			});
-		}
-
-		function loadMaritalStatuses(targetSelector) {
-		   var isEng = isEnglishCulture();
-		   $.ajax({
-			  url: '@Url.Action("GetMaritalStatusDDL", "Common")',
-			  method: 'GET',
-			  success: function (data) {
-				 const $dropdown = $(targetSelector);
-				 $dropdown.empty().append(`<option value="">@Localizer["MaritalStatus"]</option>`);
-				 data.forEach(function (status) {
-					$dropdown.append(`<option value="${status.id}">${status.title}</option>`);
-				 });
-			  },
-			  error: function () {
-			   showErrorMessage();
-			  }
-		   });
-		}
-
-		function loadNationalities(targetSelector) {
-		   var isEng = isEnglishCulture();
-		   $.ajax({
-			  url: '@Url.Action("GetNationalitiesDDL", "Common")',
-			  method: 'GET',
-			  success: function (data) {
-				const $dropdown = $(targetSelector);
-				 $dropdown.empty().append(`<option value="">@Localizer["Nationality"]</option>`);
-				 data.forEach(function (nation) {
-					$dropdown.append(`<option value="${nation.id}">${isEng ? nation.titleEn : nation.titleAr}</option>`);
-				 });
-			  },
-			  error: function () {
-				   showErrorMessage();
-			  }
-		   });
-		}
+                 formData.append("FirstNameAr", $('#firstNameAr').val());
+                 formData.append("SecondNameAr", $('#secondNameAr').val());
+                 formData.append("ThirdNameAr", $('#thirdNameAr').val());
+                 formData.append("LastNameAr", $('#lastNameAr').val());
+                 const rawDate = $('#dateOfBirth').val();  // usually "1994-01-14"
+                 if (rawDate != '')
+                 var formattedDate =new Date(rawDate).toISOString();  // still "1994-01-14"
+                 formData.append("DateOfBirth", formattedDate);
+                 formData.append("TotalExperience", $('#totalExperience').val());
+                 
+                 formData.append("MaritalStatus", $('#maritalStatus').val());
+                 formData.append("NationalityId", $('#nationalities').val());
+                 formData.append("Childs", $('#childs').val());
 
 
-	</script>
+                 // Multiple select (served countries and languages)
+                  var servedCountryIds=[]
+                  if ($('#totalExperience').val() != '0' && $('#totalExperience').val() != ''){
+                 $('#countries option:selected').each(function () {
+                     servedCountryIds.push( $(this).val())
+
+                 });
+                 
+                 if (servedCountryIds.length != 0)
+                 formData.append("servedCountryIds",servedCountryIds);
+                 }
+
+                     // Add LanguageIds - multiple select
+                 $('#languages option:selected').each(function() {
+
+                     formData.append('LanguageIds', $(this).val());
+                 });
+
+                 // Media
+                 var imageFile = $('#imagePath')[0].files[0];
+                 if (imageFile) {
+                    formData.append("ImagePath", imageFile);
+                 }
+
+                 formData.append("VideoURL", $('#videoURL').val());
+                 formData.append("Note", $('#note').val());
+
+                 // AJAX Call
+                 $.ajax({
+                    url: '/Admin/AddMaid', // Your backend API endpoint
+                    type: 'POST',
+                    data: formData,
+                    contentType: false, // Required for file upload
+                    processData: false, // Required for FormData
+                    success: function (response) {
+                       // Success logic here
+                       $('#error-msg-add').addClass('hidden');
+                       $('#maidForm')[0].reset();
+                       // Optionally close modal
+                       $('#close-add-Maid').trigger('click');
+                       // Refresh list
+                       loadMaids();
+                          showSuccessMessage();
+                    },
+                    error: function (xhr) {
+                       showErrorMessage();
+                    }
+                 });
+              });
+           });
+
+           function loadMaids()
+           {
+                 $('#dataTableContainer').load('/Admin/GetMaids');
+           }
+
+        function loadLanguages(targetSelector) {
+           var isEng = isEnglishCulture();
+           $.ajax({
+              url: '@Url.Action("GetLanguagesDDL", "Common")',
+              method: 'GET',
+              success: function (data) {
+                const $dropdown = $(targetSelector);
+                 $dropdown.empty();
+                 data.forEach(function (lang) {
+                    // Use lang instead of item, and use a proper ternary operator
+                    $dropdown.append(
+                       `<option value="${lang.id}">${isEng ? lang.nameEn : lang.nameAr}</option>`
+                    );
+                 });
+              },
+              error: function () {
+               showErrorMessage();
+              }
+           });
+        }
+
+        function loadCountries(targetSelector) {
+            var isEng = isEnglishCulture();
+            $.ajax({
+                url: '@Url.Action("GetCountriesDDL", "Common")',
+                method: 'GET',
+                success: function (data) {
+                    const $dropdown = $(targetSelector);
+                    $dropdown.empty();
+                    data.forEach(function (country) {
+                        $dropdown.append(
+                            `<option value="${country.id}">${isEng ? country.titleEn : country.titleAr}</option>`
+                        );
+                    });
+                },
+                error: function () {
+                       showErrorMessage();
+                }
+            });
+        }
+
+        function loadMaritalStatuses(targetSelector) {
+           var isEng = isEnglishCulture();
+           $.ajax({
+              url: '@Url.Action("GetMaritalStatusDDL", "Common")',
+              method: 'GET',
+              success: function (data) {
+                 const $dropdown = $(targetSelector);
+                 $dropdown.empty().append(`<option value="">@Localizer["MaritalStatus"]</option>`);
+                 data.forEach(function (status) {
+                    $dropdown.append(`<option value="${status.id}">${status.title}</option>`);
+                 });
+              },
+              error: function () {
+               showErrorMessage();
+              }
+           });
+        }
+
+        function loadNationalities(targetSelector) {
+           var isEng = isEnglishCulture();
+           $.ajax({
+              url: '@Url.Action("GetNationalitiesDDL", "Common")',
+              method: 'GET',
+              success: function (data) {
+                const $dropdown = $(targetSelector);
+                 $dropdown.empty().append(`<option value="">@Localizer["Nationality"]</option>`);
+                 data.forEach(function (nation) {
+                    $dropdown.append(`<option value="${nation.id}">${isEng ? nation.titleEn : nation.titleAr}</option>`);
+                 });
+              },
+              error: function () {
+                   showErrorMessage();
+              }
+           });
+        }
+
+
+       function handleExperienceChange() {
+           debugger;
+            var experience = parseInt(document.getElementById('totalExperience').value) || 0;
+            var countriesSelect = document.getElementById('countries');
+
+            if (experience === 0) {
+                countriesSelect.disabled = true;
+                countriesSelect.selectedIndex = -1; // Optionally clear selection
+            } else {
+                countriesSelect.disabled = false;
+            }
+        }
+
+
+
+    </script>
 }

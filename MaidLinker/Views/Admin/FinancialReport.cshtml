@@ -51,6 +51,9 @@
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                             <h6 class="m-0 font-weight-bold text-primary">@Localizer["RequestsStatusChartTitle"]</h6>
+                            <button class="btn btn-success fw-bold refresh-btn">
+                                <i class="fa-solid fa-rotate-right me-1 refresh-icon"></i> تحديث
+                            </button>
                         </div>
                         <div class="card-body">
                             <div class="chart-container" style="position: relative; min-height: 400px;">
@@ -64,8 +67,11 @@
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                             <h6 class="m-0 font-weight-bold text-primary">@Localizer["CompletedPreparedRequestsTitle"]</h6>
+                            <button class="btn btn-success fw-bold refresh-btn">
+                                <i class="fa-solid fa-rotate-right me-1 refresh-icon"></i> تحديث
+                            </button>
                         </div>
-                        <div class="card-body" style="max-height:768px; overflow-y:auto;">
+                        <div class="card-body" style="max-height:768px; overflow-y:auto;text-align:@textAlign"  >
                             <div class="table-responsive" id="requestsTableContainer">
                                 @await Html.PartialAsync("CompletedPreparedRequests", Model.FilteredRequests)
                             </div>
@@ -76,6 +82,9 @@
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                             <h6 class="m-0 font-weight-bold text-primary">@Localizer["IncomeExpensesTitle"]</h6>
+                            <button class="btn btn-success fw-bold refresh-btn">
+                                <i class="fa-solid fa-rotate-right me-1 refresh-icon"></i> تحديث
+                            </button>
                         </div>
                         <div class="card-body">
                             <form id="incomeExpenseForm" class="mb-4">
@@ -101,7 +110,7 @@
                                 </div>
                             </form>
 
-                            <div class="table-responsive mb-4">
+                            <div class="table-responsive mb-4" style="text-align:@textAlign">
                                 <table class="table table-bordered" id="transactionsTable">
                                     <thead>
                                         <tr>
@@ -128,6 +137,7 @@
                                                         <span class="badge badge-danger">@Localizer["Expense"]</span>
                                                     }
                                                 </td>
+
                                                 <td>@entry.CreationDateFormatted</td>
                                                 <td>
                                                     <button class="btn btn-sm btn-danger" onclick="deleteTransaction(@entry.Id)">

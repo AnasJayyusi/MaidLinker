@@ -126,4 +126,7 @@
   <data name="ShowMore" xml:space="preserve">
     <value>اظهر المزيد</value>
   </data>
+	<data name="Now" xml:space="preserve">
+    <value>الآن</value>
+  </data>
 </root>

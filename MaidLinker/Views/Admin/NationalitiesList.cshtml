@@ -13,7 +13,7 @@
 
 <!-- #region For Pagenations C# Code -->
 @{
-    var defaultPageSize = 5; // Default number of items per page
+    var defaultPageSize = 8; // Default number of items per page
     var currentPage = Context.Request.Query["page"].ToString();
     if (string.IsNullOrEmpty(currentPage))
     {

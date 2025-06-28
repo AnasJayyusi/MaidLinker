@@ -123,6 +123,9 @@
   <data name="Notifications" xml:space="preserve">
     <value>Notifications</value>
   </data>
+  <data name="Now" xml:space="preserve">
+    <value>Now</value>
+  </data>
   <data name="ShowMore" xml:space="preserve">
     <value>Show More</value>
   </data>

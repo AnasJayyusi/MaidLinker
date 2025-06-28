@@ -165,4 +165,10 @@
   <data name="Attach" xml:space="preserve">
     <value>Attach</value>
   </data>
+  <data name="Print" xml:space="preserve">
+    <value>Print</value>
+  </data>
+  <data name="Actions" xml:space="preserve">
+    <value>Actions</value>
+  </data>
 </root>

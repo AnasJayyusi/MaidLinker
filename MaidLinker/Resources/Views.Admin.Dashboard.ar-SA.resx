@@ -138,7 +138,6 @@
   <data name="Nationalities" xml:space="preserve">
     <value>الجنسيات</value>
   </data>
-	
   <data name="NewRequests" xml:space="preserve">
     <value>طلبات جديدة</value>
   </data>
@@ -193,56 +192,13 @@
   <data name="ConfirmCancelRequest" xml:space="preserve">
     <value>هل أنت متأكد من إلغاء هذا الطلب؟</value>
   </data>
-	<data name="MaidPageTitle" xml:space="preserve">
+  <data name="MaidPageTitle" xml:space="preserve">
     <value>الطلبات الجديدة</value>
   </data>
-	<data name="NewRequests" xml:space="preserve">
-    <value>طلبات جديدة</value>
+  <data name="InProgressRequests" xml:space="preserve">
+    <value>طلبات قيد المعالجة</value>
   </data>
-	<data name="Status" xml:space="preserve">
-    <value>الحالة</value>
-  </data>
-	<data name="RequestNumber" xml:space="preserve">
-    <value>رقم الطلب</value>
-  </data>
-	<data name="VisitorName" xml:space="preserve">
-    <value>اسم الزائر</value>
-  </data>
-	<data name="VisitorNumber" xml:space="preserve">
-    <value>رقم الزائر</value>
-  </data>
-	<data name="MaidName" xml:space="preserve">
-    <value>اسم الخادمة</value>
-  </data>
-	<data name="Action" xml:space="preserve">
-    <value>الإجراء</value>
-  </data>
-	<data name="MultipleRequestsFor" xml:space="preserve">
-    <value>طلبات متعددة لـ</value>
-  </data>
-	<data name="MultipleRequestsForThisMaid" xml:space="preserve">
-    <value>طلبات متعددة لهذه الخادمة</value>
-  </data>
-	<data name="Pending" xml:space="preserve">
-    <value>قيد الانتظار</value>
-  </data>
-	<data name="InProgress" xml:space="preserve">
-    <value>قيد المعالجة</value>
-  </data>
-	<data name="Completed" xml:space="preserve">
-    <value>مكتمل</value>
-  </data>
-	<data name="Cancel" xml:space="preserve">
-    <value>إلغاء</value>
-  </data>
-	<data name="TakeOver" xml:space="preserve">
-    <value>استلام الطلب</value>
-  </data>
-	<data name="NoNewRequestsFound" xml:space="preserve">
-    <value>لم يتم العثور على طلبات جديدة</value>
-  </data>
-	
-	<data name="ConfirmCancelRequest" xml:space="preserve">
-    <value>هل أنت متأكد من إلغاء هذا الطلب؟</value>
+  <data name="FollowedBy" xml:space="preserve">
+    <value>متابع من قبل</value>
   </data>
 </root>

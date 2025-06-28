@@ -220,19 +220,17 @@ namespace MaidLinker.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("Childs")
+                    b.Property<int?>("Childs")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("FirstNameAr")
-                        .IsRequired()
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
 
                     b.Property<string>("FirstNameEn")
-                        .IsRequired()
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
 
@@ -243,46 +241,40 @@ namespace MaidLinker.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("LastNameAr")
-                        .IsRequired()
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
 
                     b.Property<string>("LastNameEn")
-                        .IsRequired()
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
 
-                    b.Property<int>("MaritalStatus")
+                    b.Property<int?>("MaritalStatus")
                         .HasColumnType("int");
 
-                    b.Property<int>("NationalityId")
+                    b.Property<int?>("NationalityId")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<string>("Note")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SecondNameAr")
-                        .IsRequired()
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
 
                     b.Property<string>("SecondNameEn")
-                        .IsRequired()
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
 
                     b.Property<string>("ThirdNameAr")
-                        .IsRequired()
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
 
                     b.Property<string>("ThirdNameEn")
-                        .IsRequired()
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
 
-                    b.Property<double>("TotalExperience")
+                    b.Property<double?>("TotalExperience")
                         .HasColumnType("float");
 
                     b.Property<string>("VideoURL")
@@ -369,11 +361,17 @@ namespace MaidLinker.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<decimal>("AmountPaid")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<string>("ContractFilePath")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("ContractSigned")
                         .HasColumnType("bit");
+
+                    b.Property<string>("FollowByUsername")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("MaidId")
                         .HasColumnType("int");
@@ -401,6 +399,12 @@ namespace MaidLinker.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("TotalAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int?>("WorkFlowStatus")
                         .HasColumnType("int");
 
                     b.HasKey("Id");

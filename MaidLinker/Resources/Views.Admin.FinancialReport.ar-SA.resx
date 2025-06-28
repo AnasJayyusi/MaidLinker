@@ -117,77 +117,79 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-
-	<data name="FinancialReportTitle" xml:space="preserve">
+  <data name="FinancialReportTitle" xml:space="preserve">
     <value>التقرير المالي</value>
   </data>
-	<data name="FromDate" xml:space="preserve">
+  <data name="FromDate" xml:space="preserve">
     <value>من التاريخ</value>
   </data>
-	<data name="ToDate" xml:space="preserve">
+  <data name="ToDate" xml:space="preserve">
     <value>إلى التاريخ</value>
   </data>
-	<data name="FilterButton" xml:space="preserve">
+  <data name="FilterButton" xml:space="preserve">
     <value>تصفية</value>
   </data>
-	<data name="RequestsStatusChartTitle" xml:space="preserve">
+  <data name="RequestsStatusChartTitle" xml:space="preserve">
     <value>مخطط حالة الطلبات</value>
   </data>
-	<data name="CompletedPreparedRequestsTitle" xml:space="preserve">
+  <data name="CompletedPreparedRequestsTitle" xml:space="preserve">
     <value>الطلبات المكتملة والمعدة</value>
   </data>
-	<data name="IncomeExpensesTitle" xml:space="preserve">
+  <data name="IncomeExpensesTitle" xml:space="preserve">
     <value>الدخل والمصروفات</value>
   </data>
-	<data name="TransactionTitle" xml:space="preserve">
-    <value>عنوان المعاملة</value>
+  <data name="TransactionTitle" xml:space="preserve">
+    <value> اسم الإدخال</value>
   </data>
-	<data name="Amount" xml:space="preserve">
+  <data name="Amount" xml:space="preserve">
     <value>المبلغ</value>
   </data>
-	<data name="Type" xml:space="preserve">
+  <data name="Type" xml:space="preserve">
     <value>النوع</value>
   </data>
-	<data name="Income" xml:space="preserve">
+  <data name="Income" xml:space="preserve">
     <value>دخل</value>
   </data>
-	<data name="Expense" xml:space="preserve">
+  <data name="Expense" xml:space="preserve">
     <value>مصروف</value>
   </data>
-	<data name="Add" xml:space="preserve">
+  <data name="Add" xml:space="preserve">
     <value>إضافة</value>
   </data>
-	<data name="AddDate" xml:space="preserve">
+  <data name="AddDate" xml:space="preserve">
     <value>تاريخ الإضافة</value>
   </data>
-	<data name="Action" xml:space="preserve">
+  <data name="Action" xml:space="preserve">
     <value>إجراء</value>
   </data>
-	<data name="TotalIncome" xml:space="preserve">
+  <data name="TotalIncome" xml:space="preserve">
     <value>إجمالي الدخل</value>
   </data>
-	<data name="TotalExpenses" xml:space="preserve">
+  <data name="TotalExpenses" xml:space="preserve">
     <value>إجمالي المصروفات</value>
   </data>
-	<data name="TotalProfit" xml:space="preserve">
+  <data name="TotalProfit" xml:space="preserve">
     <value>إجمالي الربح</value>
   </data>
-	<data name="JOD" xml:space="preserve">
+  <data name="JOD" xml:space="preserve">
     <value>د.أ</value>
   </data>
-	<data name="Completed" xml:space="preserve">
+  <data name="Completed" xml:space="preserve">
     <value>مكتملة</value>
   </data>
-	<data name="Prepared" xml:space="preserve">
+  <data name="Prepared" xml:space="preserve">
     <value>معدة</value>
   </data>
-	<data name="RequestsCount" xml:space="preserve">
+  <data name="RequestsCount" xml:space="preserve">
     <value>عدد الطلبات</value>
   </data>
-	<data name="PleaseFillAllFieldsCorrectly" xml:space="preserve">
+  <data name="PleaseFillAllFieldsCorrectly" xml:space="preserve">
     <value>يرجى تعبئة جميع الحقول بشكل صحيح.</value>
   </data>
-	<data name="AreYouSureDelete" xml:space="preserve">
+  <data name="AreYouSureDelete" xml:space="preserve">
     <value>هل أنت متأكد من حذف هذا السجل؟</value>
+  </data>
+  <data name="Print" xml:space="preserve">
+    <value>طباعة</value>
   </data>
 </root>

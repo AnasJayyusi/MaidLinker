@@ -165,4 +165,7 @@
   <data name="Confirmation" xml:space="preserve">
     <value>Confirmation</value>
   </data>
+  <data name="Now" xml:space="preserve">
+    <value>Now</value>
+  </data>
 </root>
