@@ -147,7 +147,10 @@
   <data name="Language" xml:space="preserve">
     <value>اللغة</value>
   </data>
-	<data name="Name" xml:space="preserve">
-   <value>الأسم</value>
- </data>
+  <data name="Name" xml:space="preserve">
+    <value>الأسم</value>
+  </data>
+  <data name="ServedCountries" xml:space="preserve">
+    <value>أماكن العمل</value>
+  </data>
 </root>

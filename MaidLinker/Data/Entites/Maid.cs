@@ -37,6 +37,7 @@ namespace MaidLinker.Data.Entites
 
         public List<Country>? ServedCountries { get; set; }
         public MaritalStatus? MaritalStatus { get; set; }
+        public Religion? Religion { get; set; }
         public int? Childs { get; set; }
         public List<Language>? Langauges { get; set; }
         public DateTime DateOfBirth { get; set; }

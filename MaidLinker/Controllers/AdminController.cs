@@ -500,6 +500,7 @@ namespace MaidLinker.Controllers
                 DateOfBirth = dto.DateOfBirth,
                 TotalExperience = dto.TotalExperience,
                 MaritalStatus = dto.MaritalStatus,
+                Religion = dto.Religion,
                 Childs = dto.Childs,
                 Note = dto.Note,
                 NationalityId = dto.NationalityId,
@@ -571,6 +572,7 @@ namespace MaidLinker.Controllers
                 dateOfBirth = maid.DateOfBirth.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture),
                 totalExperience = maid.TotalExperience,
                 maritalStatusId = maid.MaritalStatus,
+                religionId = maid.Religion,
                 childs = maid.Childs,
                 nationalityId = maid.NationalityId,
                 servedCountryIds = maid.ServedCountries.Select(s => s.Id),
@@ -637,6 +639,7 @@ namespace MaidLinker.Controllers
             maid.DateOfBirth = dto.DateOfBirth;
             maid.TotalExperience = dto.TotalExperience;
             maid.MaritalStatus = dto.MaritalStatus;
+            maid.Religion = dto.Religion;
             maid.Childs = dto.Childs;
             maid.Note = dto.Note;
             maid.NationalityId = dto.NationalityId;
@@ -797,7 +800,7 @@ namespace MaidLinker.Controllers
             return PartialView("MaidList", maids);
         }
 
-        public IActionResult FillMaidsListWithFilter(string name, int nationalityId, int langId, Age age, Experience experience, MaritalStatus maritalStatus, string sortBy)
+        public IActionResult FillMaidsListWithFilter(string name, int nationalityId, int langId, Age age, Experience experience, MaritalStatus maritalStatus, int servedCountryId, string sortBy)
         {
             IQueryable<Maid> query = _dbContext.Maids
                                .Where(w => w.IsAvailable == true)
@@ -812,15 +815,15 @@ namespace MaidLinker.Controllers
                 var loweredName = name.ToLower();
 
                 query = query.Where(m =>
-                 (m.FirstNameEn != null && EF.Functions.Like(m.FirstNameEn, $"%{name}%")) ||
-          (m.FirstNameEn != null && EF.Functions.Like(m.FirstNameEn, $"%{name}%")) ||
-          (m.SecondNameEn != null && EF.Functions.Like(m.SecondNameEn, $"%{name}%")) ||
-          (m.ThirdNameEn != null && EF.Functions.Like(m.ThirdNameEn, $"%{name}%")) ||
-          (m.LastNameEn != null && EF.Functions.Like(m.LastNameEn, $"%{name}%")) ||
-          (m.FirstNameAr != null && EF.Functions.Like(m.FirstNameAr, $"%{name}%")) ||
-          (m.SecondNameAr != null && EF.Functions.Like(m.SecondNameAr, $"%{name}%")) ||
-          (m.ThirdNameAr != null && EF.Functions.Like(m.ThirdNameAr, $"%{name}%")) ||
-          (m.LastNameAr != null && EF.Functions.Like(m.LastNameAr, $"%{name}%")));
+                                   (m.FirstNameEn != null && EF.Functions.Like(m.FirstNameEn, $"%{name}%")) ||
+                                   (m.FirstNameEn != null && EF.Functions.Like(m.FirstNameEn, $"%{name}%")) ||
+                                   (m.SecondNameEn != null && EF.Functions.Like(m.SecondNameEn, $"%{name}%")) ||
+                                   (m.ThirdNameEn != null && EF.Functions.Like(m.ThirdNameEn, $"%{name}%")) ||
+                                   (m.LastNameEn != null && EF.Functions.Like(m.LastNameEn, $"%{name}%")) ||
+                                   (m.FirstNameAr != null && EF.Functions.Like(m.FirstNameAr, $"%{name}%")) ||
+                                   (m.SecondNameAr != null && EF.Functions.Like(m.SecondNameAr, $"%{name}%")) ||
+                                   (m.ThirdNameAr != null && EF.Functions.Like(m.ThirdNameAr, $"%{name}%")) ||
+                                   (m.LastNameAr != null && EF.Functions.Like(m.LastNameAr, $"%{name}%")));
             }
 
             if (nationalityId > 0)
@@ -875,6 +878,11 @@ namespace MaidLinker.Controllers
                 {
                     query = query.OrderByDescending(m => m.DateOfBirth);
                 }
+            }
+
+            if (servedCountryId > 0)
+            {
+                query = query.Where(m => m.ServedCountries.Any(c => c.Id == servedCountryId));
             }
 
             return PartialView("MaidList", query.ToList());

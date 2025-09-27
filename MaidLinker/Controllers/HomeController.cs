@@ -71,7 +71,9 @@ namespace MaidLinker.Controllers
         #region Maids 
         public IActionResult Maids()
         {
-            var maids = _dbContext.Maids.Where(w => w.IsAvailable == true).Include(i => i.Nationality).Include(i => i.Langauges).ToList();
+            var maids = _dbContext.Maids.Where(w => w.IsAvailable == true)
+                                       .Include(i => i.Nationality)
+                                       .Include(i => i.Langauges).ToList();
             return View(maids);
         }
         public ActionResult FillMaidsList()
@@ -80,84 +82,99 @@ namespace MaidLinker.Controllers
             return PartialView("MaidList", maids);
         }
 
-        public IActionResult FillMaidsListWithFilter(string name, int nationalityId, int langId, Age age, Experience experience, MaritalStatus maritalStatus, string sortBy)
+        public IActionResult FillMaidsListWithFilter(
+                                                      string name,
+                                                      int nationalityId,
+                                                      int langId,
+                                                      Age age,
+                                                      Experience experience,
+                                                      MaritalStatus maritalStatus,
+                                                      int servedCountryId,
+                                                      string sortBy)
         {
-            IQueryable<Maid> query = _dbContext.Maids
-                                .Where(w => w.IsAvailable == true)
-                               .Include(m => m.Nationality)
-                               .Include(m => m.Langauges)
-                               .Include(m => m.ServedCountries);
-
-            if (!string.IsNullOrWhiteSpace(name))
             {
-                var loweredName = name.ToLower();
+                IQueryable<Maid> query = _dbContext.Maids
+                                    .Where(w => w.IsAvailable == true)
+                                   .Include(m => m.Nationality)
+                                   .Include(m => m.Langauges)
+                                   .Include(m => m.ServedCountries);
 
-                query = query.Where(m =>
-          (m.FirstNameEn != null && EF.Functions.Like(m.FirstNameEn, $"%{name}%")) ||
-          (m.SecondNameEn != null && EF.Functions.Like(m.SecondNameEn, $"%{name}%")) ||
-          (m.ThirdNameEn != null && EF.Functions.Like(m.ThirdNameEn, $"%{name}%")) ||
-          (m.LastNameEn != null && EF.Functions.Like(m.LastNameEn, $"%{name}%")) ||
-          (m.FirstNameAr != null && EF.Functions.Like(m.FirstNameAr, $"%{name}%")) ||
-          (m.SecondNameAr != null && EF.Functions.Like(m.SecondNameAr, $"%{name}%")) ||
-          (m.ThirdNameAr != null && EF.Functions.Like(m.ThirdNameAr, $"%{name}%")) ||
-          (m.LastNameAr != null && EF.Functions.Like(m.LastNameAr, $"%{name}%")));
-            }
-
-            if (nationalityId > 0)
-            {
-                query = query.Where(m => m.NationalityId == nationalityId);
-            }
-
-            if (langId > 0)
-            {
-                query = query.Where(m => m.Langauges.Any(l => l.Id == langId));
-            }
-
-            if (age > 0)
-            {
-                var ageRange = GetDateRangeFromAgeEnum(age);
-                if (ageRange.From.HasValue && ageRange.To.HasValue)
+                if (!string.IsNullOrWhiteSpace(name))
                 {
-                    query = query.Where(m => m.DateOfBirth >= ageRange.From.Value && m.DateOfBirth <= ageRange.To.Value);
-                }
-                else if (ageRange.To.HasValue) // Age.Old case
-                {
-                    query = query.Where(m => m.DateOfBirth <= ageRange.To.Value);
-                }
-            }
+                    var loweredName = name.ToLower();
 
-            if (experience > 0)
-            {
-                var experienceRange = GetExperienceRange(experience);
-                if (experienceRange.Value.Min is not null)
-                {
-                    query = query.Where(m => m.TotalExperience >= experienceRange.Value.Min.Value);
+                    query = query.Where(m =>
+                                      (m.FirstNameEn != null && EF.Functions.Like(m.FirstNameEn, $"%{name}%")) ||
+                                      (m.SecondNameEn != null && EF.Functions.Like(m.SecondNameEn, $"%{name}%")) ||
+                                      (m.ThirdNameEn != null && EF.Functions.Like(m.ThirdNameEn, $"%{name}%")) ||
+                                      (m.LastNameEn != null && EF.Functions.Like(m.LastNameEn, $"%{name}%")) ||
+                                      (m.FirstNameAr != null && EF.Functions.Like(m.FirstNameAr, $"%{name}%")) ||
+                                      (m.SecondNameAr != null && EF.Functions.Like(m.SecondNameAr, $"%{name}%")) ||
+                                      (m.ThirdNameAr != null && EF.Functions.Like(m.ThirdNameAr, $"%{name}%")) ||
+                                      (m.LastNameAr != null && EF.Functions.Like(m.LastNameAr, $"%{name}%")));
                 }
 
-                if (experienceRange.Value.Max is not null)
+                if (nationalityId > 0)
                 {
-                    query = query.Where(m => m.TotalExperience <= experienceRange.Value.Max.Value);
+                    query = query.Where(m => m.NationalityId == nationalityId);
                 }
-            }
 
-            if (maritalStatus > 0)
-            {
-                query = query.Where(m => m.MaritalStatus == maritalStatus);
-            }
-
-            if (!string.IsNullOrEmpty(sortBy))
-            {
-                if (sortBy == "Experience")
+                if (langId > 0)
                 {
-                    query = query.OrderByDescending(m => m.TotalExperience);
+                    query = query.Where(m => m.Langauges.Any(l => l.Id == langId));
                 }
-                if (sortBy == "Age")
-                {
-                    query = query.OrderByDescending(m => m.DateOfBirth);
-                }
-            }
 
-            return PartialView("MaidList", query.ToList());
+                if (age > 0)
+                {
+                    var ageRange = GetDateRangeFromAgeEnum(age);
+                    if (ageRange.From.HasValue && ageRange.To.HasValue)
+                    {
+                        query = query.Where(m => m.DateOfBirth >= ageRange.From.Value && m.DateOfBirth <= ageRange.To.Value);
+                    }
+                    else if (ageRange.To.HasValue) // Age.Old case
+                    {
+                        query = query.Where(m => m.DateOfBirth <= ageRange.To.Value);
+                    }
+                }
+
+                if (experience > 0)
+                {
+                    var experienceRange = GetExperienceRange(experience);
+                    if (experienceRange.Value.Min is not null)
+                    {
+                        query = query.Where(m => m.TotalExperience >= experienceRange.Value.Min.Value);
+                    }
+
+                    if (experienceRange.Value.Max is not null)
+                    {
+                        query = query.Where(m => m.TotalExperience <= experienceRange.Value.Max.Value);
+                    }
+                }
+
+                if (maritalStatus > 0)
+                {
+                    query = query.Where(m => m.MaritalStatus == maritalStatus);
+                }
+
+                if (!string.IsNullOrEmpty(sortBy))
+                {
+                    if (sortBy == "Experience")
+                    {
+                        query = query.OrderByDescending(m => m.TotalExperience);
+                    }
+                    if (sortBy == "Age")
+                    {
+                        query = query.OrderByDescending(m => m.DateOfBirth);
+                    }
+                }
+
+                if (servedCountryId > 0)
+                {
+                    query = query.Where(m => m.ServedCountries.Any(c => c.Id == servedCountryId));
+                }
+
+                return PartialView("MaidList", query.ToList());
+            }
         }
 
         private (DateTime? From, DateTime? To) GetDateRangeFromAgeEnum(Age age)
@@ -198,9 +215,25 @@ namespace MaidLinker.Controllers
 
             if (maid == null)
                 return NotFound();
-
+            ViewBag.IsFullPage = false;
             return PartialView("_MaidDetailsPartial", maid);
         }
+
+        public IActionResult MaidDetails(int id)
+        {
+            var maid = _dbContext.Maids
+                                 .Include(m => m.Nationality)
+                                 .Include(m => m.Langauges)
+                                 .Include(m => m.ServedCountries)
+                                 .FirstOrDefault(m => m.Id == id);
+
+            if (maid == null)
+                return NotFound();
+            ViewBag.IsFullPage = true;
+
+            return View("MaidDetailsWrapper", maid); // Full page wrapper
+        }
+
 
         #endregion
 

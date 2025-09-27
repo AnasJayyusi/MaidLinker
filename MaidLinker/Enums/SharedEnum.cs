@@ -87,5 +87,14 @@
             ProcessingStarted = 3         // تم السير بالمعاملة
 
         }
+
+
+        public enum Religion
+        {
+            Islam = 1,
+            Christianity = 2,
+            Other = 3
+        }
+
     }
 }

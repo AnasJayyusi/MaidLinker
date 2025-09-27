@@ -37,6 +37,7 @@
                     <!-- Brief info -->
                     <p style="font-size: 13px; margin-top: 5px;">
                         <strong>@Localizer["Nationality"]:</strong>  @item.Nationality?.Title <br />
+                        <strong>@Localizer["Religion"]:</strong> @Localizer[item.Religion?.ToString() ?? "Other"]<br />
                         <strong>@Localizer["Experience"]:</strong> @item.TotalExperience @Localizer["Years"] <br />
                         <strong>@Localizer["MaritalStatus"]:</strong> @Localizer[$"MaritalStatus_{item.MaritalStatus}"] <br />
                         <strong>@Localizer["Languages"]:</strong> @string.Join(", ", item.Langauges?.Select(l => isEng ? l.NameEn : l.NameAr) ?? Enumerable.Empty<string>())<br />

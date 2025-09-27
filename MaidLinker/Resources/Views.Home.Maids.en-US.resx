@@ -150,4 +150,7 @@
   <data name="Name" xml:space="preserve">
     <value>Name</value>
   </data>
+  <data name="ServedCountries" xml:space="preserve">
+    <value>Countries of work</value>
+  </data>
 </root>

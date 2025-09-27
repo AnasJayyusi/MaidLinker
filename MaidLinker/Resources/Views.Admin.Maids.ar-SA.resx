@@ -243,4 +243,16 @@
   <data name="UseCtrlToMultiSelect" xml:space="preserve">
     <value>استخدم Ctrl لتحديد متعدد</value>
   </data>
+  <data name="Islam" xml:space="preserve">
+    <value>الإسلام</value>
+  </data>
+  <data name="Christianity" xml:space="preserve">
+    <value>المسيحية</value>
+  </data>
+  <data name="Other" xml:space="preserve">
+    <value>أخرى</value>
+  </data>
+  <data name="Religion" xml:space="preserve">
+    <value>الديانة </value>
+  </data>
 </root>

@@ -8,6 +8,11 @@
     string textAlign = direction == "rtl" ? "right" : "left";
     bool isEng = cultureCode.StartsWith("en", StringComparison.OrdinalIgnoreCase);
     string embedUrl = Model.VideoURL;
+    bool isFullPage = ViewBag.IsFullPage != null && (bool)ViewBag.IsFullPage;
+
+
+    string alignClass = direction == "rtl" ? "text-start" : "text-end";
+
 
     if (!string.IsNullOrWhiteSpace(embedUrl))
     {
@@ -28,6 +33,19 @@
 }
 
 <div class="container" style="direction:@direction; text-align:@textAlign; padding: 20px;">
+<div class="d-flex justify-content-center mb-3">
+
+
+        <div class="d-flex justify-content-center mb-3">
+            <button type="button"
+                    class="btn btn-outline-primary"
+                    onclick="navigator.clipboard.writeText('@Url.Action("MaidDetails", "Home", new { id = Model.Id }, Context.Request.Scheme)'); showSuccessMessage();">
+                <i class="fas fa-copy"></i> @Localizer["Copy"]
+            </button>
+        </div>
+
+</div>
+
 
     <!-- Video Section -->
     @if (!string.IsNullOrWhiteSpace(Model.VideoURL))
@@ -59,7 +77,7 @@
                 <div class="row gy-3">
                     <div class="col-md-6">
                         <i class="fa fa-user text-primary me-1"></i>
-                        <strong>@Localizer["Name"]:</strong> @Model.FirstNameAr
+                        <strong>@Localizer["Name"]:</strong> @Model.FullName
                     </div>
 
                     <div class="col-md-6">
@@ -87,15 +105,32 @@
                         <strong>@Localizer["Children"]:</strong> @Model.Childs
                     </div>
 
-                    <div class="col-md-12">
+                    <div class="col-md-6">
                         <i class="fa fa-language text-primary me-1"></i>
                         <strong>@Localizer["Languages"]:</strong>
-                        @foreach (var lang in Model.Langauges ?? Enumerable.Empty<MaidLinker.Data.Entites.Language>())
+
+
+                        @if (Model.Langauges != null && Model.Langauges.Any())
                         {
-                            <span class="badge bg-light text-dark me-1">
-                                @(isEng? lang.NameEn: lang.NameAr)
+                            foreach (var lang in Model.Langauges)
+                            {
+                                <span class="badge bg-light text-dark me-1">
+                                    @(isEng? lang.NameEn: lang.NameAr)
+                                </span>
+                            }
+                        }
+                        else
+                        {
+                            <span class="text-muted">
+                                @Localizer["NoLanguagesSpecified"]
                             </span>
                         }
+
+                    </div>
+                    <div class="col-md-6">
+                        <i class="fa-solid fa-place-of-worship text-secondary me-1"></i>
+                        <strong>@Localizer["Religion"]:</strong>@Localizer[Model.Religion?.ToString() ?? "Other"]
+
                     </div>
 
                     <div class="col-md-12">
@@ -127,11 +162,16 @@
     </div>
 
     <!-- Footer -->
-    <div class="modal-footer justify-content-center">
-        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal" id="close-add-service">
-            <i class="fa fa-chevron-left me-1"></i> @Localizer["Back to list"]
-        </button>
-    </div>
+    @if (isFullPage == false)
+    {
+        <div class="modal-footer justify-content-center">
+            <button type="button" class="btn btn-outline-secondary" data-dismiss="modal" id="close-add-service">
+                <i class="fa fa-chevron-left me-1"></i> @Localizer["Back to list"]
+            </button>
+        </div>
+    }
+
+ 
 </div>
 <div class="modal fade" id="requestMaidModal" tabindex="-1" aria-labelledby="requestMaidModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">

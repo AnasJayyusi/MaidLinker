@@ -39,6 +39,7 @@ namespace MaidLinker.Controllers
             // Pass the data to the view
             return Json(dropdownData);
         }
+        
 
         [HttpGet]
         [Route("GetLanguagesDDL")]
@@ -86,7 +87,7 @@ namespace MaidLinker.Controllers
             return Json(dropdownData);
         }
 
-        [Route("GetMaritalStatus")]
+        [Route("GetMaritalStatusDDL")]
         public ActionResult GetMaritalStatusDDL()
         {
             var culture = Thread.CurrentThread.CurrentCulture.Name;
@@ -97,6 +98,21 @@ namespace MaidLinker.Controllers
                                  new { Id = (int)MaritalStatus.Married,  Title = culture.StartsWith("ar") ? "متزوجة" : "Married" },
                                  new { Id = (int)MaritalStatus.Divorced, Title = culture.StartsWith("ar") ? "مطلقة" : "Divorced" },
                                  new { Id = (int)MaritalStatus.Widowed,  Title = culture.StartsWith("ar") ? "أرملة" : "Widowed" }
+                             };
+
+            return Json(dropdownData);
+        }
+
+        [Route("GetReligions")]
+        public ActionResult GetReligionsDDL()
+        {
+            var culture = Thread.CurrentThread.CurrentCulture.Name;
+
+            var dropdownData = new List<object>
+                             {
+                                 new { Id = (int)Religion.Islam,   Title = culture.StartsWith("ar") ? "الإسلام" : "Islam" },
+                                 new { Id = (int)Religion.Christianity,  Title = culture.StartsWith("ar") ? "النصرانية" : "Christianity" },
+                                 new { Id = (int)Religion.Other, Title = culture.StartsWith("ar") ? "-" : "-" },
                              };
 
             return Json(dropdownData);

@@ -65,33 +65,43 @@
                         </div>
                     </div>
                     <div class="row">
-                         <div class="col-md-2 col-12 p-0">
+                         <div class="col">
                             <select class="form-control" id="nationalities-ddl" onchange="doSearch()">
                                 <option value="-1">@Localizer["Nationality"] </option>
                             </select>
                         </div>
 
-                        <div class="col-md-2 col-12 ">
+                        <div class="col-md-4">
                             <select class="form-control" id="languages-ddl" onchange="doSearch()">
                                 <option value="-1">@Localizer["Language"] </option>
                             </select>
                         </div>
-                        <div class="col-md-2 col-12">
+                        <div class="col-md-4">
                             <select class="form-control" id="age-ddl" onchange="doSearch()">
                                 <option value="-1">@Localizer["Age"] </option>
                             </select>
                         </div>
-                        <div class="col-md-2 col-12 ">
+                      
+
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-md-4">
                             <select class="form-control" id="experience-ddl" onchange="doSearch()">
                                 <option value="-1">@Localizer["Experience"] </option>
                             </select>
                         </div>
-                        <div class="col-md-4 col-12 ">
+                        <div class="col-md-4">
                             <select class="form-control" id="maritalStatus-ddl" onchange="doSearch()">
                                 <option value="-1">@Localizer["MaritalStatus"]</option>
                             </select>
                         </div>
 
+                        <div class="col-md-4">
+                            <select class="form-control" id="servedCountries-ddl" onchange="doSearch()">
+                                <option value="-1">@Localizer["ServedCountries"]</option>
+                            </select>
+                        </div>
                     </div>
                     <div id="listContainer">
                         @Html.Partial("MaidList", Model)
@@ -99,17 +109,7 @@
                 </form>
             </div>
 
-            @*     <div class="col-lg-4 col-12 mb-4">
-            <div class="data-contain" style="margin-top: 84px;">
-
-            <div style="padding-bottom:10px">
-            <select class="form-control" id="maritalStatus-ddl" onchange="doSearch()">
-            <option value="0">All maritalStatus Companies</option>
-            </select>
-            </div>
-
-            </div>
-            </div> *@
+       
         </div>
     </div>
 </section>
@@ -244,7 +244,26 @@
                 }
             });
 
-           
+            // ServedCountries
+             $.ajax({
+                url: '@Url.Action("GetCountriesDDL", "Common")',
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    // Clear existing options
+                    $('#servedCountries-ddl').empty();
+                    // Populate the dropdown list
+                    var defaultSelect = "@Localizer["ServedCountries"]"
+                    var isEng = isEnglishCulture();
+
+                    var dropdown = $('#servedCountries-ddl');
+                    dropdown.append($('<option></option>').val(0).text(defaultSelect));
+
+                    $.each(data, function (index, item) {
+                        dropdown.append($('<option></option>').val(item.id).text(item.title));
+                    });
+                }
+            });
 
             setTimeout(function () {
                 setSelectedOptions();
@@ -257,7 +276,6 @@
             if (event.keyCode === 13) {
                 event.preventDefault();
                 doSearch();
-                ;
             }
         }
 
@@ -268,11 +286,12 @@
             var age = $('#age-ddl').val();
             var experience = $('#experience-ddl').val();
             var maritalStatus = $('#maritalStatus-ddl').val();
+            var servedCountries = $('#servedCountries-ddl').val();
             var sortBy = $('#sort-ddl').val();
 
             var container = $('#listContainer');
             $.ajax({
-                url: '/Home/FillMaidsListWithFilter?name=' + name + '&nationalityId=' + nationalityId + '&langId=' + langId + '&age=' + age+ '&experience=' + experience + '&maritalStatus=' + maritalStatus+ '&sortBy=' + sortBy,
+                url: '/Home/FillMaidsListWithFilter?name=' + name + '&nationalityId=' + nationalityId + '&langId=' + langId + '&age=' + age+ '&experience=' + experience + '&maritalStatus=' + maritalStatus+  + '&maritalStatus=' + maritalStatus+'+ &servedCountryId=' + servedCountries+'&sortBy=' + sortBy,
                 type: 'GET',
                 success: function (response) {
                     container.html(response);

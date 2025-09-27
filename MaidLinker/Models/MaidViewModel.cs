@@ -21,6 +21,7 @@ namespace MaidLinker.Models
         public double TotalExperience { get; set; }
         public List<int> ServedCountryIds { get; set; }
         public MaritalStatus MaritalStatus { get; set; }
+        public Religion Religion { get; set; }
         public int Childs { get; set; }
         public List<int> LanguageIds { get; set; }
 

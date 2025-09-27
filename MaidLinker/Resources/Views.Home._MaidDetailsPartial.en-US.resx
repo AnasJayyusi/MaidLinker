@@ -117,80 +117,91 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-	<data name="Name" xml:space="preserve">
+  <data name="Name" xml:space="preserve">
     <value>Name</value>
   </data>
-	<data name="Nationality" xml:space="preserve">
+  <data name="Nationality" xml:space="preserve">
     <value>Nationality</value>
   </data>
-	<data name="Age" xml:space="preserve">
+  <data name="Age" xml:space="preserve">
     <value>Age</value>
   </data>
-	<data name="Years" xml:space="preserve">
+  <data name="Years" xml:space="preserve">
     <value>Years</value>
   </data>
-	<data name="Experience" xml:space="preserve">
+  <data name="Experience" xml:space="preserve">
     <value>Experience</value>
   </data>
-	<data name="MaritalStatus" xml:space="preserve">
+  <data name="MaritalStatus" xml:space="preserve">
     <value>Marital Status</value>
   </data>
-	<data name="Children" xml:space="preserve">
+  <data name="Children" xml:space="preserve">
     <value>Children</value>
   </data>
-	<data name="Languages" xml:space="preserve">
+  <data name="Languages" xml:space="preserve">
     <value>Languages</value>
   </data>
-	<data name="ServedCountries" xml:space="preserve">
+  <data name="ServedCountries" xml:space="preserve">
     <value>Served Countries</value>
   </data>
-	<data name="Notes" xml:space="preserve">
+  <data name="Notes" xml:space="preserve">
     <value>Notes</value>
   </data>
-	<data name="RequestThisMaid" xml:space="preserve">
+  <data name="RequestThisMaid" xml:space="preserve">
     <value>Request this maid</value>
   </data>
-	<data name="Back to list" xml:space="preserve">
+  <data name="Back to list" xml:space="preserve">
     <value>Skip this maid and continue browsing others.</value>
   </data>
-	<data name="RequestSentForMaid" xml:space="preserve">
+  <data name="RequestSentForMaid" xml:space="preserve">
     <value>Request has been sent for maid</value>
   </data>
-	<data name="MaritalStatus_Single" xml:space="preserve">
-  <value>Single</value>
-</data>
-	<data name="MaritalStatus_Married" xml:space="preserve">
-  <value>Married</value>
-</data>
-	<data name="MaritalStatus_Divorced" xml:space="preserve">
-  <value>Divorced</value>
-</data>
-	<data name="MaritalStatus_Widowed" xml:space="preserve">
-  <value>Widowed</value>
-</data>
-	<data name="MaidDetails" xml:space="preserve">
-  <value>Details</value>
-</data>
-	<data name="PhoneNumber" xml:space="preserve">
+  <data name="MaritalStatus_Single" xml:space="preserve">
+    <value>Single</value>
+  </data>
+  <data name="MaritalStatus_Married" xml:space="preserve">
+    <value>Married</value>
+  </data>
+  <data name="MaritalStatus_Divorced" xml:space="preserve">
+    <value>Divorced</value>
+  </data>
+  <data name="MaritalStatus_Widowed" xml:space="preserve">
+    <value>Widowed</value>
+  </data>
+  <data name="MaidDetails" xml:space="preserve">
+    <value>Details</value>
+  </data>
+  <data name="PhoneNumber" xml:space="preserve">
     <value>Phone Number</value>
   </data>
-
-	<data name="CancelRequest" xml:space="preserve">
+  <data name="CancelRequest" xml:space="preserve">
     <value>Cancel Request</value>
   </data>
-
-	<data name="SendRequest" xml:space="preserve">
-    <value>Send Request</value>
-  </data>
-
-
-
-	<data name="InsertName" xml:space="preserve">
+  <data name="InsertName" xml:space="preserve">
     <value>Type Your Name</value>
   </data>
-
-
-	<data name="InvalidNumber" xml:space="preserve">
+  <data name="InvalidNumber" xml:space="preserve">
     <value>Invalid phone number. Must start with 07 and consist of 10 digits. </value>
+  </data>
+  <data name="SendRequest" xml:space="preserve">
+    <value>Send Request</value>
+  </data>
+  <data name="Copy" xml:space="preserve">
+    <value>Copy Maid Link</value>
+  </data>
+  <data name="NoLanguagesSpecified" xml:space="preserve">
+    <value>No languages specified</value>
+  </data>
+  <data name="Religion" xml:space="preserve">
+    <value>Religion</value>
+  </data>
+  <data name="Islam" xml:space="preserve">
+    <value>Islam</value>
+  </data>
+  <data name="Christianity" xml:space="preserve">
+    <value>Christianity</value>
+  </data>
+  <data name="Other" xml:space="preserve">
+    <value>-</value>
   </data>
 </root>

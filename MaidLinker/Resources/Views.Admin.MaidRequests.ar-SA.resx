@@ -153,4 +153,7 @@
   <data name="MaidPageTitle" xml:space="preserve">
     <value>طلب داخلي</value>
   </data>
+  <data name="ServedCountries" xml:space="preserve">
+    <value>أماكن العمل</value>
+  </data>
 </root>

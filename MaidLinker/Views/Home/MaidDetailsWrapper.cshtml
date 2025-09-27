@@ -1,0 +1,12 @@
+﻿@model MaidLinker.Data.Entites.Maid
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml"; // Or null if you want barebones
+    bool isFullPage = ViewBag.IsFullPage != null && (bool)ViewBag.IsFullPage;
+}
+
+
+<div style="padding-top:10%">
+    @Html.Partial("_MaidDetailsPartial", Model)
+</div>
+

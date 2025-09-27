@@ -186,4 +186,20 @@
   <data name="MaritalStatus_Widowed" xml:space="preserve">
     <value>Widowed</value>
   </data>
+  <data name="Religion" xml:space="preserve">
+    <value>Religion</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="Islam" xml:space="preserve">
+    <value>Islam</value>
+  </data>
+  <data name="Christianity" xml:space="preserve">
+    <value>Christianity
+</value>
+  </data>
+  <data name="Other" xml:space="preserve">
+    <value>-</value>
+  </data>
 </root>

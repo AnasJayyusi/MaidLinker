@@ -153,4 +153,7 @@
   <data name="MaidPageTitle" xml:space="preserve">
     <value>Internal Request</value>
   </data>
+  <data name="ServedCountries" xml:space="preserve">
+    <value>Countries of work</value>
+  </data>
 </root>

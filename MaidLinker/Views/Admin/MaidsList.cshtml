@@ -13,25 +13,40 @@
 <!-- #region Pagination Logic -->
 @{
     var defaultPageSize = 8;
-    var currentPage = Context.Request.Query["page"].ToString();
-    if (string.IsNullOrEmpty(currentPage)) currentPage = "1";
+    var maxPageSize = 20;
+    var maxVisiblePages = 5;
+
+    var currentPageStr = Context.Request.Query["page"].ToString();
+    var currentPageInt = string.IsNullOrEmpty(currentPageStr) ? 1 : int.Parse(currentPageStr);
 
     var searchQuery = Context.Request.Query["search"].ToString().Trim();
     var filteredItems = string.IsNullOrEmpty(searchQuery) ? Model :
         Model.Where(m => m.FirstNameEn.ToLower().Contains(searchQuery.ToLower()) ||
                          m.FirstNameAr.ToLower().Contains(searchQuery.ToLower())).ToList();
+
     var totalItems = filteredItems.Count;
 
     var pageSizeParam = Context.Request.Query["pageSize"].ToString();
     var pageSize = string.IsNullOrEmpty(pageSizeParam) ? defaultPageSize : int.Parse(pageSizeParam);
-    pageSize = Math.Max(1, Math.Min(pageSize, totalItems));
+    pageSize = Math.Max(1, Math.Min(pageSize, maxPageSize));
 
     var totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
-    var startIndex = (int.Parse(currentPage) - 1) * pageSize;
-    var endIndex = Math.Min(startIndex + pageSize - 1, totalItems - 1);
+    currentPageInt = Math.Max(1, Math.Min(currentPageInt, totalPages));
 
-    var visibleItems = filteredItems.GetRange(startIndex, endIndex - startIndex + 1);
+    var startIndex = (currentPageInt - 1) * pageSize;
+    var visibleItems = (startIndex < totalItems)
+        ? filteredItems.GetRange(startIndex, Math.Min(pageSize, totalItems - startIndex))
+        : new List<MaidLinker.Data.Entites.Maid>();
+
+    // Pagination window logic
+    var startPage = Math.Max(1, currentPageInt - 2);
+    var endPage = Math.Min(totalPages, startPage + maxVisiblePages - 1);
+    if (endPage - startPage + 1 < maxVisiblePages)
+    {
+        startPage = Math.Max(1, endPage - maxVisiblePages + 1);
+    }
 }
+
 <style>
     .anchorlimit {
         display: inline-block; /* Make sure it's a block or inline-block */
@@ -269,6 +284,19 @@
 
                     <hr />
 
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group" style="text-align:@textAlign">
+                                <label>@Localizer["Religion"]</label>
+                                <select class="form-control" id="maidsListReligion">
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr />
+
                     <div class="text-center my-3">
                         <img id="maidImagePreview" src="/images/female.png" alt="Maid Image"
                              style="width: 150px; height: 150px; border-radius: 50%; object-fit: contain; border: 2px solid #ccc;" />
@@ -288,7 +316,7 @@
                     </div>
                 </form>
 
-                <div style="text-align:center"  class="alert alert-info hidden" role="alert" id="error-msg">@Localizer["PleaseFillAllFields"]</div>
+                <div style="text-align:center" class="alert alert-info hidden" role="alert" id="error-msg">@Localizer["PleaseFillAllFields"]</div>
             </div>
             <div class="modal-footer">
                 <button id="close-edit-Maid" type="button" class="btn btn-danger" data-dismiss="modal">@Localizer["Cancel"]</button>
@@ -433,17 +461,31 @@
     </div>
 }
 <!-- #endregion -->
-<!-- #region Pagination -->
-<div class="text-center">
-    <ul class="pagination">
-        @for (int i = 1; i <= totalPages; i++)
+<!-- #region Pagination UI -->
+<nav aria-label="Page navigation">
+    <ul class="pagination justify-content-center">
+        @if (currentPageInt > 1)
         {
-            <li class="page-item @(i == int.Parse(currentPage) ? "active" : "")">
-                <a class="page-link" href="?page=@i&search=@searchQuery&pageSize=@pageSize">@i</a>
+            <li class="page-item">
+                <a class="page-link" href="?page=@(currentPageInt - 1)&pageSize=@pageSize&search=@searchQuery">«</a>
+            </li>
+        }
+
+        @for (int i = startPage; i <= endPage; i++)
+        {
+            <li class="page-item @(i == currentPageInt ? "active" : "")">
+                <a class="page-link" href="?page=@i&pageSize=@pageSize&search=@searchQuery">@i</a>
+            </li>
+        }
+
+        @if (currentPageInt < totalPages)
+        {
+            <li class="page-item">
+                <a class="page-link" href="?page=@(currentPageInt + 1)&pageSize=@pageSize&search=@searchQuery">»</a>
             </li>
         }
     </ul>
-</div>
+</nav>
 <!-- #endregion -->
 <!-- #region Scripts -->
 <script>
@@ -452,6 +494,7 @@
          loadLanguages("#maidsListlanguages");
          loadCountries('#maidsListCountries');
          loadMaritalStatuses('#maidsListlMaritalStatus');
+         loadReligions('#maidsListReligion');
          loadNationalities('#maidsListNationalities');
          $.ajax({
         url: '/Admin/GetMaid/' + id,
@@ -475,6 +518,7 @@
             $('#dateOfBirthMaidList').val(data.dateOfBirth?.split('T')[0]); // Format if needed
             $('#totalExperienceMaidList').val(data.totalExperience);
             $('#maidsListlMaritalStatus').val(data.maritalStatusId);
+            $('#maidsListReligion').val(data.religionId);
             $('#childsMaidList').val(data.childs);
             $('#maidsListNationalities').val(data.nationalityId);
             $('#noteMaidList').val(data.note);
@@ -534,6 +578,7 @@
         formData.append("DateOfBirth", formattedDate);
         formData.append('TotalExperience', $('#totalExperienceMaidList').val());
         formData.append('MaritalStatus', $('#maidsListlMaritalStatus').val());
+        formData.append('Religion', $('#maidsListReligion').val());
         formData.append('Childs', $('#childsMaidList').val());
         formData.append('Note', $('#noteMaidList').val());
         formData.append('NationalityId', $('#maidsListNationalities').val());
@@ -653,7 +698,7 @@
                 document.getElementById(`${type}Link`).classList.remove('d-none');
             }
         }
-     
+
         function toggleInput(type) {
             document.getElementById(`${type}Input`).value = "";
             document.getElementById(`${type}FileName`).innerText = "@Localizer["NoFileSelected"]";
@@ -744,9 +789,9 @@
         const maidId = button.data('id');
         var isCurrentlyAvailable = button.data('available');
             if (isCurrentlyAvailable == 'False' || isCurrentlyAvailable == false)
-            isCurrentlyAvailable = true; 
+            isCurrentlyAvailable = true;
             else
-            isCurrentlyAvailable = false; 
+            isCurrentlyAvailable = false;
 
 
         $.ajax({
