@@ -288,4 +288,13 @@
   <data name="Proxy" xml:space="preserve">
     <value>Proxy</value>
   </data>
+  <data name="Religion" xml:space="preserve">
+    <value>Religion</value>
+  </data>
+  <data name="FirstPage" xml:space="preserve">
+    <value>First Page</value>
+  </data>
+  <data name="LastPage" xml:space="preserve">
+    <value>Last Page</value>
+  </data>
 </root>

@@ -288,4 +288,13 @@
   <data name="Proxy" xml:space="preserve">
     <value>الوكيل</value>
   </data>
+  <data name="Religion" xml:space="preserve">
+    <value>الديانة</value>
+  </data>
+  <data name="FirstPage" xml:space="preserve">
+    <value>الصفحة الاولى </value>
+  </data>
+  <data name="LastPage" xml:space="preserve">
+    <value>الصفحة الاخيرة</value>
+  </data>
 </root>

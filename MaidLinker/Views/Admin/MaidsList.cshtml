@@ -12,9 +12,9 @@
 <!-- #endregion -->
 <!-- #region Pagination Logic -->
 @{
-    var defaultPageSize = 8;
-    var maxPageSize = 20;
-    var maxVisiblePages = 5;
+    var defaultPageSize = 9;
+    var maxPageSize = 999;
+    var maxVisiblePages = 10;
 
     var currentPageStr = Context.Request.Query["page"].ToString();
     var currentPageInt = string.IsNullOrEmpty(currentPageStr) ? 1 : int.Parse(currentPageStr);
@@ -288,23 +288,25 @@
 
                         </div>
 
-                        <div class="col-md-12">
-                            <div class="form-group" style="text-align:@textAlign">
-                                <label>@Localizer["Proxy"]</label>
-                                <input type="text" class="form-control" id="maidsLisproxy" maxlength="250" />
-                            </div>
-                        </div>
+                    
                     </div>
 
                     <hr />
 
 
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <div class="form-group" style="text-align:@textAlign">
                                 <label>@Localizer["Religion"]</label>
                                 <select class="form-control" id="maidsListReligion">
                                 </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group" style="text-align:@textAlign">
+                                <label>@Localizer["Proxy"]</label>
+                                <input type="text" class="form-control" id="maidsLisproxy" maxlength="250" />
                             </div>
                         </div>
                     </div>
@@ -478,6 +480,16 @@
 <!-- #region Pagination UI -->
 <nav aria-label="Page navigation">
     <ul class="pagination justify-content-center">
+
+        @* First Page *@
+        @if (currentPageInt > 1)
+        {
+            <li class="page-item">
+                <a style="width:200px" class="page-link" href="?page=1&pageSize=@pageSize&search=@searchQuery">@Localizer["FirstPage"]</a>
+            </li>
+        }
+
+        @* Previous *@
         @if (currentPageInt > 1)
         {
             <li class="page-item">
@@ -485,6 +497,7 @@
             </li>
         }
 
+        @* Page numbers *@
         @for (int i = startPage; i <= endPage; i++)
         {
             <li class="page-item @(i == currentPageInt ? "active" : "")">
@@ -492,12 +505,22 @@
             </li>
         }
 
+        @* Next *@
         @if (currentPageInt < totalPages)
         {
             <li class="page-item">
                 <a class="page-link" href="?page=@(currentPageInt + 1)&pageSize=@pageSize&search=@searchQuery">»</a>
             </li>
         }
+
+        @* Last Page *@
+        @if (currentPageInt < totalPages)
+        {
+            <li class="page-item">
+                <a style="width:200px" class="page-link" href="?page=@totalPages&pageSize=@pageSize&search=@searchQuery">@Localizer["LastPage"]</a>
+            </li>
+        }
+
     </ul>
 </nav>
 <!-- #endregion -->
