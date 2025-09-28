@@ -173,7 +173,15 @@
                                 </div>
                             </div>
 
+                             
 
+
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group" style="text-align:@textAlign">
+                                <label>@Localizer["Proxy"]</label>
+                                <input type="text" class="form-control" id="proxy" maxlength="250" />
+                            </div>
                         </div>
 
                     </div>
@@ -259,6 +267,7 @@
                  formData.append("SecondNameAr", $('#secondNameAr').val());
                  formData.append("ThirdNameAr", $('#thirdNameAr').val());
                  formData.append("LastNameAr", $('#lastNameAr').val());
+                 formData.append("proxy", $('#proxy').val());
                  const rawDate = $('#dateOfBirth').val();  // usually "1994-01-14"
                  if (rawDate != '')
                  var formattedDate =new Date(rawDate).toISOString();  // still "1994-01-14"

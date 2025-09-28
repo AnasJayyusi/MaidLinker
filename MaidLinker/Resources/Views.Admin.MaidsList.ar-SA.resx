@@ -285,4 +285,7 @@
   <data name="MaidNumber" xml:space="preserve">
     <value>رقم العاملة</value>
   </data>
+  <data name="Proxy" xml:space="preserve">
+    <value>الوكيل</value>
+  </data>
 </root>

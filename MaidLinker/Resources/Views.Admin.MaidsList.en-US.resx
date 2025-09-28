@@ -285,4 +285,7 @@
   <data name="MaidNumber" xml:space="preserve">
     <value>Maid Number</value>
   </data>
+  <data name="Proxy" xml:space="preserve">
+    <value>Proxy</value>
+  </data>
 </root>

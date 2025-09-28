@@ -503,6 +503,7 @@ namespace MaidLinker.Controllers
                 Religion = dto.Religion,
                 Childs = dto.Childs,
                 Note = dto.Note,
+                Proxy = dto.Proxy,
                 NationalityId = dto.NationalityId,
                 VideoURL = dto.VideoURL,
             };
@@ -579,7 +580,8 @@ namespace MaidLinker.Controllers
                 languageIds = maid.Langauges.Select(s => s.Id),
                 note = maid.Note,
                 videoURL = maid.VideoURL,
-                imagePath = maid.ImagePath
+                imagePath = maid.ImagePath,
+                proxy= maid.Proxy
             };
 
             return Json(result);
@@ -642,6 +644,7 @@ namespace MaidLinker.Controllers
             maid.Religion = dto.Religion;
             maid.Childs = dto.Childs;
             maid.Note = dto.Note;
+            maid.Proxy = dto.Proxy;
             maid.NationalityId = dto.NationalityId;
             maid.VideoURL = dto.VideoURL;
 

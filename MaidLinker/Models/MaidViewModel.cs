@@ -29,6 +29,7 @@ namespace MaidLinker.Models
         [DisplayFormat(DataFormatString = "{0:mm/dd/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime DateOfBirth { get; set; }
         public string Note { get; set; }
+        public string Proxy { get; set; }
 
         public int NationalityId { get; set; }
 

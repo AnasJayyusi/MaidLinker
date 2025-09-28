@@ -42,6 +42,7 @@ namespace MaidLinker.Data.Entites
         public List<Language>? Langauges { get; set; }
         public DateTime DateOfBirth { get; set; }
         public string? Note { get; set; }
+        public string? Proxy { get; set; }
 
         public bool IsAvailable { get; set; } = true;
 

@@ -255,4 +255,7 @@
   <data name="Religion" xml:space="preserve">
     <value>الديانة </value>
   </data>
+  <data name="Proxy" xml:space="preserve">
+    <value>الوكيل</value>
+  </data>
 </root>

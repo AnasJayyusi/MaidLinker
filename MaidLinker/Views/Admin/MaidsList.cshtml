@@ -21,9 +21,17 @@
 
     var searchQuery = Context.Request.Query["search"].ToString().Trim();
     var filteredItems = string.IsNullOrEmpty(searchQuery) ? Model :
-        Model.Where(m => m.FirstNameEn.ToLower().Contains(searchQuery.ToLower()) ||
-                         m.FirstNameAr.ToLower().Contains(searchQuery.ToLower())).ToList();
-
+      Model.Where(m =>
+          m.Id.ToString().Contains(searchQuery, StringComparison.OrdinalIgnoreCase) ||
+          (!string.IsNullOrEmpty(m.FirstNameEn) && m.FirstNameEn.Contains(searchQuery, StringComparison.OrdinalIgnoreCase)) ||
+          (!string.IsNullOrEmpty(m.SecondNameEn) && m.SecondNameEn.Contains(searchQuery, StringComparison.OrdinalIgnoreCase)) ||
+          (!string.IsNullOrEmpty(m.ThirdNameEn) && m.ThirdNameEn.Contains(searchQuery, StringComparison.OrdinalIgnoreCase)) ||
+          (!string.IsNullOrEmpty(m.LastNameEn) && m.LastNameEn.Contains(searchQuery, StringComparison.OrdinalIgnoreCase)) ||
+          (!string.IsNullOrEmpty(m.FirstNameAr) && m.FirstNameAr.Contains(searchQuery, StringComparison.OrdinalIgnoreCase)) ||
+          (!string.IsNullOrEmpty(m.SecondNameAr) && m.SecondNameAr.Contains(searchQuery, StringComparison.OrdinalIgnoreCase)) ||
+          (!string.IsNullOrEmpty(m.ThirdNameAr) && m.ThirdNameAr.Contains(searchQuery, StringComparison.OrdinalIgnoreCase)) ||
+          (!string.IsNullOrEmpty(m.LastNameAr) && m.LastNameAr.Contains(searchQuery, StringComparison.OrdinalIgnoreCase))
+      ).ToList();
     var totalItems = filteredItems.Count;
 
     var pageSizeParam = Context.Request.Query["pageSize"].ToString();
@@ -280,6 +288,12 @@
 
                         </div>
 
+                        <div class="col-md-12">
+                            <div class="form-group" style="text-align:@textAlign">
+                                <label>@Localizer["Proxy"]</label>
+                                <input type="text" class="form-control" id="maidsLisproxy" maxlength="250" />
+                            </div>
+                        </div>
                     </div>
 
                     <hr />
@@ -513,6 +527,7 @@
             $('#thirdNameArMaidList').val(data.thirdNameAr);
             $('#lastNameArMaidList').val(data.lastNameAr);
 
+
             // Other fields
 
             $('#dateOfBirthMaidList').val(data.dateOfBirth?.split('T')[0]); // Format if needed
@@ -522,6 +537,7 @@
             $('#childsMaidList').val(data.childs);
             $('#maidsListNationalities').val(data.nationalityId);
             $('#noteMaidList').val(data.note);
+            $('#maidsLisproxy').val(data.proxy);
             $('#videoURLMaidList').val(data.videoURL);
 
             // Multi-select: Served countries and languages
@@ -572,6 +588,7 @@
         formData.append('SecondNameAr', $('#secondNameArMaidList').val());
         formData.append('ThirdNameAr', $('#thirdNameArMaidList').val());
         formData.append('LastNameAr', $('#lastNameArMaidList').val());
+        formData.append('proxy', $('#maidsLisproxy').val());
 
         const rawDate = $('#dateOfBirthMaidList').val();  // usually "1994-01-14"
         const formattedDate =new Date(rawDate).toISOString();  // still "1994-01-14"
